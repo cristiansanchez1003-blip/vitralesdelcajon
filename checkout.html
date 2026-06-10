@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Vitrales del Cajón</title>
+  <meta name="description" content="Finaliza tu compra de vitrales artesanales de Vitrales del Cajón.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <style>
+    :root {
+      --paper: #FAFAFA;
+      --white: #FFFFFF;
+      --ink: #222222;
+      --muted: #6f7178;
+      --line: rgba(34, 34, 34, 0.12);
+      --blue: #0C2D83;
+      --cyan: #2FBAD3;
+      --amber: #E59513;
+      --danger: #9b2f2f;
+      --success: #1d7c55;
+      --shadow: 0 18px 55px rgba(12, 45, 131, 0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(47, 186, 211, 0.08), transparent 34rem),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+
+    .checkout-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 76px;
+      padding: 0 clamp(1rem, 4vw, 4rem);
+      background: rgba(250, 250, 250, 0.9);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      min-width: 0;
+    }
+
+    .brand img {
+      width: 58px;
+      height: auto;
+      filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.15));
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 0.86rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .brand span {
+      display: block;
+      margin-top: 0.18rem;
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .back-link {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      transition: color 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .back-link:hover { color: var(--cyan); }
+
+    .checkout-hero {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: clamp(2.4rem, 5vw, 4.8rem) 1.25rem 1.5rem;
+    }
+
+    .kicker {
+      margin: 0 0 0.8rem;
+      color: var(--cyan);
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 840px;
+      margin: 0;
+      font-size: clamp(2.1rem, 4.8vw, 4.2rem);
+      line-height: 1.04;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .checkout-layout {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 1.25rem 5rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+      gap: 1.4rem;
+      align-items: start;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 1.25rem 1.35rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .panel-head p {
+      margin: 0.45rem 0 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.65;
+    }
+
+    .checkout-form {
+      padding: 1.35rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .field {
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .field label,
+    .shipping-title,
+    .terms label {
+      color: var(--ink);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+      padding: 0 0.9rem;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 4px rgba(47, 186, 211, 0.12);
+    }
+
+    .field small {
+      min-height: 1rem;
+      color: var(--muted);
+      font-size: 0.74rem;
+      line-height: 1.4;
+    }
+
+    .field.invalid input,
+    .field.invalid select {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 4px rgba(155, 47, 47, 0.08);
+    }
+
+    .field.invalid small { color: var(--danger); }
+
+    .summary-panel {
+      position: sticky;
+      top: 96px;
+    }
+
+    .order-list {
+      padding: 0 1.35rem;
+    }
+
+    .order-item {
+      display: grid;
+      grid-template-columns: 64px 1fr auto;
+      gap: 0.85rem;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .order-item img {
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: #f0f0f0;
+    }
+
+    .order-item h3 {
+      margin: 0 0 0.25rem;
+      font-size: 0.9rem;
+      line-height: 1.25;
+    }
+
+    .order-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+
+    .line-price {
+      color: var(--blue);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .shipping-box,
+    .payment-box,
+    .totals,
+    .terms,
+    .summary-actions {
+      padding: 1.15rem 1.35rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .shipping-options {
+      display: grid;
+      gap: 0.7rem;
+      margin-top: 0.75rem;
+    }
+
+    .radio-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.85rem;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .radio-card span {
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .radio-card strong {
+      display: block;
+      color: var(--ink);
+      font-size: 0.86rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .payment-methods {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 0.8rem;
+    }
+
+    .payment-method {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.9rem;
+      background: linear-gradient(135deg, #ffffff 0%, #f6fbfc 100%);
+    }
+
+    .payment-method strong {
+      display: block;
+      font-size: 0.86rem;
+      text-transform: uppercase;
+    }
+
+    .payment-method span {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .method-pill {
+      border-radius: 999px;
+      padding: 0.35rem 0.65rem;
+      color: var(--blue);
+      background: rgba(47, 186, 211, 0.12);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .total-row strong {
+      color: var(--ink);
+    }
+
+    .grand-total {
+      margin-top: 0.9rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.18rem;
+      font-weight: 800;
+    }
+
+    .terms {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+    }
+
+    .terms input {
+      width: 20px;
+      height: 20px;
+      margin-top: 0.05rem;
+      accent-color: var(--blue);
+      flex: 0 0 auto;
+    }
+
+    .terms label {
+      letter-spacing: 0;
+      line-height: 1.55;
+      text-transform: none;
+    }
+
+    .terms a {
+      color: var(--blue);
+      font-weight: 800;
+    }
+
+    .place-order {
+      width: 100%;
+      min-height: 52px;
+      border: 1px solid var(--blue);
+      border-radius: 999px;
+      color: var(--paper);
+      background: var(--blue);
+      cursor: pointer;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .place-order:hover {
+      transform: translateY(-2px);
+      border-color: var(--cyan);
+      background: var(--cyan);
+    }
+
+    .empty-cart {
+      padding: 1.35rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .empty-cart a {
+      display: inline-block;
+      margin-top: 0.85rem;
+      color: var(--blue);
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .status {
+      margin: 0.85rem 0 0;
+      min-height: 1.2rem;
+      color: var(--danger);
+      font-size: 0.84rem;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .status.success { color: var(--success); }
+
+    @media (max-width: 940px) {
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .checkout-header {
+        min-height: 68px;
+        padding: 0.55rem 1rem;
+      }
+
+      .brand img { width: 50px; }
+      .brand span { display: none; }
+      .back-link { font-size: 0.7rem; letter-spacing: 0.1em; }
+      .checkout-hero { padding: 2rem 1rem 1.2rem; }
+      .checkout-layout { padding: 0 1rem 3rem; gap: 1rem; }
+      .field-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .panel-head,
+      .checkout-form,
+      .shipping-box,
+      .payment-box,
+      .totals,
+      .terms,
+      .summary-actions { padding-left: 1rem; padding-right: 1rem; }
+      .order-list { padding: 0 1rem; }
+      .order-item { grid-template-columns: 58px 1fr; }
+      .order-item img { width: 58px; height: 58px; }
+      .line-price { grid-column: 2; }
+      .radio-card,
+      .payment-method {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="checkout-header">
+    <a class="brand" href="index.html" aria-label="Volver al inicio">
+      <img src="assets/images/logotipo_vitrales_hero.png" alt="Vitrales del Cajón">
+      <span>
+        <strong>Vitrales del Cajón</strong>
+        <span>Checkout seguro</span>
+      </span>
+    </a>
+    <a class="back-link" href="catalogo.html">Volver al catálogo</a>
+  </header>
+
+  <main>
+    <section class="checkout-hero">
+      <p class="kicker">Finalizar compra</p>
+      <h1>Datos de envío y pedido</h1>
+    </section>
+
+    <section class="checkout-layout" aria-label="Checkout">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Facturación y envío</h2>
+          <p>Completa tus datos para preparar el pedido. Te contactaremos por WhatsApp para confirmar pago y despacho.</p>
+        </div>
+
+        <form class="checkout-form" id="checkoutForm" novalidate>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required>
+            <small></small>
+          </div>
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="nombre">Nombre</label>
+              <input id="nombre" name="nombre" type="text" autocomplete="given-name" required>
+              <small></small>
+            </div>
+            <div class="field">
+              <label for="apellidos">Apellidos</label>
+              <input id="apellidos" name="apellidos" type="text" autocomplete="family-name" required>
+              <small></small>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="rut">RUT</label>
+            <input id="rut" name="rut" type="text" inputmode="text" placeholder="12345678-K" autocomplete="off" required>
+            <small>Formato requerido: 12345678-K</small>
+          </div>
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="pais">País</label>
+              <select id="pais" name="pais" required>
+                <option value="Chile" selected>Chile</option>
+              </select>
+              <small></small>
+            </div>
+            <div class="field">
+              <label for="region">Región</label>
+              <select id="region" name="region" required>
+                <option value="">Selecciona región</option>
+              </select>
+              <small></small>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="comuna">Comuna</label>
+            <select id="comuna" name="comuna" required disabled>
+              <option value="">Selecciona comuna</option>
+            </select>
+            <small></small>
+          </div>
+
+          <div class="field">
+            <label for="direccion">Dirección</label>
+            <input id="direccion" name="direccion" type="text" autocomplete="street-address" placeholder="Calle y número" required>
+            <small></small>
+          </div>
+
+          <div class="field">
+            <label for="departamento">Departamento / Apartamento</label>
+            <input id="departamento" name="departamento" type="text" autocomplete="address-line2" placeholder="Opcional">
+            <small>Opcional</small>
+          </div>
+        </form>
+      </article>
+
+      <aside class="panel summary-panel">
+        <div class="panel-head">
+          <h2>Tu pedido</h2>
+          <p>Resumen calculado desde tu carrito activo.</p>
+        </div>
+
+        <div class="order-list" id="orderList"></div>
+
+        <div class="shipping-box">
+          <div class="shipping-title">Envío</div>
+          <div class="shipping-options">
+            <label class="radio-card">
+              <span><strong>Retiro en taller</strong>Coordinar entrega en el Cajón del Maipo.</span>
+              <input type="radio" name="shipping" value="0" data-label="Retiro en taller" checked>
+            </label>
+            <label class="radio-card">
+              <span><strong>Despacho RM</strong>Entrega coordinada dentro de la Región Metropolitana.</span>
+              <input type="radio" name="shipping" value="7000" data-label="Despacho RM">
+            </label>
+            <label class="radio-card">
+              <span><strong>Despacho a regiones</strong>Embalaje protegido y envío por pagar/coordinado.</span>
+              <input type="radio" name="shipping" value="12000" data-label="Despacho a regiones">
+            </label>
+          </div>
+        </div>
+
+        <div class="totals">
+          <div class="total-row"><span>Subtotal</span><strong id="subtotal">$0</strong></div>
+          <div class="total-row"><span>IVA incluido</span><strong id="iva">$0</strong></div>
+          <div class="total-row"><span>Envío</span><strong id="shippingTotal">$0</strong></div>
+          <div class="total-row grand-total"><span>Total</span><strong id="grandTotal">$0</strong></div>
+        </div>
+
+        <div class="payment-box">
+          <div class="shipping-title">Pasarela de pagos</div>
+          <div class="payment-methods">
+            <div class="payment-method">
+              <span><strong>Webpay / Flow</strong>Pago con tarjeta de crédito, débito o prepago.</span>
+              <span class="method-pill">Próximo paso</span>
+            </div>
+            <div class="payment-method">
+              <span><strong>Transferencia</strong>Confirmación manual y coordinación por WhatsApp.</span>
+              <span class="method-pill">Disponible</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="terms">
+          <input id="terms" type="checkbox" required>
+          <label for="terms">He leído y estoy de acuerdo con los <a href="index.html#contacto">términos y condiciones</a> de la web.</label>
+        </div>
+
+        <div class="summary-actions">
+          <button class="place-order" id="placeOrder" type="button">Realizar el pedido</button>
+          <p class="status" id="status" aria-live="polite"></p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_PRODUCTS = 'vitralesCatalogProducts';
+    const STORAGE_CART = 'vitralesCatalogCart';
+    const STORAGE_CHECKOUT_CART = 'vitralesCheckoutCart';
+    const WHATSAPP_PHONE = '56999977550';
+
+    const regions = {
+      'Región de Arica y Parinacota': ['Arica', 'Camarones', 'Putre', 'General Lagos'],
+      'Región de Tarapacá': ['Iquique', 'Alto Hospicio', 'Pozo Almonte', 'Pica', 'Huara', 'Camiña', 'Colchane'],
+      'Región de Antofagasta': ['Antofagasta', 'Calama', 'Tocopilla', 'Mejillones', 'Taltal', 'San Pedro de Atacama'],
+      'Región de Atacama': ['Copiapó', 'Caldera', 'Vallenar', 'Chañaral', 'Diego de Almagro', 'Huasco'],
+      'Región de Coquimbo': ['La Serena', 'Coquimbo', 'Ovalle', 'Illapel', 'Vicuña', 'Los Vilos'],
+      'Región de Valparaíso': ['Valparaíso', 'Viña del Mar', 'Quilpué', 'Villa Alemana', 'Concón', 'San Antonio', 'Los Andes'],
+      'Región Metropolitana de Santiago': ['Santiago', 'Providencia', 'Ñuñoa', 'Las Condes', 'La Reina', 'Puente Alto', 'La Florida', 'Maipú', 'San José de Maipo', 'Peñalolén', 'Vitacura', 'Lo Barnechea'],
+      "Región del Libertador General Bernardo O'Higgins": ['Rancagua', 'Machalí', 'San Fernando', 'Rengo', 'Santa Cruz', 'Pichilemu'],
+      'Región del Maule': ['Talca', 'Curicó', 'Linares', 'Cauquenes', 'Constitución', 'Molina'],
+      'Región de Ñuble': ['Chillán', 'Chillán Viejo', 'Bulnes', 'San Carlos', 'Quirihue'],
+      'Región del Biobío': ['Concepción', 'Talcahuano', 'San Pedro de la Paz', 'Los Ángeles', 'Coronel', 'Hualpén'],
+      'Región de La Araucanía': ['Temuco', 'Padre Las Casas', 'Villarrica', 'Pucón', 'Angol', 'Victoria'],
+      'Región de Los Ríos': ['Valdivia', 'La Unión', 'Río Bueno', 'Panguipulli', 'Lanco'],
+      'Región de Los Lagos': ['Puerto Montt', 'Puerto Varas', 'Osorno', 'Castro', 'Ancud', 'Frutillar'],
+      'Región de Aysén': ['Coyhaique', 'Puerto Aysén', 'Chile Chico', 'Cochrane'],
+      'Región de Magallanes': ['Punta Arenas', 'Puerto Natales', 'Porvenir', 'Cabo de Hornos']
+    };
+
+    const formatPrice = (value) => '$' + Number(value || 0).toLocaleString('es-CL');
+    const escapeHTML = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    }[char]));
+    const readJSON = (key, fallback = []) => {
+      try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+      catch { return fallback; }
+    };
+    const whatsappLink = (message) => `https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${encodeURIComponent(message)}`;
+
+    const form = document.getElementById('checkoutForm');
+    const orderList = document.getElementById('orderList');
+    const statusBox = document.getElementById('status');
+    const regionSelect = document.getElementById('region');
+    const comunaSelect = document.getElementById('comuna');
+
+    let checkoutItems = [];
+
+    function validateRut(rut) {
+      const clean = rut.replace(/\./g, '').replace(/-/g, '').toUpperCase();
+      if (!/^\d{7,8}[0-9K]$/.test(clean)) return false;
+      const body = clean.slice(0, -1);
+      const dv = clean.slice(-1);
+      let sum = 0;
+      let multiplier = 2;
+      for (let i = body.length - 1; i >= 0; i -= 1) {
+        sum += Number(body[i]) * multiplier;
+        multiplier = multiplier === 7 ? 2 : multiplier + 1;
+      }
+      const expected = 11 - (sum % 11);
+      const expectedDv = expected === 11 ? '0' : expected === 10 ? 'K' : String(expected);
+      return dv === expectedDv;
+    }
+
+    function setFieldError(input, message = '') {
+      const field = input.closest('.field');
+      const small = field?.querySelector('small');
+      field?.classList.toggle('invalid', Boolean(message));
+      if (small && message) small.textContent = message;
+    }
+
+    function hydrateRegions() {
+      Object.keys(regions).forEach((region) => {
+        const option = document.createElement('option');
+        option.value = region;
+        option.textContent = region;
+        regionSelect.appendChild(option);
+      });
+    }
+
+    function hydrateCommunes(region) {
+      comunaSelect.innerHTML = '<option value="">Selecciona comuna</option>';
+      comunaSelect.disabled = !region;
+      (regions[region] || []).forEach((comuna) => {
+        const option = document.createElement('option');
+        option.value = comuna;
+        option.textContent = comuna;
+        comunaSelect.appendChild(option);
+      });
+    }
+
+    function loadCartItems() {
+      const bridgeCart = readJSON(STORAGE_CHECKOUT_CART, []);
+      if (bridgeCart.length) {
+        checkoutItems = bridgeCart.map((item) => ({
+          id: item.id || item.name,
+          name: item.name,
+          price: Number(item.price || 0),
+          qty: Number(item.qty || 1),
+          image: item.image || 'assets/images/logotipo_vitrales_hero.png',
+          category: item.category || 'Obra'
+        }));
+        return;
+      }
+
+      const products = readJSON(STORAGE_PRODUCTS, []);
+      const catalogCart = readJSON(STORAGE_CART, []);
+      checkoutItems = catalogCart.map((item) => {
+        const product = products.find((entry) => entry.id === item.id);
+        if (!product) return null;
+        return {
+          id: product.id,
+          name: product.name,
+          price: Number(product.price || 0),
+          qty: Number(item.qty || 1),
+          image: product.image,
+          category: product.category
+        };
+      }).filter(Boolean);
+    }
+
+    function totals() {
+      const subtotal = checkoutItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+      const shipping = Number(document.querySelector('input[name="shipping"]:checked')?.value || 0);
+      const iva = Math.round(subtotal * 0.19 / 1.19);
+      const total = subtotal + shipping;
+      return { subtotal, shipping, iva, total };
+    }
+
+    function renderOrder() {
+      if (!checkoutItems.length) {
+        orderList.innerHTML = `
+          <div class="empty-cart">
+            Tu carrito está vacío. Agrega una obra antes de finalizar tu pedido.
+            <br><a href="catalogo.html">Ir al catálogo</a>
+          </div>
+        `;
+      } else {
+        orderList.innerHTML = checkoutItems.map((item) => `
+          <article class="order-item">
+            <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.name)}" loading="lazy">
+            <div>
+              <h3>${escapeHTML(item.name)}</h3>
+              <p>${escapeHTML(item.category)} · x${item.qty}</p>
+            </div>
+            <strong class="line-price">${formatPrice(item.price * item.qty)}</strong>
+          </article>
+        `).join('');
+      }
+
+      const currentTotals = totals();
+      document.getElementById('subtotal').textContent = formatPrice(currentTotals.subtotal);
+      document.getElementById('iva').textContent = formatPrice(currentTotals.iva);
+      document.getElementById('shippingTotal').textContent = formatPrice(currentTotals.shipping);
+      document.getElementById('grandTotal').textContent = formatPrice(currentTotals.total);
+    }
+
+    function validateForm() {
+      let valid = true;
+      const requiredFields = [...form.querySelectorAll('[required]')];
+
+      requiredFields.forEach((input) => {
+        setFieldError(input);
+        if (!input.value.trim()) {
+          valid = false;
+          setFieldError(input, 'Este campo es obligatorio.');
+        }
+        if (input.type === 'email' && input.value && !input.checkValidity()) {
+          valid = false;
+          setFieldError(input, 'Ingresa un email válido.');
+        }
+      });
+
+      const rutInput = document.getElementById('rut');
+      if (rutInput.value && !validateRut(rutInput.value)) {
+        valid = false;
+        setFieldError(rutInput, 'Ingresa un RUT chileno válido, por ejemplo 12345678-K.');
+      }
+
+      if (!document.getElementById('terms').checked) {
+        valid = false;
+        statusBox.textContent = 'Debes aceptar los términos y condiciones para realizar el pedido.';
+      }
+
+      if (!checkoutItems.length) {
+        valid = false;
+        statusBox.textContent = 'Tu carrito está vacío. Agrega una obra antes de continuar.';
+      }
+
+      return valid;
+    }
+
+    function getOrderPayload() {
+      const shippingOption = document.querySelector('input[name="shipping"]:checked');
+      const currentTotals = totals();
+      return {
+        customer: {
+          email: document.getElementById('email').value.trim(),
+          nombre: document.getElementById('nombre').value.trim(),
+          apellidos: document.getElementById('apellidos').value.trim(),
+          rut: document.getElementById('rut').value.trim(),
+          pais: document.getElementById('pais').value,
+          region: regionSelect.value,
+          comuna: comunaSelect.value,
+          direccion: document.getElementById('direccion').value.trim(),
+          departamento: document.getElementById('departamento').value.trim()
+        },
+        items: checkoutItems,
+        shipping: {
+          label: shippingOption?.dataset.label || 'Sin definir',
+          amount: currentTotals.shipping
+        },
+        totals: currentTotals,
+        createdAt: new Date().toISOString()
+      };
+    }
+
+    function submitOrder(orderPayload) {
+      // Hook futuro para Flow/Webpay:
+      // return fetch('/api/create-payment', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderPayload) });
+      const lines = orderPayload.items.map((item) => `• ${item.name} x${item.qty} — ${formatPrice(item.price * item.qty)}`);
+      const customer = orderPayload.customer;
+      const message = [
+        'Hola, quiero realizar este pedido en Vitrales del Cajón:',
+        '',
+        ...lines,
+        '',
+        `Subtotal: ${formatPrice(orderPayload.totals.subtotal)}`,
+        `IVA incluido: ${formatPrice(orderPayload.totals.iva)}`,
+        `Envío (${orderPayload.shipping.label}): ${formatPrice(orderPayload.shipping.amount)}`,
+        `Total: ${formatPrice(orderPayload.totals.total)}`,
+        '',
+        'Datos del comprador:',
+        `${customer.nombre} ${customer.apellidos}`,
+        `RUT: ${customer.rut}`,
+        `Email: ${customer.email}`,
+        `Dirección: ${customer.direccion}${customer.departamento ? ', ' + customer.departamento : ''}`,
+        `${customer.comuna}, ${customer.region}, ${customer.pais}`
+      ].join('\n');
+      window.location.href = whatsappLink(message);
+    }
+
+    document.querySelectorAll('input[name="shipping"]').forEach((input) => {
+      input.addEventListener('change', renderOrder);
+    });
+
+    regionSelect.addEventListener('change', () => {
+      hydrateCommunes(regionSelect.value);
+    });
+
+    document.getElementById('placeOrder').addEventListener('click', () => {
+      statusBox.textContent = '';
+      statusBox.classList.remove('success');
+      if (!validateForm()) return;
+
+      const orderPayload = getOrderPayload();
+      localStorage.setItem('vitralesLastOrder', JSON.stringify(orderPayload));
+      statusBox.textContent = 'Pedido validado. Abriendo WhatsApp para confirmar pago y despacho...';
+      statusBox.classList.add('success');
+      submitOrder(orderPayload);
+    });
+
+    hydrateRegions();
+    loadCartItems();
+    renderOrder();
+  </script>
+</body>
+</html>

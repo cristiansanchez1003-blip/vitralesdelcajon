@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo — Vitrales del Cajón</title>
+  <meta name="description" content="Catálogo de vitrales, joyas, suncatchers y piezas decorativas de Vitrales del Cajón.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <style>
+    :root {
+      --paper: #FAFAFA;
+      --ink: #222222;
+      --muted: #6f7178;
+      --line: rgba(34, 34, 34, 0.12);
+      --blue: #0C2D83;
+      --cyan: #2FBAD3;
+      --amber: #E59513;
+      --shadow: 0 18px 55px rgba(12, 45, 131, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    .catalog-shell {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(47, 186, 211, 0.08), transparent 34rem),
+        linear-gradient(180deg, #ffffff 0%, #FAFAFA 100%);
+    }
+
+    .catalog-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 76px;
+      padding: 0 clamp(1.25rem, 4vw, 4rem);
+      background: rgba(250, 250, 250, 0.86);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      min-width: 0;
+    }
+
+    .brand-mark img {
+      width: 68px;
+      height: auto;
+      filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.15));
+    }
+
+    .brand-mark strong {
+      display: block;
+      font-size: 0.88rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .brand-mark span {
+      display: block;
+      margin-top: 0.18rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .link-soft {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      transition: color 0.25s ease;
+    }
+
+    .link-soft:hover { color: var(--cyan); }
+
+    .cart-button {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--blue);
+      background: #fff;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: transform 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    .cart-button:hover {
+      transform: translateY(-2px);
+      border-color: rgba(47, 186, 211, 0.5);
+      color: var(--cyan);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -5px;
+      right: -6px;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: var(--amber);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+    }
+
+    .catalog-hero {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: clamp(3rem, 7vw, 6rem) 1.25rem 2.25rem;
+      text-align: center;
+    }
+
+    .kicker {
+      margin: 0 0 0.9rem;
+      color: var(--cyan);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 0 auto 1rem;
+      font-size: clamp(2.35rem, 5vw, 4.7rem);
+      line-height: 1.03;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .catalog-hero p {
+      max-width: 720px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.85;
+    }
+
+    .toolbar {
+      max-width: 1180px;
+      margin: 0 auto 1.5rem;
+      padding: 0 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .search-field, .category-select {
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .search-field {
+      flex: 1 1 280px;
+      padding: 0 1rem;
+    }
+
+    .category-select {
+      flex: 0 1 260px;
+      padding: 0 0.8rem;
+    }
+
+    .search-field:focus, .category-select:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 4px rgba(47, 186, 211, 0.12);
+    }
+
+    .catalog-grid {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 1.25rem 5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .product-card {
+      overflow: hidden;
+      border: 1px solid rgba(34, 34, 34, 0.08);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 10px 34px rgba(12, 45, 131, 0.08);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-media {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: #f1f1f1;
+    }
+
+    .product-media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .product-card:hover .product-media img {
+      transform: scale(1.06);
+    }
+
+    .category-chip {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(12, 45, 131, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .product-body {
+      padding: 1.05rem;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+    }
+
+    .product-title {
+      margin: 0 0 0.45rem;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+    }
+
+    .product-description {
+      margin: 0 0 0.9rem;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: auto;
+    }
+
+    .price {
+      color: var(--blue);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .add-button, .checkout-button, .clear-button {
+      border: 0;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+    }
+
+    .add-button {
+      padding: 0.75rem 0.9rem;
+      color: #fff;
+      background: var(--blue);
+      font-size: 0.7rem;
+    }
+
+    .add-button:hover, .checkout-button:hover {
+      background: var(--cyan);
+      transform: translateY(-2px);
+    }
+
+    .empty-state {
+      max-width: 720px;
+      margin: 2rem auto 5rem;
+      padding: 0 1.25rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .cart-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(12, 45, 131, 0.24);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .cart-backdrop.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .cart-drawer {
+      position: fixed;
+      inset: 0 0 0 auto;
+      z-index: 100;
+      width: min(430px, 94vw);
+      background: rgba(250, 250, 250, 0.96);
+      border-left: 1px solid var(--line);
+      box-shadow: -18px 0 45px rgba(12, 45, 131, 0.14);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-drawer.open {
+      transform: translateX(0);
+    }
+
+    .cart-head {
+      min-height: 76px;
+      padding: 0 1.25rem;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cart-head h2 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .icon-button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .cart-items {
+      flex: 1;
+      overflow: auto;
+      padding: 1rem 1.25rem;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 0.9rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .cart-item img {
+      width: 72px;
+      height: 72px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    .cart-item h3 {
+      margin: 0 0 0.3rem;
+      font-size: 0.9rem;
+    }
+
+    .cart-item p {
+      margin: 0 0 0.65rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .quantity-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.65rem;
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .qty-controls button {
+      width: 30px;
+      height: 30px;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 800;
+    }
+
+    .qty-controls span {
+      min-width: 28px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .remove-button {
+      border: 0;
+      background: transparent;
+      color: #9b2f2f;
+      cursor: pointer;
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .cart-foot {
+      padding: 1.15rem 1.25rem;
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.9rem;
+      font-weight: 800;
+    }
+
+    .checkout-button {
+      width: 100%;
+      min-height: 48px;
+      color: #fff;
+      background: var(--blue);
+    }
+
+    .clear-button {
+      width: 100%;
+      margin-top: 0.6rem;
+      min-height: 42px;
+      color: var(--muted);
+      background: transparent;
+    }
+
+    .toast {
+      position: fixed;
+      right: 1.2rem;
+      bottom: 1.2rem;
+      z-index: 120;
+      padding: 0.9rem 1rem;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--blue);
+      box-shadow: var(--shadow);
+      transform: translateY(18px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 640px) {
+      .catalog-header {
+        align-items: center;
+        min-height: 68px;
+        padding: 0.55rem 1rem;
+      }
+
+      .brand-mark img { width: 54px; }
+      .brand-mark span { display: none; }
+      .header-actions { gap: 0.55rem; }
+      .link-soft { font-size: 0.72rem; }
+      .cart-button { width: 44px; height: 44px; }
+      .catalog-hero { padding: 2.2rem 1rem 1.5rem; }
+      h1 { font-size: clamp(2rem, 13vw, 3.1rem); line-height: 1.03; }
+      .catalog-hero p { font-size: 0.92rem; line-height: 1.7; }
+      .toolbar { align-items: stretch; }
+      .search-field { flex-basis: 100%; min-width: 0; }
+      .category-select { flex: 1 1 100%; }
+      .catalog-grid { grid-template-columns: 1fr; padding-inline: 1rem; gap: 1rem; }
+      .category-chip { max-width: calc(100% - 24px); white-space: normal; line-height: 1.25; }
+      .product-footer { align-items: flex-start; flex-direction: column; }
+      .add-button { width: 100%; }
+      .cart-drawer { width: 100vw; }
+      .cart-head,
+      .cart-items,
+      .cart-foot { padding-left: 1rem; padding-right: 1rem; }
+      .cart-item { grid-template-columns: 64px 1fr; gap: 0.75rem; }
+      .cart-item img { width: 64px; height: 64px; }
+      .quantity-row { align-items: flex-start; flex-direction: column; }
+      .toast { left: 1rem; right: 1rem; bottom: 1rem; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="catalog-shell">
+    <header class="catalog-header">
+      <a class="brand-mark" href="index.html" aria-label="Volver a Vitrales del Cajón">
+        <img src="assets/images/logotipo_vitrales_hero.png" alt="Vitrales del Cajón">
+        <span>
+          <strong>Vitrales del Cajón</strong>
+          <span>Catálogo de obras</span>
+        </span>
+      </a>
+      <div class="header-actions">
+        <a class="link-soft" href="index.html">Inicio</a>
+        <button class="cart-button" id="openCart" type="button" aria-label="Abrir carrito">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="catalog-hero">
+        <p class="kicker">Colección disponible</p>
+        <h1>Obras en vidrio para habitar la luz</h1>
+        <p>Explora piezas artesanales listas para comprar. Cada vitral conserva la identidad del Cajón del Maipo: geometría, transparencia y una calma hecha a mano.</p>
+      </section>
+
+      <section class="toolbar" aria-label="Filtros del catálogo">
+        <input class="search-field" id="searchInput" type="search" placeholder="Buscar por nombre, categoría o descripción">
+        <select class="category-select" id="categorySelect" aria-label="Filtrar por categoría">
+          <option value="all">Todas las categorías</option>
+        </select>
+      </section>
+
+      <section class="catalog-grid" id="catalogGrid" aria-live="polite"></section>
+      <p class="empty-state" id="emptyState" hidden>No hay obras que coincidan con esta búsqueda.</p>
+    </main>
+  </div>
+
+  <div class="cart-backdrop" id="cartBackdrop"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-labelledby="cartTitle" aria-hidden="true">
+    <div class="cart-head">
+      <h2 id="cartTitle">Carrito</h2>
+      <button class="icon-button" id="closeCart" type="button" aria-label="Cerrar carrito"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-foot">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">$0</span>
+      </div>
+      <button class="checkout-button" id="checkoutButton" type="button">Ir al checkout</button>
+      <button class="clear-button" id="clearCart" type="button">Vaciar carrito</button>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_PRODUCTS = 'vitralesCatalogProducts';
+    const STORAGE_CART = 'vitralesCatalogCart';
+    const STORAGE_CHECKOUT_CART = 'vitralesCheckoutCart';
+    const WHATSAPP_PHONE = '56999977550';
+
+    const seedProducts = [
+      { id: 'p-luna-hada', name: 'Luna del Valle', category: 'Suncatchers', price: 180000, image: 'assets/images/collection/obra_luna_hada.jpeg', description: 'Hada de vitral suspendida sobre luna creciente, con vidrios blancos, ámbar y turquesa que capturan la luz del jardín.' },
+      { id: 'p-geometria-azul', name: 'Geometría Azul', category: 'Decorativo', price: 200000, image: 'assets/images/collection/obra_escultura_azul.jpeg', description: 'Escultura tridimensional de vidrio azul con planos geométricos y texturas translúcidas para repisas o mesas de luz.' },
+      { id: 'p-companero-lunar', name: 'Compañero Lunar', category: 'Suncatchers', price: 165000, image: 'assets/images/collection/obra_perro_luna.jpeg', description: 'Perrito en luna púrpura, trabajado con cobre y vidrios cálidos para una presencia tierna y protectora en ventana.' },
+      { id: 'p-esfera-iridiscente', name: 'Esfera Iridiscente', category: 'Decorativo', price: 195000, image: 'assets/images/collection/obra_esfera_iridiscente.jpeg', description: 'Pieza esférica facetada con vidrios humo, transparentes e iridiscentes montados sobre base de vidrio.' },
+      { id: 'p-aros-hoja', name: 'Aros Hoja de Bosque', category: 'Joyas - Aros', price: 85000, image: 'assets/images/collection/obra_aros_hoja_verde.jpeg', description: 'Aros de vidrio fusionado en verdes profundos con brillo orgánico inspirado en hojas húmedas del Cajón.' },
+      { id: 'p-arco-solar', name: 'Colgante Arco Solar', category: 'Joyas - Colgantes', price: 90000, image: 'assets/images/collection/obra_colgante_arco_solar.jpeg', description: 'Colgante pequeño en amarillo, verde y rojo con composición circular luminosa y acento artesanal.' },
+      { id: 'p-aros-media-luna', name: 'Aros Media Luna', category: 'Joyas - Aros', price: 88000, image: 'assets/images/collection/obra_aros_media_luna.jpeg', description: 'Aros curvos en amarillo intenso y vino profundo, pulidos para reflejar destellos cálidos al movimiento.' },
+      { id: 'p-aros-agua', name: 'Aros Agua Azul', category: 'Joyas - Aros', price: 92000, image: 'assets/images/collection/obra_aros_azules.jpeg', description: 'Par de aros en azules transparentes con centro claro, evocando pozones cordilleranos bajo el sol.' },
+      { id: 'p-aros-triangulo', name: 'Aros Triángulo de Luz', category: 'Joyas - Aros', price: 95000, image: 'assets/images/collection/obra_aros_triangulo_luz.jpeg', description: 'Aros triangulares con rojo, blanco y verde en una composición gráfica de alto contraste.' },
+      { id: 'p-aros-brasa', name: 'Aros Brasa Roja', category: 'Joyas - Aros', price: 98000, image: 'assets/images/collection/obra_aros_rojos.jpeg', description: 'Aros rojos de vidrio brillante con detalle plateado, intensos y contemporáneos.' },
+      { id: 'p-hoja-andina', name: 'Colgante Hoja Andina', category: 'Joyas - Colgantes', price: 89000, image: 'assets/images/collection/obra_colgante_hoja.jpeg', description: 'Colgante tipo hoja en verdes translúcidos, con veta luminosa y cordón negro ajustable.' },
+      { id: 'p-bosque-ambar', name: 'Colgante Bosque Ámbar', category: 'Joyas - Colgantes', price: 96000, image: 'assets/images/collection/obra_colgante_verde_ambar.jpeg', description: 'Colgante orgánico en verde y ámbar que proyecta sombras cálidas sobre madera natural.' },
+      { id: 'p-granate-prisma', name: 'Colgante Granate Prisma', category: 'Joyas - Colgantes', price: 110000, image: 'assets/images/collection/obra_colgante_granate.jpeg', description: 'Composición prismática en granates e iridiscencias, con transparencias profundas y borde artesanal.' },
+      { id: 'p-circulo-agua', name: 'Colgante Círculo de Agua', category: 'Joyas - Colgantes', price: 85000, image: 'assets/images/collection/obra_colgante_circulo_agua.jpeg', description: 'Medallón circular celeste con burbujas internas, simple y luminoso como una gota suspendida.' },
+      { id: 'p-cactus', name: 'Dúo Cactus del Cajón', category: 'Decorativo', price: 145000, image: 'assets/images/collection/obra_cactus_duo.jpeg', description: 'Dos cactus decorativos de vitral verde, ideales para escritorio, repisa o rincón de plantas.' },
+      { id: 'p-mariposa', name: 'Mariposa Solar', category: 'Suncatchers', price: 175000, image: 'assets/images/collection/obra_mariposa_sol.jpeg', description: 'Mariposa de ventana en naranjo y amarillo, pensada para teñir el espacio con luz cálida.' },
+      { id: 'p-gato-luna', name: 'Gato Luna Cobriza', category: 'Decorativo', price: 170000, image: 'assets/images/collection/obra_gato_luna.jpeg', description: 'Gato de vitral abrazado por una luna cobriza, pieza expresiva con carácter doméstico y poético.' }
+    ];
+
+    const formatPrice = (value) => '$' + Number(value || 0).toLocaleString('es-CL');
+    const escapeHTML = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    }[char]));
+    const getProducts = () => JSON.parse(localStorage.getItem(STORAGE_PRODUCTS) || '[]');
+    const saveProducts = (products) => localStorage.setItem(STORAGE_PRODUCTS, JSON.stringify(products));
+    const getCart = () => JSON.parse(localStorage.getItem(STORAGE_CART) || '[]');
+    const saveCart = (cart) => localStorage.setItem(STORAGE_CART, JSON.stringify(cart));
+
+    if (!localStorage.getItem(STORAGE_PRODUCTS)) {
+      saveProducts(seedProducts);
+    }
+
+    const grid = document.getElementById('catalogGrid');
+    const emptyState = document.getElementById('emptyState');
+    const searchInput = document.getElementById('searchInput');
+    const categorySelect = document.getElementById('categorySelect');
+    const cartCount = document.getElementById('cartCount');
+    const cartDrawer = document.getElementById('cartDrawer');
+    const cartBackdrop = document.getElementById('cartBackdrop');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    const toast = document.getElementById('toast');
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function hydrateCategories(products) {
+      const selected = categorySelect.value || 'all';
+      const categories = [...new Set(products.map((item) => item.category).filter(Boolean))].sort();
+      categorySelect.innerHTML = '<option value="all">Todas las categorías</option>' + categories.map((category) => `<option value="${escapeHTML(category)}">${escapeHTML(category)}</option>`).join('');
+      categorySelect.value = categories.includes(selected) ? selected : 'all';
+    }
+
+    function renderProducts() {
+      const products = getProducts();
+      hydrateCategories(products);
+      const term = searchInput.value.trim().toLowerCase();
+      const category = categorySelect.value;
+      const filtered = products.filter((product) => {
+        const haystack = `${product.name} ${product.category} ${product.description}`.toLowerCase();
+        return (category === 'all' || product.category === category) && (!term || haystack.includes(term));
+      });
+
+      grid.innerHTML = filtered.map((product) => `
+        <article class="product-card">
+          <div class="product-media">
+            <img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}" loading="lazy">
+            <span class="category-chip">${escapeHTML(product.category)}</span>
+          </div>
+          <div class="product-body">
+            <h2 class="product-title">${escapeHTML(product.name)}</h2>
+            <p class="product-description">${escapeHTML(product.description)}</p>
+            <div class="product-footer">
+              <span class="price">${formatPrice(product.price)}</span>
+              <button class="add-button" type="button" data-id="${escapeHTML(product.id)}">Añadir al Carrito</button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+
+      emptyState.hidden = filtered.length > 0;
+    }
+
+    function updateCartBadge() {
+      const totalItems = getCart().reduce((sum, item) => sum + item.qty, 0);
+      cartCount.textContent = totalItems;
+    }
+
+    function addToCart(productId) {
+      const product = getProducts().find((item) => item.id === productId);
+      if (!product) return;
+      const cart = getCart();
+      const existing = cart.find((item) => item.id === productId);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ id: product.id, qty: 1 });
+      }
+      saveCart(cart);
+      updateCartBadge();
+      renderCart();
+      showToast(`${product.name} agregado al carrito`);
+    }
+
+    function setCartQuantity(productId, qty) {
+      const nextQty = Math.max(0, qty);
+      const cart = getCart().map((item) => item.id === productId ? { ...item, qty: nextQty } : item).filter((item) => item.qty > 0);
+      saveCart(cart);
+      updateCartBadge();
+      renderCart();
+    }
+
+    function renderCart() {
+      const products = getProducts();
+      const cart = getCart();
+      const rows = cart.map((item) => {
+        const product = products.find((entry) => entry.id === item.id);
+        if (!product) return '';
+        return `
+          <div class="cart-item">
+            <img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}">
+            <div>
+              <h3>${escapeHTML(product.name)}</h3>
+              <p>${escapeHTML(product.category)} · ${formatPrice(product.price)}</p>
+              <div class="quantity-row">
+                <div class="qty-controls">
+                  <button type="button" data-qty="${item.qty - 1}" data-id="${escapeHTML(item.id)}">-</button>
+                  <span>${item.qty}</span>
+                  <button type="button" data-qty="${item.qty + 1}" data-id="${escapeHTML(item.id)}">+</button>
+                </div>
+                <button class="remove-button" type="button" data-remove="${escapeHTML(item.id)}">Eliminar</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      cartItems.innerHTML = rows || '<p class="empty-state">Tu carrito está vacío. Agrega una obra para iniciar tu pedido.</p>';
+      const total = cart.reduce((sum, item) => {
+        const product = products.find((entry) => entry.id === item.id);
+        return sum + (product ? product.price * item.qty : 0);
+      }, 0);
+      cartTotal.textContent = formatPrice(total);
+    }
+
+    function openCart() {
+      cartDrawer.classList.add('open');
+      cartBackdrop.classList.add('open');
+      cartDrawer.setAttribute('aria-hidden', 'false');
+      renderCart();
+    }
+
+    function closeCart() {
+      cartDrawer.classList.remove('open');
+      cartBackdrop.classList.remove('open');
+      cartDrawer.setAttribute('aria-hidden', 'true');
+    }
+
+    function checkout() {
+      const products = getProducts();
+      const cart = getCart();
+      if (!cart.length) {
+        showToast('Agrega una obra antes de finalizar');
+        return;
+      }
+
+      const checkoutItems = cart.map((item) => {
+        const product = products.find((entry) => entry.id === item.id);
+        if (!product) return null;
+        return { ...product, qty: item.qty };
+      }).filter(Boolean);
+      localStorage.setItem(STORAGE_CHECKOUT_CART, JSON.stringify(checkoutItems));
+      window.location.href = 'checkout.html';
+    }
+
+    document.getElementById('openCart').addEventListener('click', openCart);
+    document.getElementById('closeCart').addEventListener('click', closeCart);
+    document.getElementById('cartBackdrop').addEventListener('click', closeCart);
+    document.getElementById('checkoutButton').addEventListener('click', checkout);
+    document.getElementById('clearCart').addEventListener('click', () => {
+      saveCart([]);
+      localStorage.removeItem(STORAGE_CHECKOUT_CART);
+      renderCart();
+      updateCartBadge();
+    });
+
+    grid.addEventListener('click', (event) => {
+      const button = event.target.closest('.add-button');
+      if (button) addToCart(button.dataset.id);
+    });
+
+    cartItems.addEventListener('click', (event) => {
+      const qtyButton = event.target.closest('[data-qty]');
+      const removeButton = event.target.closest('[data-remove]');
+      if (qtyButton) setCartQuantity(qtyButton.dataset.id, Number(qtyButton.dataset.qty));
+      if (removeButton) setCartQuantity(removeButton.dataset.remove, 0);
+    });
+
+    searchInput.addEventListener('input', renderProducts);
+    categorySelect.addEventListener('change', renderProducts);
+    window.addEventListener('storage', (event) => {
+      if (event.key === STORAGE_PRODUCTS) renderProducts();
+      if (event.key === STORAGE_CART) {
+        updateCartBadge();
+        renderCart();
+      }
+    });
+
+    renderProducts();
+    updateCartBadge();
+    renderCart();
+  </script>
+</body>
+</html>

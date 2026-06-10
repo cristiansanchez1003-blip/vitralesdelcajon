@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Vitrales del Cajón</title>
+  <meta name="description" content="Panel de administración local para gestionar el catálogo de Vitrales del Cajón.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <script>
+    const ADMIN_SESSION_KEY = 'admin_authenticated';
+    const hasAdminSession = sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true';
+    document.documentElement.classList.add(hasAdminSession ? 'admin-session-valid' : 'admin-login-required');
+  </script>
+  <style>
+    :root {
+      --paper: #FAFAFA;
+      --white: #FFFFFF;
+      --ink: #222222;
+      --muted: #6f7178;
+      --line: rgba(34, 34, 34, 0.12);
+      --blue: #0C2D83;
+      --cyan: #2FBAD3;
+      --amber: #E59513;
+      --danger: #9b2f2f;
+      --shadow: 0 18px 55px rgba(12, 45, 131, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(47, 186, 211, 0.1), transparent 34rem),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .admin-shell {
+      min-height: 100vh;
+      display: none;
+    }
+
+    html.admin-session-valid .admin-shell,
+    .admin-shell.unlocked {
+      display: block;
+    }
+
+    html.admin-login-required .admin-shell {
+      display: none !important;
+    }
+
+    html.admin-session-valid .login-overlay {
+      display: none !important;
+    }
+
+    .admin-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 78px;
+      padding: 0 clamp(1.25rem, 4vw, 4rem);
+      background: rgba(250, 250, 250, 0.88);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .brand-block strong {
+      display: block;
+      font-size: 0.9rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .brand-block span {
+      display: block;
+      margin-top: 0.2rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .header-links {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .soft-link,
+    .logout-button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: color 0.25s ease;
+    }
+
+    .soft-link:hover,
+    .logout-button:hover {
+      color: var(--cyan);
+    }
+
+    .admin-hero {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: clamp(2.8rem, 6vw, 5rem) 1.25rem 2rem;
+    }
+
+    .kicker {
+      margin: 0 0 0.85rem;
+      color: var(--cyan);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 850px;
+      margin: 0 0 1rem;
+      color: var(--ink);
+      font-size: clamp(2.1rem, 4.6vw, 4.25rem);
+      line-height: 1.04;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .admin-hero p {
+      max-width: 720px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+
+    .admin-grid {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 1.25rem 5rem;
+      display: grid;
+      grid-template-columns: minmax(300px, 430px) 1fr;
+      gap: 1.4rem;
+      align-items: start;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 1.25rem 1.35rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .panel-head p {
+      margin: 0.35rem 0 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.6;
+    }
+
+    .product-form {
+      padding: 1.35rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .field {
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .field label {
+      color: var(--ink);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .field input,
+    .field select {
+      min-height: 46px;
+      padding: 0 0.9rem;
+    }
+
+    .field textarea {
+      min-height: 132px;
+      padding: 0.85rem 0.9rem;
+      line-height: 1.6;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 4px rgba(47, 186, 211, 0.12);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 0.2rem;
+    }
+
+    .primary-button,
+    .ghost-button,
+    .danger-button {
+      min-height: 46px;
+      border-radius: 999px;
+      padding: 0 1.15rem;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .primary-button {
+      border: 1px solid var(--blue);
+      background: var(--blue);
+      color: var(--paper);
+    }
+
+    .primary-button:hover {
+      transform: translateY(-2px);
+      border-color: var(--cyan);
+      background: var(--cyan);
+    }
+
+    .ghost-button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--blue);
+    }
+
+    .ghost-button:hover {
+      transform: translateY(-2px);
+      border-color: rgba(47, 186, 211, 0.5);
+      color: var(--cyan);
+    }
+
+    .danger-button {
+      border: 1px solid rgba(155, 47, 47, 0.25);
+      background: rgba(155, 47, 47, 0.06);
+      color: var(--danger);
+    }
+
+    .danger-button:hover {
+      transform: translateY(-2px);
+      background: rgba(155, 47, 47, 0.12);
+    }
+
+    .inventory-tools {
+      padding: 1rem 1.35rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      border-bottom: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+
+    .inventory-tools input {
+      flex: 1 1 240px;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0 0.9rem;
+      outline: none;
+    }
+
+    .inventory-tools input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 4px rgba(47, 186, 211, 0.12);
+    }
+
+    .count-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 0.75rem;
+      border-radius: 999px;
+      background: rgba(12, 45, 131, 0.08);
+      color: var(--blue);
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 780px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 1rem 1.15rem;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    td {
+      font-size: 0.88rem;
+    }
+
+    .thumb {
+      width: 72px;
+      height: 56px;
+      border-radius: 7px;
+      object-fit: cover;
+      background: #f2f2f2;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .item-name {
+      font-weight: 800;
+    }
+
+    .item-description {
+      max-width: 280px;
+      margin-top: 0.25rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .category-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 0.65rem;
+      border-radius: 999px;
+      background: rgba(47, 186, 211, 0.1);
+      color: var(--blue);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 0.45rem;
+      justify-content: flex-end;
+    }
+
+    .icon-action {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: #fff;
+      color: var(--blue);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: transform 0.25s ease, color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .icon-action:hover {
+      transform: translateY(-2px);
+      border-color: rgba(47, 186, 211, 0.5);
+      color: var(--cyan);
+    }
+
+    .icon-action.delete {
+      color: var(--danger);
+    }
+
+    .icon-action.delete:hover {
+      border-color: rgba(155, 47, 47, 0.3);
+      background: rgba(155, 47, 47, 0.06);
+    }
+
+    .empty-row {
+      padding: 2rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      padding: 1.25rem;
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0.72)),
+        url('assets/images/collection/obra_escultura_azul.jpeg') center/cover no-repeat;
+    }
+
+    .login-card {
+      width: min(100%, 430px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 18px;
+      padding: 2rem;
+      background: rgba(250, 250, 250, 0.92);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .login-card h2 {
+      margin: 0 0 0.7rem;
+      color: var(--ink);
+      font-size: 1.55rem;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .login-card p {
+      margin: 0 0 1.3rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+
+    .login-form {
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .login-form input {
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0 1rem;
+      outline: none;
+    }
+
+    .login-form input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 4px rgba(47, 186, 211, 0.12);
+    }
+
+    .login-error {
+      min-height: 1.2rem;
+      margin: 0;
+      color: var(--danger);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 120;
+      padding: 0.9rem 1.1rem;
+      border-radius: 999px;
+      background: rgba(34, 34, 34, 0.94);
+      color: #fff;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+      transform: translate(-50%, 20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    @media (max-width: 900px) {
+      .admin-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .admin-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.8rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+      }
+
+      .header-links {
+        justify-content: flex-start;
+        width: 100%;
+        gap: 0.7rem;
+      }
+
+      .soft-link,
+      .logout-button {
+        font-size: 0.68rem;
+        letter-spacing: 0.1em;
+      }
+
+      .admin-hero {
+        padding-top: 2rem;
+        padding-bottom: 1.25rem;
+      }
+
+      .admin-hero h1 {
+        font-size: clamp(2rem, 11vw, 3rem);
+      }
+
+      .admin-hero p {
+        font-size: 0.92rem;
+        line-height: 1.7;
+      }
+
+      .admin-grid {
+        padding-inline: 1rem;
+        padding-bottom: 3rem;
+      }
+
+      .login-overlay {
+        align-items: center;
+        padding: 1rem;
+      }
+
+      .login-card {
+        padding: 1.35rem;
+        border-radius: 14px;
+      }
+
+      .login-card h2 {
+        font-size: 1.25rem;
+      }
+
+      .login-card p {
+        font-size: 0.88rem;
+      }
+
+      .panel-head,
+      .product-form,
+      .inventory-tools {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .form-actions {
+        flex-direction: column;
+      }
+
+      .primary-button,
+      .ghost-button,
+      .danger-button {
+        width: 100%;
+      }
+
+      table {
+        min-width: 700px;
+      }
+
+      th,
+      td {
+        padding: 0.85rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-card">
+      <p class="kicker">Acceso privado</p>
+      <h2>Panel de catálogo</h2>
+      <p>Gestiona las obras disponibles, sus precios y las imágenes que verá el comprador.</p>
+      <form class="login-form" id="loginForm">
+        <input id="passwordInput" type="password" placeholder="Contraseña de administración" autocomplete="current-password" required>
+        <button class="primary-button" type="submit">Entrar</button>
+        <p class="login-error" id="loginError" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="admin-shell" id="adminShell">
+    <header class="admin-header">
+      <a class="brand-block" href="index.html" aria-label="Volver al inicio">
+        <strong>Vitrales del Cajón</strong>
+        <span>Administrador de obras</span>
+      </a>
+      <nav class="header-links" aria-label="Accesos rápidos">
+        <a class="soft-link" href="catalogo.html">Ver catálogo</a>
+        <a class="soft-link" href="index.html">Inicio</a>
+        <button class="logout-button" id="logoutButton" type="button">Cerrar Sesión</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="admin-hero">
+        <p class="kicker">Gestión local</p>
+        <h1>Inventario vivo para una galería comprable</h1>
+        <p>Agrega, edita o elimina obras desde este panel. Los cambios se guardan en el navegador y se reflejan de inmediato en el catálogo.</p>
+      </section>
+
+      <section class="admin-grid" aria-label="Panel de administración">
+        <article class="panel">
+          <div class="panel-head">
+            <h2 id="formTitle">Agregar obra</h2>
+            <p>Completa los datos tal como deben aparecer en la tienda.</p>
+          </div>
+
+          <form class="product-form" id="productForm">
+            <input type="hidden" id="productId">
+
+            <div class="field">
+              <label for="productName">Nombre del Vitral</label>
+              <input id="productName" type="text" placeholder="Ej: Luna del Valle" required>
+            </div>
+
+            <div class="field">
+              <label for="productCategory">Categoría</label>
+              <select id="productCategory" required>
+                <option value="">Seleccionar categoría</option>
+                <option value="Joyas - Aros">Joyas · Aros</option>
+                <option value="Joyas - Colgantes">Joyas · Colgantes</option>
+                <option value="Decorativo">Decorativo</option>
+                <option value="Suncatchers">Suncatchers</option>
+                <option value="Ventanas">Ventanas</option>
+                <option value="Pantalla de Lámparas">Pantalla de Lámparas</option>
+                <option value="Espejos">Espejos</option>
+                <option value="Lámparas">Lámparas</option>
+                <option value="Paneles">Paneles</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="productPrice">Precio</label>
+              <input id="productPrice" type="number" min="0" step="1000" placeholder="Ej: 120000" required>
+            </div>
+
+            <div class="field">
+              <label for="productImage">URL de la Imagen</label>
+              <input id="productImage" type="text" placeholder="assets/images/collection/obra_luna_hada.jpeg" required>
+            </div>
+
+            <div class="field">
+              <label for="productDescription">Descripción Poética</label>
+              <textarea id="productDescription" placeholder="Describe la luz, el material y el uso de la pieza." required></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button class="primary-button" id="submitButton" type="submit">Guardar obra</button>
+              <button class="ghost-button" id="resetButton" type="button">Limpiar</button>
+            </div>
+          </form>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Inventario actual</h2>
+            <p>Estas obras alimentan automáticamente la grilla de catalogo.html.</p>
+          </div>
+
+          <div class="inventory-tools">
+            <input id="inventorySearch" type="search" placeholder="Buscar por nombre, categoría o descripción">
+            <span class="count-pill" id="productCount">0 obras</span>
+            <button class="danger-button" id="restoreSeedButton" type="button">Restaurar base</button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Imagen</th>
+                  <th>Obra</th>
+                  <th>Categoría</th>
+                  <th>Precio</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="inventoryBody"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const ADMIN_PASS = 'vitrales2026';
+    const STORAGE_PRODUCTS = 'vitralesCatalogProducts';
+    const AUTH_KEY = 'admin_authenticated';
+    const isAdminAuthenticated = sessionStorage.getItem(AUTH_KEY) === 'true';
+
+    const seedProducts = [
+      { id: 'p-luna-hada', name: 'Luna del Valle', category: 'Suncatchers', price: 180000, image: 'assets/images/collection/obra_luna_hada.jpeg', description: 'Hada de vitral suspendida sobre luna creciente, con vidrios blancos, ámbar y turquesa que capturan la luz del jardín.' },
+      { id: 'p-geometria-azul', name: 'Geometría Azul', category: 'Decorativo', price: 200000, image: 'assets/images/collection/obra_escultura_azul.jpeg', description: 'Escultura tridimensional de vidrio azul con planos geométricos y texturas translúcidas para repisas o mesas de luz.' },
+      { id: 'p-companero-lunar', name: 'Compañero Lunar', category: 'Suncatchers', price: 165000, image: 'assets/images/collection/obra_perro_luna.jpeg', description: 'Perrito en luna púrpura, trabajado con cobre y vidrios cálidos para una presencia tierna y protectora en ventana.' },
+      { id: 'p-esfera-iridiscente', name: 'Esfera Iridiscente', category: 'Decorativo', price: 195000, image: 'assets/images/collection/obra_esfera_iridiscente.jpeg', description: 'Pieza esférica facetada con vidrios humo, transparentes e iridiscentes montados sobre base de vidrio.' },
+      { id: 'p-aros-hoja', name: 'Aros Hoja de Bosque', category: 'Joyas - Aros', price: 85000, image: 'assets/images/collection/obra_aros_hoja_verde.jpeg', description: 'Aros de vidrio fusionado en verdes profundos con brillo orgánico inspirado en hojas húmedas del Cajón.' },
+      { id: 'p-arco-solar', name: 'Colgante Arco Solar', category: 'Joyas - Colgantes', price: 90000, image: 'assets/images/collection/obra_colgante_arco_solar.jpeg', description: 'Colgante pequeño en amarillo, verde y rojo con composición circular luminosa y acento artesanal.' },
+      { id: 'p-aros-media-luna', name: 'Aros Media Luna', category: 'Joyas - Aros', price: 88000, image: 'assets/images/collection/obra_aros_media_luna.jpeg', description: 'Aros curvos en amarillo intenso y vino profundo, pulidos para reflejar destellos cálidos al movimiento.' },
+      { id: 'p-aros-agua', name: 'Aros Agua Azul', category: 'Joyas - Aros', price: 92000, image: 'assets/images/collection/obra_aros_azules.jpeg', description: 'Par de aros en azules transparentes con centro claro, evocando pozones cordilleranos bajo el sol.' },
+      { id: 'p-aros-triangulo', name: 'Aros Triángulo de Luz', category: 'Joyas - Aros', price: 95000, image: 'assets/images/collection/obra_aros_triangulo_luz.jpeg', description: 'Aros triangulares con rojo, blanco y verde en una composición gráfica de alto contraste.' },
+      { id: 'p-aros-brasa', name: 'Aros Brasa Roja', category: 'Joyas - Aros', price: 98000, image: 'assets/images/collection/obra_aros_rojos.jpeg', description: 'Aros rojos de vidrio brillante con detalle plateado, intensos y contemporáneos.' },
+      { id: 'p-hoja-andina', name: 'Colgante Hoja Andina', category: 'Joyas - Colgantes', price: 89000, image: 'assets/images/collection/obra_colgante_hoja.jpeg', description: 'Colgante tipo hoja en verdes translúcidos, con veta luminosa y cordón negro ajustable.' },
+      { id: 'p-bosque-ambar', name: 'Colgante Bosque Ámbar', category: 'Joyas - Colgantes', price: 96000, image: 'assets/images/collection/obra_colgante_verde_ambar.jpeg', description: 'Colgante orgánico en verde y ámbar que proyecta sombras cálidas sobre madera natural.' },
+      { id: 'p-granate-prisma', name: 'Colgante Granate Prisma', category: 'Joyas - Colgantes', price: 110000, image: 'assets/images/collection/obra_colgante_granate.jpeg', description: 'Composición prismática en granates e iridiscencias, con transparencias profundas y borde artesanal.' },
+      { id: 'p-circulo-agua', name: 'Colgante Círculo de Agua', category: 'Joyas - Colgantes', price: 85000, image: 'assets/images/collection/obra_colgante_circulo_agua.jpeg', description: 'Medallón circular celeste con burbujas internas, simple y luminoso como una gota suspendida.' },
+      { id: 'p-cactus', name: 'Dúo Cactus del Cajón', category: 'Decorativo', price: 145000, image: 'assets/images/collection/obra_cactus_duo.jpeg', description: 'Dos cactus decorativos de vitral verde, ideales para escritorio, repisa o rincón de plantas.' },
+      { id: 'p-mariposa', name: 'Mariposa Solar', category: 'Suncatchers', price: 175000, image: 'assets/images/collection/obra_mariposa_sol.jpeg', description: 'Mariposa de ventana en naranjo y amarillo, pensada para teñir el espacio con luz cálida.' },
+      { id: 'p-gato-luna', name: 'Gato Luna Cobriza', category: 'Decorativo', price: 170000, image: 'assets/images/collection/obra_gato_luna.jpeg', description: 'Gato de vitral abrazado por una luna cobriza, pieza expresiva con carácter doméstico y poético.' }
+    ];
+
+    const $ = (selector) => document.querySelector(selector);
+    const formatPrice = (value) => '$' + Number(value || 0).toLocaleString('es-CL');
+    const escapeHTML = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    }[char]));
+    const getProducts = () => JSON.parse(localStorage.getItem(STORAGE_PRODUCTS) || '[]');
+    const saveProducts = (products) => localStorage.setItem(STORAGE_PRODUCTS, JSON.stringify(products));
+
+    if (!localStorage.getItem(STORAGE_PRODUCTS)) {
+      saveProducts(seedProducts);
+    }
+
+    const loginOverlay = $('#loginOverlay');
+    const adminShell = $('#adminShell');
+    const loginForm = $('#loginForm');
+    const loginError = $('#loginError');
+    const passwordInput = $('#passwordInput');
+    const logoutButton = $('#logoutButton');
+    const productForm = $('#productForm');
+    const formTitle = $('#formTitle');
+    const submitButton = $('#submitButton');
+    const inventoryBody = $('#inventoryBody');
+    const inventorySearch = $('#inventorySearch');
+    const productCount = $('#productCount');
+    const toast = $('#toast');
+
+    const fields = {
+      id: $('#productId'),
+      name: $('#productName'),
+      category: $('#productCategory'),
+      price: $('#productPrice'),
+      image: $('#productImage'),
+      description: $('#productDescription')
+    };
+
+    function unlock() {
+      if (!isAdminAuthenticated) return;
+      loginOverlay.style.display = 'none';
+      adminShell.classList.add('unlocked');
+      renderInventory();
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function slugify(value) {
+      return value
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'obra';
+    }
+
+    function resetForm() {
+      productForm.reset();
+      fields.id.value = '';
+      formTitle.textContent = 'Agregar obra';
+      submitButton.textContent = 'Guardar obra';
+    }
+
+    function productFromForm() {
+      const id = fields.id.value || `${slugify(fields.name.value)}-${Date.now()}`;
+      return {
+        id,
+        name: fields.name.value.trim(),
+        category: fields.category.value,
+        price: Number(fields.price.value),
+        image: fields.image.value.trim(),
+        description: fields.description.value.trim()
+      };
+    }
+
+    function renderInventory() {
+      const term = inventorySearch.value.trim().toLowerCase();
+      const products = getProducts();
+      const filtered = products.filter((product) => {
+        const haystack = `${product.name} ${product.category} ${product.description}`.toLowerCase();
+        return !term || haystack.includes(term);
+      });
+
+      productCount.textContent = `${products.length} ${products.length === 1 ? 'obra' : 'obras'}`;
+
+      if (!filtered.length) {
+        inventoryBody.innerHTML = '<tr><td class="empty-row" colspan="5">No hay obras que coincidan con esta búsqueda.</td></tr>';
+        return;
+      }
+
+      inventoryBody.innerHTML = filtered.map((product) => `
+        <tr>
+          <td><img class="thumb" src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}" loading="lazy"></td>
+          <td>
+            <div class="item-name">${escapeHTML(product.name)}</div>
+            <div class="item-description">${escapeHTML(product.description)}</div>
+          </td>
+          <td><span class="category-chip">${escapeHTML(product.category)}</span></td>
+          <td><strong>${formatPrice(product.price)}</strong></td>
+          <td>
+            <div class="row-actions">
+              <button class="icon-action" type="button" data-edit="${escapeHTML(product.id)}" aria-label="Editar ${escapeHTML(product.name)}">
+                <i class="fas fa-pen"></i>
+              </button>
+              <button class="icon-action delete" type="button" data-delete="${escapeHTML(product.id)}" aria-label="Eliminar ${escapeHTML(product.name)}">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function editProduct(productId) {
+      const product = getProducts().find((item) => item.id === productId);
+      if (!product) return;
+
+      fields.id.value = product.id;
+      fields.name.value = product.name;
+      fields.category.value = product.category;
+      fields.price.value = product.price;
+      fields.image.value = product.image;
+      fields.description.value = product.description;
+      formTitle.textContent = 'Editar obra';
+      submitButton.textContent = 'Actualizar obra';
+      productForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function deleteProduct(productId) {
+      const product = getProducts().find((item) => item.id === productId);
+      if (!product) return;
+      const confirmed = window.confirm(`¿Eliminar "${product.name}" del catálogo?`);
+      if (!confirmed) return;
+
+      saveProducts(getProducts().filter((item) => item.id !== productId));
+      renderInventory();
+      resetForm();
+      showToast('Obra eliminada del catálogo');
+    }
+
+    loginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (passwordInput.value === ADMIN_PASS) {
+        sessionStorage.setItem(AUTH_KEY, 'true');
+        location.reload();
+      } else {
+        loginError.textContent = 'Contraseña incorrecta.';
+        passwordInput.select();
+      }
+    });
+
+    logoutButton.addEventListener('click', () => {
+      sessionStorage.removeItem(AUTH_KEY);
+      window.location.href = 'index.html';
+    });
+
+    productForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const product = productFromForm();
+      const products = getProducts();
+      const existingIndex = products.findIndex((item) => item.id === product.id);
+
+      if (existingIndex >= 0) {
+        products[existingIndex] = product;
+        showToast('Obra actualizada');
+      } else {
+        products.unshift(product);
+        showToast('Obra agregada al catálogo');
+      }
+
+      saveProducts(products);
+      renderInventory();
+      resetForm();
+    });
+
+    $('#resetButton').addEventListener('click', resetForm);
+    inventorySearch.addEventListener('input', renderInventory);
+
+    inventoryBody.addEventListener('click', (event) => {
+      const editButton = event.target.closest('[data-edit]');
+      const deleteButton = event.target.closest('[data-delete]');
+      if (editButton) editProduct(editButton.dataset.edit);
+      if (deleteButton) deleteProduct(deleteButton.dataset.delete);
+    });
+
+    $('#restoreSeedButton').addEventListener('click', () => {
+      const confirmed = window.confirm('¿Restaurar la base inicial de obras? Esto reemplaza el inventario actual.');
+      if (!confirmed) return;
+      saveProducts(seedProducts);
+      renderInventory();
+      resetForm();
+      showToast('Base inicial restaurada');
+    });
+
+    window.addEventListener('storage', (event) => {
+      if (event.key === STORAGE_PRODUCTS) renderInventory();
+    });
+
+    if (isAdminAuthenticated) {
+      unlock();
+    } else {
+      passwordInput.focus();
+    }
+  </script>
+</body>
+</html>

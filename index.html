@@ -1,0 +1,1055 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vitrales en el Cajón — Arte en Vidrio Artesanal desde el Cajón del Maipo</title>
+  <meta name="description" content="Vitrales artesanales únicos diseñados por Carmen Gloria desde el Cajón del Maipo. Lámparas Tiffany, Suncatchers y Paneles de ventana hechos a mano con técnica vitral.">
+  <meta name="keywords" content="vitrales, arte en vidrio, Cajón del Maipo, lámparas Tiffany, suncatchers, vitral artesanal, Chile">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/images/favicon.png">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Preloader -->
+  <div class="preloader" id="preloader">
+    <div class="preloader-logo">
+      <img src="assets/images/logotipo_vitrales_hero.png" alt="Vitrales en el Cajón">
+    </div>
+    <div class="preloader-bar"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <div class="nav-links" id="navLinks">
+        <a href="#galeria" class="active" id="nav-galeria">Galería</a>
+        <a href="#coleccion" id="nav-coleccion">Colección</a>
+        <a href="catalogo.html" id="nav-catalogo">Catálogo</a>
+        <a href="#cotizador" id="nav-cotizador">Cotizador</a>
+        <a href="#historia" id="nav-historia">Nuestra Historia</a>
+        <a href="#contacto" id="nav-contacto">Contacto</a>
+      </div>
+
+      <button class="nav-cart" id="cartToggle" type="button" aria-label="Abrir carrito de compras">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="badge" id="cartBadge">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div id="hero-carousel-wrapper" aria-hidden="true">
+      <div class="carousel-slide carousel-slide-1 active"></div>
+      <div class="carousel-slide carousel-slide-2"></div>
+      <div class="carousel-slide carousel-slide-3"></div>
+    </div>
+    <div class="hero-carousel-overlay" aria-hidden="true"></div>
+    <div class="hero-rays"></div>
+
+    <div class="hero-content">
+      <!-- Floating logo with silhouette backlight glow -->
+      <div class="hero-logo-wrapper">
+        <img
+          id="heroLogo"
+          src="assets/images/logotipo_vitrales_hero.png"
+          alt="Vitrales en el Cajón — logotipo artesanal"
+          class="hero-logo-glow"
+        >
+      </div>
+
+      <p class="overline"><i class="fas fa-gem"></i>&ensp;Desde el Cajón del Maipo</p>
+      <h1>Equilibrio en Cada Línea, Luz en Cada Espacio</h1>
+      <p class="subtitle">Explora una colección de vitrales artesanales donde la geometría perfecta se encuentra con el diseño de autor. Piezas únicas con identidad cordillerana creadas para inspirar calma, capturar la luz y conectar tu hogar con el arte consciente.</p>
+      <div class="hero-buttons">
+        <a href="#coleccion" class="btn btn-turquoise" id="hero-cta-shop">
+          <i class="fas fa-th-large"></i> Explorar Colección
+        </a>
+        <a href="#cotizador" class="btn btn-outline" id="hero-cta-custom">
+          <i class="fas fa-pencil-ruler"></i> Pieza a Medida
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories" id="galeria">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="overline">Colecciones de Autor</span>
+        <h2>Formas que Capturan lo Intangible</h2>
+        <div class="section-divider"><i class="fas fa-diamond"></i></div>
+        <p>Lámparas que cobijan, atrapasoles que activan la energía y ventanales que reescriben tu paisaje cotidiano. Tres líneas de arte en vidrio, cada una con su propia historia de luz, geometría y espíritu.</p>
+      </div>
+
+      <div class="categories-grid">
+        <div class="category-card reveal reveal-delay-1" id="cat-joyas">
+          <img src="assets/images/collection/obra_aros_azules.jpeg" alt="Joyas de vitral artesanales">
+          <div class="category-overlay">
+            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
+            <h3>Joyas</h3>
+            <span>Aros y colgantes</span>
+          </div>
+        </div>
+
+        <div class="category-card reveal reveal-delay-2" id="cat-suncatchers">
+          <img src="assets/images/suncatcher.png" alt="Suncatchers de vidrio">
+          <div class="category-overlay">
+            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
+            <h3>Suncatchers</h3>
+            <span>18 diseños disponibles</span>
+          </div>
+        </div>
+
+        <div class="category-card reveal reveal-delay-3" id="cat-panels">
+          <img src="assets/images/window_panel.png" alt="Paneles de ventana vitral">
+          <div class="category-overlay">
+            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
+            <h3>Paneles de Ventana</h3>
+            <span>8 obras maestras</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Gallery -->
+  <section class="gallery" id="coleccion">
+    <div class="container">
+      <div class="section-header gallery-heading reveal">
+        <span class="overline">Tienda</span>
+        <h2>Colección de Vitral</h2>
+        <div class="section-divider"><i class="fas fa-diamond"></i></div>
+        <p>Piezas únicas elaboradas artesanalmente con vidrios importados y técnica tradicional de emplomado.</p>
+      </div>
+
+      <div class="filter-tabs reveal" id="filterTabs">
+        <button class="filter-tab active" data-filter="all" id="filter-all">Todos</button>
+        <div class="filter-group">
+          <button class="filter-tab" data-filter="joyas" id="filter-joyas" aria-haspopup="true">Joyas</button>
+          <div class="filter-dropdown" aria-label="Tipos de joyas">
+            <button class="filter-tab filter-subtab" data-filter="aros" id="filter-aros">Aros</button>
+            <button class="filter-tab filter-subtab" data-filter="colgantes" id="filter-colgantes">Colgantes</button>
+          </div>
+        </div>
+        <button class="filter-tab" data-filter="decorativo" id="filter-decorativo">Decorativo</button>
+        <button class="filter-tab" data-filter="suncatcher" id="filter-suncatcher">Suncatcher</button>
+        <button class="filter-tab" data-filter="ventanas" id="filter-ventanas">Ventanas</button>
+        <button class="filter-tab" data-filter="lamparas" id="filter-lamparas">Pantalla de Lámparas</button>
+        <button class="filter-tab" data-filter="espejos" id="filter-espejos">Espejos</button>
+      </div>
+
+      <div class="products-grid" id="productsGrid">
+        <!-- Product 1 -->
+        <article class="glass-card product-card reveal" data-category="lamparas" id="product-1">
+          <div class="product-image">
+            <img src="assets/images/tiffany_lamp.png" alt="Lámpara Tiffany Amanecer Andino">
+            <span class="product-badge">Pieza Exclusiva</span>
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-1"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-1"><i class="fas fa-expand"></i> Vista Rápida</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Pantalla de L&aacute;mparas</p>
+            <h3 class="product-name">Amanecer Andino</h3>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $385.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <span>4.8</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 2 -->
+        <article class="glass-card product-card reveal reveal-delay-1" data-category="suncatcher" id="product-2">
+          <div class="product-image">
+            <img src="assets/images/suncatcher.png" alt="Suncatcher Colibrí del Valle">
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-2"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-2"><i class="fas fa-expand"></i> Vista Rápida</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Suncatcher</p>
+            <h3 class="product-name">Colibrí del Valle</h3>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $68.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 3 -->
+        <article class="glass-card product-card reveal reveal-delay-2" data-category="ventanas" id="product-3">
+          <div class="product-image">
+            <img src="assets/images/window_panel.png" alt="Panel Geometría Sagrada">
+            <span class="product-badge">Pieza Exclusiva</span>
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-3"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-3"><i class="fas fa-expand"></i> Vista Rápida</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Ventanas</p>
+            <h3 class="product-name">Geometría Sagrada</h3>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $720.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 4 -->
+        <article class="glass-card product-card reveal reveal-delay-3" data-category="suncatcher" id="product-4">
+          <div class="product-image">
+            <img src="assets/images/suncatcher.png" alt="Suncatcher Flor de Cordillera" style="filter: hue-rotate(40deg) saturate(1.2);">
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-4"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-4"><i class="fas fa-expand"></i> Vista Rápida</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Suncatcher</p>
+            <h3 class="product-name">Flor de Cordillera</h3>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $55.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+                <span>4.2</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 5 -->
+        <article class="glass-card product-card reveal" data-category="lamparas" id="product-5">
+          <div class="product-image">
+            <img src="assets/images/tiffany_lamp.png" alt="Lámpara Crepúsculo Azul" style="filter: hue-rotate(-20deg) brightness(0.95);">
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-5"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-5"><i class="fas fa-expand"></i> Vista Rápida</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Pantalla de L&aacute;mparas</p>
+            <h3 class="product-name">Crepúsculo Azul</h3>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $310.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <span>4.6</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 6 -->
+        <article class="glass-card product-card reveal reveal-delay-1" data-category="ventanas" id="product-6">
+          <div class="product-image">
+            <img src="assets/images/window_panel.png" alt="Mandala Chakana" style="filter: hue-rotate(30deg) saturate(1.1);">
+            <span class="product-badge">Pieza Exclusiva</span>
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-6"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-6"><i class="fas fa-expand"></i> Vista Rápida</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Ventanas</p>
+            <h3 class="product-name">Mandala Chakana</h3>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $195.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 7 -->
+        <article class="glass-card product-card reveal" data-category="suncatcher" id="product-7">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_luna_hada.jpeg" alt="Luna del Valle">
+            <span class="product-badge">Nuevo</span>
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-7"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-7"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Suncatcher</p>
+            <h3 class="product-name">Luna del Valle</h3>
+            <p class="product-description">Hada de vitral suspendida sobre luna creciente, con vidrios blancos, &aacute;mbar y turquesa que capturan la luz del jard&iacute;n.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 180.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 8 -->
+        <article class="glass-card product-card reveal reveal-delay-1" data-category="decorativo" id="product-8">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_escultura_azul.jpeg" alt="Geometr&iacute;a Azul">
+            <span class="product-badge">Nuevo</span>
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-8"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-8"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Decorativo</p>
+            <h3 class="product-name">Geometr&iacute;a Azul</h3>
+            <p class="product-description">Escultura tridimensional de vidrio azul con planos geom&eacute;tricos y texturas transl&uacute;cidas para repisas o mesas de luz.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 200.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 9 -->
+        <article class="glass-card product-card reveal reveal-delay-2" data-category="suncatcher" id="product-9">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_perro_luna.jpeg" alt="Compa&ntilde;ero Lunar">
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-9"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-9"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Suncatcher</p>
+            <h3 class="product-name">Compa&ntilde;ero Lunar</h3>
+            <p class="product-description">Perrito en luna p&uacute;rpura, trabajado con cobre y vidrios c&aacute;lidos para una presencia tierna y protectora en ventana.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 165.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 10 -->
+        <article class="glass-card product-card reveal reveal-delay-3" data-category="decorativo" id="product-10">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_esfera_iridiscente.jpeg" alt="Esfera Iridiscente">
+            <span class="product-badge">Nuevo</span>
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-10"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-10"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Decorativo</p>
+            <h3 class="product-name">Esfera Iridiscente</h3>
+            <p class="product-description">Pieza esf&eacute;rica facetada con vidrios humo, transparentes e iridiscentes montados sobre base de vidrio.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 195.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 11 -->
+        <article class="glass-card product-card reveal" data-category="joyas" data-subcategory="aros" id="product-11">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_aros_hoja_verde.jpeg" alt="Aros Hoja de Bosque">
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-11"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-11"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Joyas / Aros</p>
+            <h3 class="product-name">Aros Hoja de Bosque</h3>
+            <p class="product-description">Aros de vidrio fusionado en verdes profundos con brillo org&aacute;nico inspirado en hojas h&uacute;medas del Caj&oacute;n.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 85.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 12 -->
+        <article class="glass-card product-card reveal reveal-delay-1" data-category="joyas" data-subcategory="colgantes" id="product-12">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_colgante_arco_solar.jpeg" alt="Colgante Arco Solar">
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-12"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-12"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Joyas / Colgantes</p>
+            <h3 class="product-name">Colgante Arco Solar</h3>
+            <p class="product-description">Colgante peque&ntilde;o en amarillo, verde y rojo con composici&oacute;n circular luminosa y acento artesanal.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 90.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 13 -->
+        <article class="glass-card product-card reveal reveal-delay-2" data-category="joyas" data-subcategory="aros" id="product-13">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_aros_media_luna.jpeg" alt="Aros Media Luna">
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-13"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-13"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Joyas / Aros</p>
+            <h3 class="product-name">Aros Media Luna</h3>
+            <p class="product-description">Aros curvos en amarillo intenso y vino profundo, pulidos para reflejar destellos c&aacute;lidos al movimiento.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 88.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 14 -->
+        <article class="glass-card product-card reveal reveal-delay-3" data-category="joyas" data-subcategory="aros" id="product-14">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_aros_azules.jpeg" alt="Aros Agua Azul">
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-14"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-14"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Joyas / Aros</p>
+            <h3 class="product-name">Aros Agua Azul</h3>
+            <p class="product-description">Par de aros en azules transparentes con centro claro, evocando pozones cordilleranos bajo el sol.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 92.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 15 -->
+        <article class="glass-card product-card reveal" data-category="joyas" data-subcategory="aros" id="product-15">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_aros_triangulo_luz.jpeg" alt="Aros Tri&aacute;ngulo de Luz">
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-15"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-15"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Joyas / Aros</p>
+            <h3 class="product-name">Aros Tri&aacute;ngulo de Luz</h3>
+            <p class="product-description">Aros triangulares con rojo, blanco y verde en una composici&oacute;n gr&aacute;fica de alto contraste.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 95.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 16 -->
+        <article class="glass-card product-card reveal reveal-delay-1" data-category="joyas" data-subcategory="aros" id="product-16">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_aros_rojos.jpeg" alt="Aros Brasa Roja">
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-16"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-16"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Joyas / Aros</p>
+            <h3 class="product-name">Aros Brasa Roja</h3>
+            <p class="product-description">Aros rojos de vidrio brillante con detalle plateado, intensos y contempor&aacute;neos.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 98.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 17 -->
+        <article class="glass-card product-card reveal reveal-delay-2" data-category="joyas" data-subcategory="colgantes" id="product-17">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_colgante_hoja.jpeg" alt="Colgante Hoja Andina">
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-17"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-17"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Joyas / Colgantes</p>
+            <h3 class="product-name">Colgante Hoja Andina</h3>
+            <p class="product-description">Colgante tipo hoja en verdes transl&uacute;cidos, con veta luminosa y cord&oacute;n negro ajustable.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 89.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 18 -->
+        <article class="glass-card product-card reveal reveal-delay-3" data-category="joyas" data-subcategory="colgantes" id="product-18">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_colgante_verde_ambar.jpeg" alt="Colgante Bosque &Aacute;mbar">
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-18"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-18"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Joyas / Colgantes</p>
+            <h3 class="product-name">Colgante Bosque &Aacute;mbar</h3>
+            <p class="product-description">Colgante org&aacute;nico en verde y &aacute;mbar que proyecta sombras c&aacute;lidas sobre madera natural.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 96.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 19 -->
+        <article class="glass-card product-card reveal" data-category="joyas" data-subcategory="colgantes" id="product-19">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_colgante_granate.jpeg" alt="Colgante Granate Prisma">
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-19"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-19"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Joyas / Colgantes</p>
+            <h3 class="product-name">Colgante Granate Prisma</h3>
+            <p class="product-description">Composici&oacute;n prism&aacute;tica en granates e iridiscencias, con transparencias profundas y borde artesanal.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 110.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 20 -->
+        <article class="glass-card product-card reveal reveal-delay-1" data-category="joyas" data-subcategory="colgantes" id="product-20">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_colgante_circulo_agua.jpeg" alt="Colgante C&iacute;rculo de Agua">
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-20"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-20"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Joyas / Colgantes</p>
+            <h3 class="product-name">Colgante C&iacute;rculo de Agua</h3>
+            <p class="product-description">Medall&oacute;n circular celeste con burbujas internas, simple y luminoso como una gota suspendida.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 85.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 21 -->
+        <article class="glass-card product-card reveal reveal-delay-2" data-category="decorativo" id="product-21">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_cactus_duo.jpeg" alt="D&uacute;o Cactus del Caj&oacute;n">
+            <span class="product-badge">Nuevo</span>
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-21"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-21"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Decorativo</p>
+            <h3 class="product-name">D&uacute;o Cactus del Caj&oacute;n</h3>
+            <p class="product-description">Dos cactus decorativos de vitral verde, ideales para escritorio, repisa o rinc&oacute;n de plantas.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 145.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 22 -->
+        <article class="glass-card product-card reveal reveal-delay-3" data-category="suncatcher" id="product-22">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_mariposa_sol.jpeg" alt="Mariposa Solar">
+            <span class="product-badge">Nuevo</span>
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-22"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-22"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Suncatcher</p>
+            <h3 class="product-name">Mariposa Solar</h3>
+            <p class="product-description">Mariposa de ventana en naranjo y amarillo, pensada para te&ntilde;ir el espacio con luz c&aacute;lida.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 175.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Product 23 -->
+        <article class="glass-card product-card reveal" data-category="decorativo" id="product-23">
+          <div class="product-image">
+            <img src="assets/images/collection/obra_gato_luna.jpeg" alt="Gato Luna Cobriza">
+            <span class="product-badge">Nuevo</span>
+            <button class="product-wishlist" aria-label="Agregar a favoritos" id="wish-23"><i class="far fa-heart"></i></button>
+            <div class="product-quickview">
+              <button id="quickview-23"><i class="fas fa-shopping-bag"></i> Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">Decorativo</p>
+            <h3 class="product-name">Gato Luna Cobriza</h3>
+            <p class="product-description">Gato de vitral abrazado por una luna cobriza, pieza expresiva con car&aacute;cter dom&eacute;stico y po&eacute;tico.</p>
+            <div class="product-footer">
+              <span class="product-price"><span class="currency">CLP</span> $ 170.000</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+      <p class="filter-empty" id="filterEmpty" hidden>No hay obras disponibles en esta categoría por ahora. Escríbenos para cotizar una pieza personalizada.</p>
+    </div>
+  </section>
+
+  <!-- Custom Commission / Cotizador -->
+  <section class="cotizador" id="cotizador">
+    <div class="container">
+      <div class="cotizador-wrapper">
+        <div class="cotizador-info reveal">
+          <span class="overline" style="font-family:'Montserrat',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;color:var(--turquoise);margin-bottom:0.5rem;display:block;">Servicio Personalizado</span>
+          <h2>Cotiza tu Pieza a Medida</h2>
+          <p>¿Sueñas con un vitral único? Cuéntanos tu idea y crearemos una obra de arte personalizada que transformará tu espacio con la magia de la luz a través del vidrio.</p>
+
+          <div class="cotizador-features">
+            <div class="cotizador-feature">
+              <div class="feature-icon"><i class="fas fa-palette"></i></div>
+              <div>
+                <h4>Diseño Exclusivo</h4>
+                <p>Creamos un boceto único basado en tus preferencias y el estilo de tu espacio.</p>
+              </div>
+            </div>
+            <div class="cotizador-feature">
+              <div class="feature-icon"><i class="fas fa-ruler-combined"></i></div>
+              <div>
+                <h4>Medidas Exactas</h4>
+                <p>Trabajamos con las dimensiones precisas de tu ventana o espacio.</p>
+              </div>
+            </div>
+            <div class="cotizador-feature">
+              <div class="feature-icon"><i class="fas fa-gem"></i></div>
+              <div>
+                <h4>Vidrios Premium</h4>
+                <p>Utilizamos vidrios importados de la más alta calidad con garantía de color.</p>
+              </div>
+            </div>
+            <div class="cotizador-feature">
+              <div class="feature-icon"><i class="fas fa-truck"></i></div>
+              <div>
+                <h4>Instalación Incluida</h4>
+                <p>Entrega e instalación profesional en la Región Metropolitana.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form class="glass-card cotizador-form reveal" id="cotizadorForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombre">Nombre Completo</label>
+              <input type="text" id="nombre" placeholder="Tu nombre" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Correo Electrónico</label>
+              <input type="email" id="email" placeholder="tu@correo.cl" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="telefono">Teléfono</label>
+              <input type="tel" id="telefono" placeholder="+56 9 xxxx xxxx">
+            </div>
+            <div class="form-group">
+              <label for="tipo-pieza">Tipo de Pieza</label>
+              <select id="tipo-pieza" required>
+                <option value="" disabled selected>Selecciona una opción</option>
+                <option value="panel">Panel de Ventana</option>
+                <option value="lampara">Lámpara Tiffany</option>
+                <option value="suncatcher">Suncatcher</option>
+                <option value="espejo">Marco de Espejo</option>
+                <option value="terrario">Terrario Geométrico</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Medidas Aproximadas</label>
+            <div class="measurement-group">
+              <div class="measurement-input">
+                <input type="number" id="medida-ancho" placeholder="Ancho" min="1">
+                <span class="unit">cm</span>
+              </div>
+              <div class="measurement-input">
+                <input type="number" id="medida-alto" placeholder="Alto" min="1">
+                <span class="unit">cm</span>
+              </div>
+              <div class="measurement-input">
+                <input type="number" id="medida-profundo" placeholder="Prof." min="1">
+                <span class="unit">cm</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Estilo de Vidrio Preferido</label>
+            <div class="glass-styles" id="glassStyles">
+              <div class="glass-style-option selected" data-style="opalescente" id="style-opal">
+                <div class="swatch" style="background:linear-gradient(135deg, #e8d5b7, #f0e6d3, #d4c4a8);"></div>
+                <span>Opalescente</span>
+              </div>
+              <div class="glass-style-option" data-style="catedral" id="style-catedral">
+                <div class="swatch" style="background:linear-gradient(135deg, #2FBAD3, #0C2D83, #5CCDE3);"></div>
+                <span>Catedral</span>
+              </div>
+              <div class="glass-style-option" data-style="iridiscente" id="style-iridiscente">
+                <div class="swatch" style="background:linear-gradient(135deg, #ff6b9d, #c44dff, #2FBAD3, #E59513);"></div>
+                <span>Iridiscente</span>
+              </div>
+              <div class="glass-style-option" data-style="texturado" id="style-texturado">
+                <div class="swatch" style="background:linear-gradient(135deg, #a8c0a0, #c8d8c0, #8fb088);"></div>
+                <span>Texturado</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="descripcion">Describe tu Idea</label>
+            <textarea id="descripcion" placeholder="Cuéntanos sobre el diseño, colores preferidos, el espacio donde irá y cualquier referencia visual que tengas..." rows="5"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="presupuesto">Presupuesto Estimado</label>
+            <select id="presupuesto">
+              <option value="" disabled selected>Rango de presupuesto</option>
+              <option value="50-100">CLP $50.000 – $100.000</option>
+              <option value="100-250">CLP $100.000 – $250.000</option>
+              <option value="250-500">CLP $250.000 – $500.000</option>
+              <option value="500+">CLP $500.000+</option>
+              <option value="definir">Prefiero definirlo con la cotización</option>
+            </select>
+          </div>
+
+          <div class="form-submit">
+            <button type="submit" class="btn btn-primary" id="submitCotizacion" style="width:100%;">
+              <i class="fas fa-paper-plane"></i> Solicitar Cotización
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story Section -->
+  <section class="story" id="historia">
+    <div class="container">
+      <div class="story-wrapper reveal">
+        <div class="story-image">
+          <img src="assets/images/artist_portrait_carmen_gloria.jpeg" alt="Carmen Gloria trabajando en su taller de vitrales">
+        </div>
+
+        <div class="story-content">
+          <span class="overline"><i class="fas fa-heart"></i>&ensp;Nuestra Historia</span>
+          <h2>Carmen Gloria <span class="script-text">El Alma del Taller</span></h2>
+
+          <div class="story-text">
+            <p>En el corazón del Cajón del Maipo, donde la cordillera de los Andes se encuentra con el cielo, Carmen Gloria transforma vidrio en poesía de luz. Cada mañana, su taller se llena con los colores del amanecer cordillerano que ella captura para siempre en sus vitrales.</p>
+            <p>Con más de 15 años de experiencia y formación en técnicas tradicionales europeas, Carmen Gloria ha desarrollado un estilo único que fusiona la geometría del vitral clásico con los paisajes, la flora y la fauna del valle que la rodea.</p>
+          </div>
+
+          <blockquote class="story-quote">
+            "Cada pieza que creo es un fragmento de la luz del Cajón — quiero que quien tenga un vitral mío sienta esa misma paz que yo siento al ver el sol pasar por las montañas."
+          </blockquote>
+
+          <div class="story-stats">
+            <div class="story-stat">
+              <div class="stat-number">15<span>+</span></div>
+              <div class="stat-label">Años de Arte</div>
+            </div>
+            <div class="story-stat">
+              <div class="stat-number">500<span>+</span></div>
+              <div class="stat-label">Piezas Creadas</div>
+            </div>
+            <div class="story-stat">
+              <div class="stat-number">100<span>%</span></div>
+              <div class="stat-label">Hecho a Mano</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="contacto">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="assets/images/logo.jpeg" alt="Vitrales en el Cajón">
+          <p>Arte en vidrio artesanal desde el Cajón del Maipo. Cada pieza cuenta la historia de la luz pasando a través de la cordillera.</p>
+          <div class="footer-social">
+            <a href="https://instagram.com/vitralesdelcajon" aria-label="Instagram" id="social-ig"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Facebook" id="social-fb"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Pinterest" id="social-pin"><i class="fab fa-pinterest-p"></i></a>
+            <a href="https://api.whatsapp.com/send?phone=56999977550&text=Hola%2C%20quiero%20hacer%20una%20consulta%20sobre%20Vitrales%20del%20Caj%C3%B3n" target="_blank" rel="noopener" aria-label="WhatsApp" id="social-wa"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Colecciones</h4>
+          <ul>
+            <li><a href="#" id="foot-tiffany">Lámparas Tiffany</a></li>
+            <li><a href="#" id="foot-suncatchers">Suncatchers</a></li>
+            <li><a href="#" id="foot-panels">Paneles de Ventana</a></li>
+            <li><a href="#" id="foot-decorativo">Decorativo</a></li>
+            <li><a href="#" id="foot-custom">Piezas a Medida</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Información</h4>
+          <ul>
+            <li><a href="#" id="foot-about">Sobre Nosotros</a></li>
+            <li><a href="#" id="foot-process">Proceso Artesanal</a></li>
+            <li><a href="#" id="foot-shipping">Envío & Cuidado</a></li>
+            <li><a href="#" id="foot-faq">Preguntas Frecuentes</a></li>
+            <li><a href="#" id="foot-contact">Contacto</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Newsletter</h4>
+          <p style="font-size:0.85rem;margin-bottom:1rem;">Recibe novedades sobre nuevas piezas y talleres exclusivos.</p>
+          <div class="footer-newsletter">
+            <input type="email" placeholder="tu@correo.cl" id="newsletter-email">
+            <button class="btn btn-turquoise" style="width:100%;padding:12px;" id="newsletter-submit">
+              <i class="fas fa-envelope"></i> Suscribirme
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 Vitrales en el Cajón. Todos los derechos reservados.</span>
+        <div>
+          <a href="#" id="foot-privacy">Privacidad</a> &ensp;·&ensp; <a href="#" id="foot-terms">Términos</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Drawer -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3><i class="fas fa-shopping-bag" style="color:var(--turquoise);margin-right:8px;"></i> Mi Carrito</h3>
+      <button class="cart-close" id="cartClose" aria-label="Cerrar carrito"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty" id="cartEmpty">
+        <i class="fas fa-bag-shopping"></i>
+        <p>Tu carrito está vacío</p>
+        <a href="#coleccion" class="btn btn-outline" style="margin-top:1rem;padding:10px 24px;font-size:0.75rem;" id="cart-browse">Explorar Colección</a>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+      <div class="cart-total">
+        <span class="label">Total</span>
+        <span class="amount" id="cartTotal">$0</span>
+      </div>
+      <button class="btn btn-primary" id="checkoutBtn">
+        <i class="fas fa-credit-card"></i> Ir al Checkout
+      </button>
+    </div>
+  </aside>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Producto agregado al carrito</span>
+  </div>
+
+  <script src="script.js?v=categories-20260609"></script>
+</body>
+</html>
