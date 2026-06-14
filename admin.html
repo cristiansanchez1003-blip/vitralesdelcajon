@@ -11,8 +11,6 @@
   <script src="products.js?v=20260614-v2"></script>
   <script>
     const ADMIN_SESSION_KEY = 'admin_authenticated';
-    // Limpiar sesión anterior y requerir autenticación fresca
-    sessionStorage.removeItem(ADMIN_SESSION_KEY);
     const ok = sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true';
     document.documentElement.classList.add(ok ? 'auth-ok' : 'auth-need');
   </script>
