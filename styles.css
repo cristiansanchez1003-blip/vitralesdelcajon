@@ -1750,6 +1750,8 @@ section {
     letter-spacing: 1.4px;
     scroll-snap-align: start;
     white-space: nowrap;
+    color: #111 !important;
+    text-shadow: none;
   }
 
   .nav-toggle {

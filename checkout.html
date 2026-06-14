@@ -597,7 +597,7 @@
 
         <div class="totals">
           <div class="total-row"><span>Subtotal</span><strong id="subtotal">$0</strong></div>
-          <div class="total-row"><span>IVA incluido</span><strong id="iva">$0</strong></div>
+
           <div class="total-row"><span>Envío</span><strong id="shippingTotal">$0</strong></div>
           <div class="total-row grand-total"><span>Total</span><strong id="grandTotal">$0</strong></div>
         </div>
@@ -754,9 +754,8 @@
     function totals() {
       const subtotal = checkoutItems.reduce((sum, item) => sum + item.price * item.qty, 0);
       const shipping = Number(document.querySelector('input[name="shipping"]:checked')?.value || 0);
-      const iva = Math.round(subtotal * 0.19 / 1.19);
       const total = subtotal + shipping;
-      return { subtotal, shipping, iva, total };
+      return { subtotal, shipping, total };
     }
 
     function renderOrder() {
@@ -782,7 +781,6 @@
 
       const currentTotals = totals();
       document.getElementById('subtotal').textContent = formatPrice(currentTotals.subtotal);
-      document.getElementById('iva').textContent = formatPrice(currentTotals.iva);
       document.getElementById('shippingTotal').textContent = formatPrice(currentTotals.shipping);
       document.getElementById('grandTotal').textContent = formatPrice(currentTotals.total);
     }
@@ -858,7 +856,6 @@
         ...lines,
         '',
         `Subtotal: ${formatPrice(orderPayload.totals.subtotal)}`,
-        `IVA incluido: ${formatPrice(orderPayload.totals.iva)}`,
         `Envío (${orderPayload.shipping.label}): ${formatPrice(orderPayload.shipping.amount)}`,
         `Total: ${formatPrice(orderPayload.totals.total)}`,
         '',

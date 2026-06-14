@@ -575,8 +575,22 @@
             </div>
 
             <div class="field">
-              <label for="productImage">URL de Imagen</label>
-              <input type="text" id="productImage" placeholder="assets/images/collection/nombre-obra.webp">
+              <label>Foto de la obra *</label>
+              <div style="border:2px dashed var(--blue);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.3s ease;" id="uploadZone">
+                <input type="file" id="productImage" accept="image/*" style="display:none;">
+                <div id="uploadPrompt">
+                  <i class="fas fa-cloud-upload-alt" style="font-size:2rem;color:var(--blue);margin-bottom:0.5rem;display:block;"></i>
+                  <p style="font-weight:700;color:var(--deep-blue);margin:0.5rem 0;">Arrastra la foto aquí</p>
+                  <p style="font-size:0.8rem;color:var(--muted);margin:0;">o haz clic para seleccionar</p>
+                </div>
+                <div id="uploadProgress" style="display:none;">
+                  <div style="display:flex;align-items:center;gap:0.75rem;">
+                    <i class="fas fa-spinner fa-spin" style="color:var(--blue);"></i>
+                    <span id="uploadStatus" style="color:var(--deep-blue);font-weight:600;">Subiendo...</span>
+                  </div>
+                </div>
+              </div>
+              <input type="hidden" id="productImageUrl">
               <div class="img-preview" id="imgPreview">
                 <div class="ph"><i class="fas fa-image"></i>Vista previa de imagen</div>
               </div>
@@ -780,6 +794,7 @@
     function resetForm() {
       $('productForm').reset();
       $('productId').value = '';
+      $('productImageUrl').value = '';
       $('productInStock').checked = true;
       $('productFeatured').checked = false;
       updateStockLabel();
@@ -803,7 +818,7 @@
     }
 
     function updateImgPreview() {
-      const url = $('productImage').value.trim();
+      const url = $('productImageUrl').value.trim();
       const preview = $('imgPreview');
       const existing = preview.querySelector('img');
       if (existing) existing.remove();
@@ -816,6 +831,102 @@
       }
     }
 
+    // ── Cloudinary Upload ──────────────────────
+    const CLOUDINARY_CLOUD = 'dxp5xum9j';
+    const CLOUDINARY_PRESET = 'vitrales_unsigned';
+    const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`;
+
+    async function uploadToCloudinary(file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_PRESET);
+      formData.append('folder', 'vitrales/products');
+      formData.append('resource_type', 'auto');
+
+      const uploadZone = $('uploadZone');
+      const uploadPrompt = $('uploadPrompt');
+      const uploadProgress = $('uploadProgress');
+      const uploadStatus = $('uploadStatus');
+
+      // Mostrar progreso
+      uploadPrompt.style.display = 'none';
+      uploadProgress.style.display = '';
+      uploadStatus.textContent = 'Subiendo...';
+
+      try {
+        const response = await fetch(CLOUDINARY_URL, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) throw new Error('Error al subir la imagen');
+        const data = await response.json();
+        
+        // Guardar URL
+        $('productImageUrl').value = data.secure_url;
+        updateImgPreview();
+        
+        // Éxito
+        uploadStatus.textContent = '✓ Foto subida exitosamente';
+        uploadStatus.style.color = 'var(--green)';
+        setTimeout(() => {
+          uploadPrompt.style.display = '';
+          uploadProgress.style.display = 'none';
+          uploadStatus.style.color = 'var(--deep-blue)';
+        }, 2000);
+        
+        showToast(`Foto "${file.name}" subida a Cloudinary ✓`, 'success');
+      } catch (err) {
+        console.error('Upload error:', err);
+        uploadStatus.textContent = '✗ Error al subir. Intenta de nuevo.';
+        uploadStatus.style.color = 'var(--red)';
+        showToast('Error al subir la foto', 'error');
+        setTimeout(() => {
+          uploadPrompt.style.display = '';
+          uploadProgress.style.display = 'none';
+          uploadStatus.style.color = 'var(--deep-blue)';
+        }, 3000);
+      }
+    }
+
+    // ── File Input Handling ────────────────────
+    const uploadZone = $('uploadZone');
+    const fileInput = $('productImage');
+
+    uploadZone.addEventListener('click', () => fileInput.click());
+    
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files?.[0];
+      if (file && file.type.startsWith('image/')) {
+        uploadToCloudinary(file);
+      }
+    });
+
+    // ── Drag & Drop ────────────────────────────
+    uploadZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadZone.style.borderColor = 'var(--cyan)';
+      uploadZone.style.backgroundColor = 'rgba(0, 210, 255, 0.03)';
+    });
+
+    uploadZone.addEventListener('dragleave', () => {
+      uploadZone.style.borderColor = 'var(--blue)';
+      uploadZone.style.backgroundColor = 'transparent';
+    });
+
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.style.borderColor = 'var(--blue)';
+      uploadZone.style.backgroundColor = 'transparent';
+      const file = e.dataTransfer.files?.[0];
+      if (file && file.type.startsWith('image/')) {
+        uploadToCloudinary(file);
+      } else {
+        showToast('Por favor arrastra una imagen válida', 'error');
+      }
+    });
+
+
     function productFromForm() {
       const name = $('productName').value.trim();
       const id = $('productId').value || `${slugify(name)}-${Date.now()}`;
@@ -825,7 +936,7 @@
         category: $('productCategory').value,
         subcategory: $('productSubcategory').value,
         price: Number($('productPrice').value),
-        image: $('productImage').value.trim(),
+        image: $('productImageUrl').value.trim(),
         description: $('productDescription').value.trim(),
         inStock: $('productInStock').checked,
         featured: $('productFeatured').checked
@@ -840,7 +951,7 @@
       $('productCategory').value = p.category;
       $('productSubcategory').value = p.subcategory || '';
       $('productPrice').value = p.price;
-      $('productImage').value = p.image;
+      $('productImageUrl').value = p.image;
       $('productDescription').value = p.description;
       $('productInStock').checked = p.inStock !== false;
       $('productFeatured').checked = !!p.featured;
