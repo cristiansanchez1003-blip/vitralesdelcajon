@@ -320,6 +320,19 @@
       border-radius: 2px;
       transition: all 0.3s ease;
     }
+    .nav-hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+    .nav-hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .nav-hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+    .nav-hamburger {
+      z-index: 10000;
+      position: relative;
+    }
     @media (max-width: 768px) {
       .nav-hamburger { display: flex; }
       .nav-links {
@@ -332,9 +345,9 @@
         border-bottom: 1px solid rgba(12,45,131,0.1);
         max-height: 0; overflow: hidden;
         transition: max-height 0.4s var(--ease-out);
-        z-index: 99;
+        z-index: 9999;
       }
-      .nav-links.open { max-height: 420px; }
+      .nav-links.open { max-height: 500px; }
       .nav-links a {
         padding: 1rem 1.5rem;
         border-bottom: 1px solid rgba(12,45,131,0.06);
@@ -651,20 +664,20 @@
           <blockquote class="story-quote">
             "Cada pieza que creo es un fragmento de la luz del Cajón — quiero que quien tenga un vitral mío sienta esa misma paz que yo siento al ver el sol pasar por las montañas."
           </blockquote>
-          <div class="story-stats">
-            <div class="story-stat">
-              <div class="stat-number">30<span>+</span></div>
-              <div class="stat-label">Años de Arte</div>
-            </div>
-            <div class="story-stat">
-              <div class="stat-number">500<span>+</span></div>
-              <div class="stat-label">Piezas Creadas</div>
-            </div>
-            <div class="story-stat">
-              <div class="stat-number">100<span>%</span></div>
-              <div class="stat-label">Hecho a Mano</div>
-            </div>
-          </div>
+        </div>
+      </div>
+      <div class="story-stats-section">
+        <div class="story-stat">
+          <div class="stat-number">30<span>+</span></div>
+          <div class="stat-label">Años de Arte</div>
+        </div>
+        <div class="story-stat">
+          <div class="stat-number">500<span>+</span></div>
+          <div class="stat-label">Piezas Creadas</div>
+        </div>
+        <div class="story-stat">
+          <div class="stat-number">100<span>%</span></div>
+          <div class="stat-label">Hecho a Mano</div>
         </div>
       </div>
     </div>
