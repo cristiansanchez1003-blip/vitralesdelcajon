@@ -728,7 +728,8 @@
           price: Number(item.price || 0),
           qty: Number(item.qty || 1),
           image: item.image || 'assets/images/logotipo_vitrales_hero.png',
-          category: item.category || 'Obra'
+          category: item.category || 'Obra',
+          subcategory: item.subcategory || ''
         }));
         return;
       }
@@ -744,7 +745,8 @@
           price: Number(product.price || 0),
           qty: Number(item.qty || 1),
           image: product.image,
-          category: product.category
+          category: product.category,
+          subcategory: product.subcategory || ''
         };
       }).filter(Boolean);
     }
@@ -771,7 +773,7 @@
             <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.name)}" loading="lazy">
             <div>
               <h3>${escapeHTML(item.name)}</h3>
-              <p>${escapeHTML(item.category)} · x${item.qty}</p>
+              <p>${escapeHTML(item.category)}${item.subcategory ? ' · ' + escapeHTML(item.subcategory) : ''} · x${item.qty}</p>
             </div>
             <strong class="line-price">${formatPrice(item.price * item.qty)}</strong>
           </article>

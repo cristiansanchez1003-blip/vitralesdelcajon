@@ -1,0 +1,690 @@
+[
+  {
+    "id": "p-vitral-fotos-1",
+    "name": "Vitral Sol de la Cordillera",
+    "category": "Vitrales",
+    "price": 45000,
+    "image": "assets/images/collection/vitral-sol-de-la-cordillera.webp",
+    "description": "Una obra que captura el sol radiante sobre las cumbres, llenando la habitación de reflejos cálidos y dorados."
+  },
+  {
+    "id": "p-vitral-fotos-2",
+    "name": "Atrapasol Colibrí Andino",
+    "category": "Vitrales",
+    "price": 60000,
+    "image": "assets/images/collection/atrapasol-colibri-andino.webp",
+    "description": "Delicado atrapasol que recrea el vuelo de un colibrí, diseñado para colgar cerca de ventanas y activar la luz."
+  },
+  {
+    "id": "p-vitral-fotos-3",
+    "name": "Vitral Geometría Sagrada",
+    "category": "Vitrales",
+    "price": 75000,
+    "image": "assets/images/collection/vitral-geometria-sagrada.webp",
+    "description": "Composición geométrica perfecta inspirada en patrones sagrados, ideal para meditación y armonizar espacios."
+  },
+  {
+    "id": "p-vitral-fotos-4",
+    "name": "Lámpara Tiffany Amanecer",
+    "category": "Vitrales",
+    "price": 90000,
+    "image": "assets/images/collection/lampara-tiffany-amanecer.webp",
+    "description": "Pantalla de lámpara estilo Tiffany con tonos cálidos que emula la luz suave del amanecer andino."
+  },
+  {
+    "id": "p-vitral-fotos-5",
+    "name": "Panel Vitral Flor del Cajón",
+    "category": "Vitrales",
+    "price": 105000,
+    "image": "assets/images/collection/panel-vitral-flor-del-cajon.webp",
+    "description": "Delicada pieza inspirada en la flora endémica del Cajón, con texturas que enriquecen el paso de la luz."
+  },
+  {
+    "id": "p-vitral-fotos-6",
+    "name": "Espejo Vitral Bosque Nativo",
+    "category": "Vitrales",
+    "price": 120000,
+    "image": "assets/images/collection/espejo-vitral-bosque-nativo.webp",
+    "description": "Espejo enmarcado con piezas de vidrio en tonos tierra y ocre, simulando la fronda de un bosque nativo."
+  },
+  {
+    "id": "p-vitral-fotos-7",
+    "name": "Vitral Mandala de Luz",
+    "category": "Vitrales",
+    "price": 135000,
+    "image": "assets/images/collection/vitral-mandala-de-luz.webp",
+    "description": "Mandala circular de vitral con un centro iridiscente que proyecta destellos multicolores en todas direcciones."
+  },
+  {
+    "id": "p-vitral-fotos-8",
+    "name": "Atrapasol Mariposa del Maipo",
+    "category": "Vitrales",
+    "price": 150000,
+    "image": "assets/images/collection/atrapasol-mariposa-del-maipo.webp",
+    "description": "Mariposa de vitral en tonos anaranjados y turquesas, ideal para dar vida y color a cualquier balcón o ventana."
+  },
+  {
+    "id": "p-vitral-fotos-9",
+    "name": "Vitral Cúspide de la Montaña",
+    "category": "Vitrales",
+    "price": 165000,
+    "image": "assets/images/collection/vitral-cuspide-de-la-montana.webp",
+    "description": "Representación abstracta del macizo andino, una pieza con carácter y gran fuerza visual."
+  },
+  {
+    "id": "p-vitral-fotos-10",
+    "name": "Panel Vitral Río Maipo",
+    "category": "Vitrales",
+    "price": 180000,
+    "image": "assets/images/collection/panel-vitral-rio-maipo.webp",
+    "description": "Panel alargado que evoca las curvas y la fuerza del río Maipo fluyendo a través del valle."
+  },
+  {
+    "id": "p-vitral-fotos-11",
+    "name": "Vitral Eclipse del Valle",
+    "category": "Vitrales",
+    "price": 195000,
+    "image": "assets/images/collection/vitral-eclipse-del-valle.webp",
+    "description": "Obra circular de colección con contraste entre vidrios opacos y translúcidos, simulando un eclipse."
+  },
+  {
+    "id": "p-vitral-fotos-12",
+    "name": "Atrapasol Pluma Luminosa",
+    "category": "Vitrales",
+    "price": 210000,
+    "image": "assets/images/collection/atrapasol-pluma-luminosa.webp",
+    "description": "Pequeño atrapasol en forma de pluma con vidrios texturados que filtran la luz con gran suavidad."
+  },
+  {
+    "id": "p-vitral-fotos-13",
+    "name": "Vitral Ojo de la Tierra",
+    "category": "Vitrales",
+    "price": 225000,
+    "image": "assets/images/collection/vitral-ojo-de-la-tierra.webp",
+    "description": "Vitral escultórico inspirado en la conexión con la naturaleza y los elementos de la tierra."
+  },
+  {
+    "id": "p-vitral-fotos-14",
+    "name": "Lámpara Tiffany Ocaso de Cobre",
+    "category": "Vitrales",
+    "price": 240000,
+    "image": "assets/images/collection/lampara-tiffany-ocaso-de-cobre.webp",
+    "description": "Lámpara Tiffany de tonos rojizos y cobre, que crea una atmósfera íntima y acogedora en el hogar."
+  },
+  {
+    "id": "p-vitral-fotos-15",
+    "name": "Panel Vitral Geometría Andina",
+    "category": "Vitrales",
+    "price": 255000,
+    "image": "assets/images/collection/panel-vitral-geometria-andina.webp",
+    "description": "Panel de ventana con diseño lineal y abstracto que dialoga armónicamente con la arquitectura moderna."
+  },
+  {
+    "id": "p-vitral-fotos-16",
+    "name": "Espejo Vitral Hojas de Plata",
+    "category": "Vitrales",
+    "price": 45000,
+    "image": "assets/images/collection/espejo-vitral-hojas-de-plata.webp",
+    "description": "Espejo decorado con hojas de vidrio plateado y translúcido que capturan reflejos sutiles."
+  },
+  {
+    "id": "p-vitral-fotos-17",
+    "name": "Vitral Chacana del Cajón",
+    "category": "Vitrales",
+    "price": 60000,
+    "image": "assets/images/collection/vitral-chacana-del-cajon.webp",
+    "description": "La chakana o cruz andina representada en vitral emplomado, cargada de simbolismo y tradición."
+  },
+  {
+    "id": "p-vitral-fotos-18",
+    "name": "Atrapasol Gotas de Lluvia",
+    "category": "Vitrales",
+    "price": 75000,
+    "image": "assets/images/collection/atrapasol-gotas-de-lluvia.webp",
+    "description": "Atrapasol colgante con múltiples prismas que descomponen la luz solar en el espectro del arcoíris."
+  },
+  {
+    "id": "p-vitral-fotos-19",
+    "name": "Vitral Espiral del Tiempo",
+    "category": "Vitrales",
+    "price": 90000,
+    "image": "assets/images/collection/vitral-espiral-del-tiempo.webp",
+    "description": "Diseño dinámico en espiral que crea sensación de movimiento a medida que la luz cambia durante el día."
+  },
+  {
+    "id": "p-vitral-fotos-20",
+    "name": "Panel Vitral Hojas de Roble",
+    "category": "Vitrales",
+    "price": 105000,
+    "image": "assets/images/collection/panel-vitral-hojas-de-roble.webp",
+    "description": "Vitral con detalles de hojas de roble, una pieza rústica ideal para casas de montaña."
+  },
+  {
+    "id": "p-vitral-fotos-21",
+    "name": "Vitral Trío de Cactus",
+    "category": "Vitrales",
+    "price": 120000,
+    "image": "assets/images/collection/vitral-trio-de-cactus.webp",
+    "description": "Composición tridimensional de tres cactus en vitral verde sobre base de madera de autor."
+  },
+  {
+    "id": "p-vitral-fotos-22",
+    "name": "Atrapasol Luna y Estrellas",
+    "category": "Vitrales",
+    "price": 135000,
+    "image": "assets/images/collection/atrapasol-luna-y-estrellas.webp",
+    "description": "Medallón colgante que reúne la luna y estrellas en una composición nocturna de tonos púrpuras y azules."
+  },
+  {
+    "id": "p-vitral-fotos-23",
+    "name": "Vitral Ventana Andina",
+    "category": "Vitrales",
+    "price": 150000,
+    "image": "assets/images/collection/vitral-ventana-andina.webp",
+    "description": "Ventana de vitral de gran formato, ideal para ser instalada en accesos o muros de luz."
+  },
+  {
+    "id": "p-vitral-fotos-24",
+    "name": "Lámpara Tiffany Hojas del Bosque",
+    "category": "Vitrales",
+    "price": 165000,
+    "image": "assets/images/collection/lampara-tiffany-hojas-del-bosque.webp",
+    "description": "Lámpara de mesa Tiffany inspirada en las copas de los árboles del Cajón de Maipo."
+  },
+  {
+    "id": "p-vitral-fotos-25",
+    "name": "Panel Vitral Mandala Cósmico",
+    "category": "Vitrales",
+    "price": 180000,
+    "image": "assets/images/collection/panel-vitral-mandala-cosmico.webp",
+    "description": "Diseño de mandala complejo que invita a la contemplación y llena el espacio de calma."
+  },
+  {
+    "id": "p-vitral-fotos-26",
+    "name": "Espejo Vitral Diseño Colonial",
+    "category": "Vitrales",
+    "price": 195000,
+    "image": "assets/images/collection/espejo-vitral-diseno-colonial.webp",
+    "description": "Espejo de estilo clásico colonial con marcos de vitral emplomado en azul profundo."
+  },
+  {
+    "id": "p-vitral-fotos-27",
+    "name": "Vitral Portal de los Andes",
+    "category": "Vitrales",
+    "price": 210000,
+    "image": "assets/images/collection/vitral-portal-de-los-andes.webp",
+    "description": "Portal místico de vidrio que enmarca el paisaje exterior con bordes de color y textura."
+  },
+  {
+    "id": "p-vitral-fotos-28",
+    "name": "Atrapasol Estrella del Maipo",
+    "category": "Vitrales",
+    "price": 225000,
+    "image": "assets/images/collection/atrapasol-estrella-del-maipo.webp",
+    "description": "Pequeña estrella de vitral facetado que destella con el sol de la tarde."
+  },
+  {
+    "id": "p-vitral-fotos-29",
+    "name": "Vitral Calma Cordillerana",
+    "category": "Vitrales",
+    "price": 240000,
+    "image": "assets/images/collection/vitral-calma-cordillerana.webp",
+    "description": "Composición zen en tonos grises, humo y transparentes para propiciar espacios de calma y relax."
+  },
+  {
+    "id": "p-vitral-fotos-30",
+    "name": "Panel Vitral Atardecer de Fuego",
+    "category": "Vitrales",
+    "price": 255000,
+    "image": "assets/images/collection/panel-vitral-atardecer-de-fuego.webp",
+    "description": "Panel que recrea los intensos colores del atardecer cordillerano en rojos, violetas y dorados."
+  },
+  {
+    "id": "p-vitral-fotos-31",
+    "name": "Vitral Prismas del Sol",
+    "category": "Vitrales",
+    "price": 45000,
+    "image": "assets/images/collection/vitral-prismas-del-sol.webp",
+    "description": "Vitral compuesto de prismas geométricos que refractan la luz creando patrones en las paredes."
+  },
+  {
+    "id": "p-vitral-fotos-32",
+    "name": "Atrapasol Hoja de Parra",
+    "category": "Vitrales",
+    "price": 60000,
+    "image": "assets/images/collection/atrapasol-hoja-de-parra.webp",
+    "description": "Atrapasol orgánico con forma de hoja de parra, rindiendo tributo a la tradición vitivinícola del valle."
+  },
+  {
+    "id": "p-vitral-fotos-33",
+    "name": "Vitral Ojo Andino",
+    "category": "Vitrales",
+    "price": 75000,
+    "image": "assets/images/collection/vitral-ojo-andino.webp",
+    "description": "Vitral circular que simboliza la mirada de la cordillera y la protección del hogar."
+  },
+  {
+    "id": "p-vitral-fotos-34",
+    "name": "Lámpara Tiffany Libélula de Oro",
+    "category": "Vitrales",
+    "price": 90000,
+    "image": "assets/images/collection/lampara-tiffany-libelula-de-oro.webp",
+    "description": "Lámpara Tiffany con detalles de libélulas y vidrios iridiscentes que brillan aun apagada."
+  },
+  {
+    "id": "p-vitral-fotos-35",
+    "name": "Panel Vitral Cascada de Luz",
+    "category": "Vitrales",
+    "price": 105000,
+    "image": "assets/images/collection/panel-vitral-cascada-de-luz.webp",
+    "description": "Panel vertical que emula la caída de agua de una cascada cordillerana mediante vidrios texturados."
+  },
+  {
+    "id": "p-vitral-fotos-36",
+    "name": "Espejo Vitral Rosetón Clásico",
+    "category": "Vitrales",
+    "price": 120000,
+    "image": "assets/images/collection/espejo-vitral-roseton-clasico.webp",
+    "description": "Espejo redondo enmarcado en un rosetón clásico de vitral, una pieza de gran elegancia."
+  },
+  {
+    "id": "p-vitral-fotos-37",
+    "name": "Vitral Equilibrio de Luz",
+    "category": "Vitrales",
+    "price": 135000,
+    "image": "assets/images/collection/vitral-equilibrio-de-luz.webp",
+    "description": "Composición simétrica que aporta equilibrio visual y proyecta una luz serena."
+  },
+  {
+    "id": "p-vitral-fotos-38",
+    "name": "Atrapasol Flor de Cactus",
+    "category": "Vitrales",
+    "price": 150000,
+    "image": "assets/images/collection/atrapasol-flor-de-cactus.webp",
+    "description": "Pequeño atrapasol con forma de flor de cactus andino en vibrante color fucsia."
+  },
+  {
+    "id": "p-vitral-fotos-39",
+    "name": "Vitral Montaña Sagrada",
+    "category": "Vitrales",
+    "price": 165000,
+    "image": "assets/images/collection/vitral-montana-sagrada.webp",
+    "description": "Representación del espíritu de las montañas y la nieve eterna de los Andes."
+  },
+  {
+    "id": "p-vitral-fotos-40",
+    "name": "Panel Vitral Luz de la Luna",
+    "category": "Vitrales",
+    "price": 180000,
+    "image": "assets/images/collection/panel-vitral-luz-de-la-luna.webp",
+    "description": "Panel de noche con tonos azules y blancos que captura la misteriosa luz lunar."
+  },
+  {
+    "id": "p-vitral-fotos-41",
+    "name": "Vitral Cuarzo del Cajón",
+    "category": "Vitrales",
+    "price": 195000,
+    "image": "assets/images/collection/vitral-cuarzo-del-cajon.webp",
+    "description": "Vitral que incorpora texturas inspiradas en las formaciones de cuarzo de la cordillera."
+  },
+  {
+    "id": "p-vitral-fotos-42",
+    "name": "Atrapasol Pluma Iridiscente",
+    "category": "Vitrales",
+    "price": 210000,
+    "image": "assets/images/collection/atrapasol-pluma-iridiscente.webp",
+    "description": "Atrapasol colgante con forma de pluma y acabados iridiscentes que brillan con el movimiento."
+  },
+  {
+    "id": "p-vitral-fotos-43",
+    "name": "Vitral Escultura del Viento",
+    "category": "Vitrales",
+    "price": 225000,
+    "image": "assets/images/collection/vitral-escultura-del-viento.webp",
+    "description": "Escultura de vitral autoportante diseñada para capturar corrientes de luz sobre repisas."
+  },
+  {
+    "id": "p-vitral-fotos-44",
+    "name": "Lámpara Tiffany Peumo Dorado",
+    "category": "Vitrales",
+    "price": 240000,
+    "image": "assets/images/collection/lampara-tiffany-peumo-dorado.webp",
+    "description": "Lámpara Tiffany que rinde homenaje al peumo, árbol emblemático de la zona central de Chile."
+  },
+  {
+    "id": "p-vitral-fotos-45",
+    "name": "Panel Vitral Geometría del Valle",
+    "category": "Vitrales",
+    "price": 255000,
+    "image": "assets/images/collection/panel-vitral-geometria-del-valle.webp",
+    "description": "Panel decorativo con patrones geométricos inspirados en el trazado de los valles andinos."
+  },
+  {
+    "id": "p-vitral-fotos-46",
+    "name": "Espejo Vitral Bordes Biselados",
+    "category": "Vitrales",
+    "price": 45000,
+    "image": "assets/images/collection/espejo-vitral-bordes-biselados.webp",
+    "description": "Espejo de diseño sobrio con bordes biselados en vidrio de color humo."
+  },
+  {
+    "id": "p-vitral-fotos-47",
+    "name": "Vitral Flor de Loto",
+    "category": "Vitrales",
+    "price": 60000,
+    "image": "assets/images/collection/vitral-flor-de-loto.webp",
+    "description": "Representación de la flor de loto en vitral, símbolo de pureza y crecimiento espiritual."
+  },
+  {
+    "id": "p-vitral-fotos-48",
+    "name": "Atrapasol Mandala Pequeño",
+    "category": "Vitrales",
+    "price": 75000,
+    "image": "assets/images/collection/atrapasol-mandala-pequeno.webp",
+    "description": "Atrapasol circular de tamaño mediano con diseño simplificado de mandala andino."
+  },
+  {
+    "id": "p-vitral-fotos-49",
+    "name": "Vitral Reflejos del Maipo",
+    "category": "Vitrales",
+    "price": 90000,
+    "image": "assets/images/collection/vitral-reflejos-del-maipo.webp",
+    "description": "Obra que plasma los reflejos cambiantes del sol sobre el agua en el Cajón."
+  },
+  {
+    "id": "p-vitral-fotos-50",
+    "name": "Panel Vitral Fuego Andino",
+    "category": "Vitrales",
+    "price": 105000,
+    "image": "assets/images/collection/panel-vitral-fuego-andino.webp",
+    "description": "Panel con vidrios en tonos cálidos y texturas de fuego para dar energía al espacio."
+  },
+  {
+    "id": "p-vitral-fotos-51",
+    "name": "Vitral Portal de la Luz",
+    "category": "Vitrales",
+    "price": 120000,
+    "image": "assets/images/collection/vitral-portal-de-la-luz.webp",
+    "description": "Vitral que actúa como un portal de luz, ideal para transformar rincones oscuros."
+  },
+  {
+    "id": "p-vitral-fotos-52",
+    "name": "Atrapasol Hoja de Canelo",
+    "category": "Vitrales",
+    "price": 135000,
+    "image": "assets/images/collection/atrapasol-hoja-de-canelo.webp",
+    "description": "Atrapasol con forma de hoja de canelo, el árbol sagrado, en hermosos tonos verdes."
+  },
+  {
+    "id": "p-vitral-fotos-53",
+    "name": "Vitral Sol Naciente",
+    "category": "Vitrales",
+    "price": 150000,
+    "image": "assets/images/collection/vitral-sol-naciente.webp",
+    "description": "Vitral circular que celebra el renacer diario del sol tras las montañas."
+  },
+  {
+    "id": "p-vitral-fotos-54",
+    "name": "Lámpara Tiffany Rosas Silvestres",
+    "category": "Vitrales",
+    "price": 165000,
+    "image": "assets/images/collection/lampara-tiffany-rosas-silvestres.webp",
+    "description": "Lámpara de diseño romántico Tiffany con patrones de rosas rojas y vidrios verdes."
+  },
+  {
+    "id": "p-vitral-fotos-55",
+    "name": "Panel Vitral Estructura Cubista",
+    "category": "Vitrales",
+    "price": 180000,
+    "image": "assets/images/collection/panel-vitral-estructura-cubista.webp",
+    "description": "Panel abstracto que juega con la luz y la sombra mediante la intersección de planos."
+  },
+  {
+    "id": "p-vitral-fotos-56",
+    "name": "Espejo Vitral Vitromosaico",
+    "category": "Vitrales",
+    "price": 195000,
+    "image": "assets/images/collection/espejo-vitral-vitromosaico.webp",
+    "description": "Espejo con marco decorado en mosaico de vidrio (vitromosaico) de vivos colores."
+  },
+  {
+    "id": "p-vitral-fotos-57",
+    "name": "Vitral Bosque de Cobre",
+    "category": "Vitrales",
+    "price": 210000,
+    "image": "assets/images/collection/vitral-bosque-de-cobre.webp",
+    "description": "Obra emplomada que combina maderas y vidrios en tonos cobrizos y bronce."
+  },
+  {
+    "id": "p-vitral-fotos-58",
+    "name": "Atrapasol Libélula Turquesa",
+    "category": "Vitrales",
+    "price": 225000,
+    "image": "assets/images/collection/atrapasol-libelula-turquesa.webp",
+    "description": "Atrapasol de libélula en vidrio turquesa y ámbar, liviano y fácil de colgar."
+  },
+  {
+    "id": "p-vitral-fotos-59",
+    "name": "Vitral Olas del Maipo",
+    "category": "Vitrales",
+    "price": 240000,
+    "image": "assets/images/collection/vitral-olas-del-maipo.webp",
+    "description": "Vitral con líneas fluidas que evocan las corrientes del río y la brisa del valle."
+  },
+  {
+    "id": "p-vitral-fotos-60",
+    "name": "Panel Vitral Constelación",
+    "category": "Vitrales",
+    "price": 255000,
+    "image": "assets/images/collection/panel-vitral-constelacion.webp",
+    "description": "Panel estrellado inspirado en las despejadas noches astronómicas del Cajón."
+  },
+  {
+    "id": "p-vitral-fotos-61",
+    "name": "Vitral Girasol Luminoso",
+    "category": "Vitrales",
+    "price": 45000,
+    "image": "assets/images/collection/vitral-girasol-luminoso.webp",
+    "description": "Representación alegre y luminosa de un girasol en vidrio amarillo opalescente."
+  },
+  {
+    "id": "p-vitral-fotos-62",
+    "name": "Atrapasol Prismático",
+    "category": "Vitrales",
+    "price": 60000,
+    "image": "assets/images/collection/atrapasol-prismatico.webp",
+    "description": "Atrapasol simple pero efectivo con una gema facetada central que refracta la luz."
+  },
+  {
+    "id": "p-vitral-fotos-63",
+    "name": "Vitral Trilogía Cordillerana",
+    "category": "Vitrales",
+    "price": 75000,
+    "image": "assets/images/collection/vitral-trilogia-cordillerana.webp",
+    "description": "Obra compuesta de tres paneles integrados que representan la cordillera."
+  },
+  {
+    "id": "p-vitral-fotos-64",
+    "name": "Lámpara Tiffany Violetas del Valle",
+    "category": "Vitrales",
+    "price": 90000,
+    "image": "assets/images/collection/lampara-tiffany-violetas-del-valle.webp",
+    "description": "Lámpara Tiffany de tonos violetas y lavanda que genera una luz relajante."
+  },
+  {
+    "id": "p-vitral-fotos-65",
+    "name": "Panel Vitral Espacio Sagrado",
+    "category": "Vitrales",
+    "price": 105000,
+    "image": "assets/images/collection/panel-vitral-espacio-sagrado.webp",
+    "description": "Panel diseñado para crear un punto focal sagrado en salas de estar o meditación."
+  },
+  {
+    "id": "p-vitral-fotos-66",
+    "name": "Espejo Vitral Hojas de Lenga",
+    "category": "Vitrales",
+    "price": 120000,
+    "image": "assets/images/collection/espejo-vitral-hojas-de-lenga.webp",
+    "description": "Espejo con detalles de hojas de lenga en vidrios otoñales dorados y rojizos."
+  },
+  {
+    "id": "p-vitral-fotos-67",
+    "name": "Vitral Destello Andino",
+    "category": "Vitrales",
+    "price": 135000,
+    "image": "assets/images/collection/vitral-destello-andino.webp",
+    "description": "Vitral con destellos de vidrios amarillos y claros que maximizan la entrada de luz."
+  },
+  {
+    "id": "p-vitral-fotos-68",
+    "name": "Atrapasol Colibrí de Fuego",
+    "category": "Vitrales",
+    "price": 150000,
+    "image": "assets/images/collection/atrapasol-colibri-de-fuego.webp",
+    "description": "Atrapasol de colibrí en vibrantes tonos rojos e iridiscentes que dan dinamismo."
+  },
+  {
+    "id": "p-vitral-fotos-69",
+    "name": "Vitral Armonía Geométrica",
+    "category": "Vitrales",
+    "price": 165000,
+    "image": "assets/images/collection/vitral-armonia-geometrica.webp",
+    "description": "Composición geométrica pura para los amantes del diseño limpio y minimalista."
+  },
+  {
+    "id": "p-vitral-fotos-70",
+    "name": "Panel Vitral Bosque de Arrayanes",
+    "category": "Vitrales",
+    "price": 180000,
+    "image": "assets/images/collection/panel-vitral-bosque-de-arrayanes.webp",
+    "description": "Panel inspirado en un denso bosque de arrayanes con sus característicos troncos."
+  },
+  {
+    "id": "p-vitral-fotos-71",
+    "name": "Vitral Rayos de Cobre",
+    "category": "Vitrales",
+    "price": 195000,
+    "image": "assets/images/collection/vitral-rayos-de-cobre.webp",
+    "description": "Vitral que incorpora alambres y detalles de cobre en su estructura emplomada."
+  },
+  {
+    "id": "p-vitral-fotos-72",
+    "name": "Atrapasol Luna de Cristal",
+    "category": "Vitrales",
+    "price": 210000,
+    "image": "assets/images/collection/atrapasol-luna-de-cristal.webp",
+    "description": "Atrapasol con forma de luna creciente de cristal texturado y destellos plateados."
+  },
+  {
+    "id": "p-vitral-fotos-73",
+    "name": "Vitral Ojo del Maipo",
+    "category": "Vitrales",
+    "price": 225000,
+    "image": "assets/images/collection/vitral-ojo-del-maipo.webp",
+    "description": "Vitral circular que evoca la mirada del valle, un amuleto de luz para el hogar."
+  },
+  {
+    "id": "p-vitral-fotos-74",
+    "name": "Lámpara Tiffany Hojas de Otoño",
+    "category": "Vitrales",
+    "price": 240000,
+    "image": "assets/images/collection/lampara-tiffany-hojas-de-otono.webp",
+    "description": "Lámpara Tiffany decorada con motivos de hojas secas en tonos bronce y ocre."
+  },
+  {
+    "id": "p-vitral-fotos-75",
+    "name": "Panel Vitral Silueta Cordillerana",
+    "category": "Vitrales",
+    "price": 255000,
+    "image": "assets/images/collection/panel-vitral-silueta-cordillerana.webp",
+    "description": "Panel alargado que dibuja la silueta del perfil cordillerano contra el cielo."
+  },
+  {
+    "id": "p-vitral-fotos-76",
+    "name": "Espejo Vitral Tradicional",
+    "category": "Vitrales",
+    "price": 45000,
+    "image": "assets/images/collection/espejo-vitral-tradicional.webp",
+    "description": "Espejo con enmarcado clásico y elegante de vitral en tonos ámbar y transparente."
+  },
+  {
+    "id": "p-vitral-fotos-77",
+    "name": "Vitral Espíritu del Cajón",
+    "category": "Vitrales",
+    "price": 60000,
+    "image": "assets/images/collection/vitral-espiritu-del-cajon.webp",
+    "description": "Vitral de colección que encierra la esencia y el espíritu del Cajón del Maipo."
+  },
+  {
+    "id": "p-vitral-fotos-78",
+    "name": "Atrapasol Estrella Fugaz",
+    "category": "Vitrales",
+    "price": 75000,
+    "image": "assets/images/collection/atrapasol-estrella-fugaz.webp",
+    "description": "Atrapasol colgante de estrella fugaz que deja una estela de gemas facetadas."
+  },
+  {
+    "id": "p-vitral-fotos-79",
+    "name": "Vitral Simetría Sagrada",
+    "category": "Vitrales",
+    "price": 90000,
+    "image": "assets/images/collection/vitral-simetria-sagrada.webp",
+    "description": "Composición simétrica perfecta que inspira orden, calma y equilibrio visual."
+  },
+  {
+    "id": "p-vitral-fotos-80",
+    "name": "Panel Vitral Luz de Invierno",
+    "category": "Vitrales",
+    "price": 105000,
+    "image": "assets/images/collection/panel-vitral-luz-de-invierno.webp",
+    "description": "Panel con tonos fríos y transparentes que evoca la luz clara del invierno."
+  },
+  {
+    "id": "p-vitral-fotos-81",
+    "name": "Vitral Ocaso del Maipo",
+    "category": "Vitrales",
+    "price": 120000,
+    "image": "assets/images/collection/vitral-ocaso-del-maipo.webp",
+    "description": "Vitral que recrea los tonos mágicos del ocaso sobre las altas cumbres."
+  },
+  {
+    "id": "p-vitral-fotos-82",
+    "name": "Lámpara Tiffany Diseño Geométrico",
+    "category": "Vitrales",
+    "price": 135000,
+    "image": "assets/images/collection/lampara-tiffany-diseno-geometrico.webp",
+    "description": "Lámpara Tiffany de diseño puramente geométrico y colores primarios armonizados."
+  },
+  {
+    "id": "p-vitral-fotos-83",
+    "name": "Panel Vitral Cascada Esmeralda",
+    "category": "Vitrales",
+    "price": 150000,
+    "image": "assets/images/collection/panel-vitral-cascada-esmeralda.webp",
+    "description": "Panel vertical con vidrios verdes esmeralda que imitan la luz filtrada por el agua."
+  },
+  {
+    "id": "p-vitral-fotos-84",
+    "name": "Espejo Vitral Flores Azules",
+    "category": "Vitrales",
+    "price": 165000,
+    "image": "assets/images/collection/espejo-vitral-flores-azules.webp",
+    "description": "Espejo redondo decorado con flores de vitral azul y hojas verdes."
+  },
+  {
+    "id": "p-vitral-fotos-85",
+    "name": "Vitral Cordillera y Sol",
+    "category": "Vitrales",
+    "price": 180000,
+    "image": "assets/images/collection/vitral-cordillera-y-sol.webp",
+    "description": "Una hermosa representación de la silueta cordillerana coronada por el sol."
+  },
+  {
+    "id": "p-vitral-fotos-86",
+    "name": "Atrapasol Gota de Rocío",
+    "category": "Vitrales",
+    "price": 195000,
+    "image": "assets/images/collection/atrapasol-gota-de-rocio.webp",
+    "description": "Atrapasol en forma de gota con vidrio texturado transparente que imita el rocío."
+  }
+]

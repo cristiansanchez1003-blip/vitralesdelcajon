@@ -1,0 +1,21 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.tmp
+*.log
+
+# Local tooling caches
+node_modules/
+__pycache__/
+.pytest_cache/
+.cache/
+
+# Local audit/test output
+mobile-audit/
+mobile-audit-profile/
+
+# Environment files
+.env
+.env.*

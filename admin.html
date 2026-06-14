@@ -3,745 +3,649 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin — Vitrales del Cajón</title>
-  <meta name="description" content="Panel de administración local para gestionar el catálogo de Vitrales del Cajón.">
+  <title>Panel de Administración — Vitrales del Cajón</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <script src="products.js?v=20260614-v2"></script>
   <script>
     const ADMIN_SESSION_KEY = 'admin_authenticated';
-    const hasAdminSession = sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true';
-    document.documentElement.classList.add(hasAdminSession ? 'admin-session-valid' : 'admin-login-required');
+    const ok = sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true';
+    document.documentElement.classList.add(ok ? 'auth-ok' : 'auth-need');
   </script>
   <style>
     :root {
-      --paper: #FAFAFA;
-      --white: #FFFFFF;
-      --ink: #222222;
-      --muted: #6f7178;
-      --line: rgba(34, 34, 34, 0.12);
-      --blue: #0C2D83;
-      --cyan: #2FBAD3;
-      --amber: #E59513;
-      --danger: #9b2f2f;
-      --shadow: 0 18px 55px rgba(12, 45, 131, 0.12);
+      --paper:#FAFAFA; --white:#FFFFFF; --ink:#1a1d26;
+      --muted:#6f7280; --line:rgba(26,29,38,0.10);
+      --blue:#0C2D83; --blue-light:#1A3F9E;
+      --cyan:#2FBAD3; --amber:#E59513;
+      --green:#18a558; --red:#c0392b;
+      --shadow:0 20px 60px rgba(12,45,131,0.11);
+      --r:12px; --ease:cubic-bezier(0.16,1,0.3,1);
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { -webkit-font-smoothing:antialiased; }
     body {
-      margin: 0;
-      font-family: 'Montserrat', sans-serif;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at top left, rgba(47, 186, 211, 0.1), transparent 34rem),
-        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
-      min-height: 100vh;
-      overflow-x: hidden;
+      font-family:'Montserrat',sans-serif; color:var(--ink);
+      background: radial-gradient(circle at top left, rgba(47,186,211,0.08), transparent 40rem),
+                  linear-gradient(180deg,#fff 0%,var(--paper) 100%);
+      min-height:100vh; overflow-x:hidden;
+    }
+    a { color:inherit; text-decoration:none; }
+    img { display:block; max-width:100%; height:auto; }
+    button,input,select,textarea { font:inherit; }
+
+    /* ── LOGIN OVERLAY ── */
+    .login-overlay {
+      position:fixed; inset:0; z-index:200;
+      background:var(--blue);
+      display:grid; place-items:center;
+    }
+    html.auth-ok .login-overlay { display:none !important; }
+
+    .login-card {
+      background:#fff; border-radius:20px;
+      padding:2.8rem 2.5rem;
+      width:min(400px,90vw);
+      box-shadow:0 40px 80px rgba(0,0,0,0.25);
+      text-align:center;
+    }
+    .login-card .logo-mark {
+      width:60px; height:60px; border-radius:50%;
+      background:linear-gradient(135deg, var(--blue), var(--cyan));
+      display:grid; place-items:center;
+      color:#fff; font-size:1.4rem;
+      margin:0 auto 1.5rem;
+    }
+    .login-card h1 {
+      font-size:1.1rem; font-weight:800;
+      letter-spacing:0.14em; text-transform:uppercase;
+      color:var(--blue); margin-bottom:0.3rem;
+    }
+    .login-card p { font-size:0.78rem; color:var(--muted); margin-bottom:2rem; }
+    .login-field {
+      position:relative; margin-bottom:1rem;
+    }
+    .login-field i {
+      position:absolute; left:14px; top:50%; transform:translateY(-50%);
+      color:var(--muted); font-size:0.85rem;
+    }
+    .login-field input {
+      width:100%; height:48px;
+      border:1.5px solid var(--line);
+      border-radius:10px; background:#fff;
+      padding:0 1rem 0 2.8rem;
+      color:var(--ink); outline:none;
+      transition:border-color 0.25s, box-shadow 0.25s;
+      font-size:0.9rem;
+    }
+    .login-field input:focus {
+      border-color:var(--cyan);
+      box-shadow:0 0 0 4px rgba(47,186,211,0.12);
+    }
+    .login-submit {
+      width:100%; height:48px;
+      background:var(--blue); color:#fff;
+      border:none; border-radius:10px;
+      font-size:0.8rem; font-weight:800;
+      letter-spacing:0.14em; text-transform:uppercase;
+      cursor:pointer;
+      transition:background 0.25s, transform 0.2s;
+    }
+    .login-submit:hover { background:var(--cyan); transform:translateY(-1px); }
+    .login-error {
+      color:var(--red); font-size:0.75rem;
+      font-weight:600; margin-top:0.75rem; min-height:20px;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    /* ── ADMIN SHELL ── */
+    .admin-shell { display:none; }
+    html.auth-ok .admin-shell { display:block; }
 
-    button,
-    input,
-    textarea,
-    select {
-      font: inherit;
+    /* ── TOPBAR ── */
+    .topbar {
+      position:sticky; top:0; z-index:60;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:1rem; min-height:72px;
+      padding:0 clamp(1rem,4vw,3rem);
+      background:rgba(250,250,250,0.92);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:blur(20px);
     }
-
-    .admin-shell {
-      min-height: 100vh;
-      display: none;
+    .topbar-brand { display:flex; align-items:center; gap:10px; }
+    .topbar-brand strong { font-size:0.82rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--blue); }
+    .topbar-brand span { display:block; font-size:0.62rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; }
+    .admin-badge {
+      padding:3px 10px; background:rgba(47,186,211,0.12);
+      border:1px solid rgba(47,186,211,0.3);
+      border-radius:4px; color:var(--cyan);
+      font-size:0.62rem; font-weight:800; letter-spacing:0.14em;
+      text-transform:uppercase;
     }
-
-    html.admin-session-valid .admin-shell,
-    .admin-shell.unlocked {
-      display: block;
+    .topbar-actions { display:flex; align-items:center; gap:0.75rem; }
+    .soft-btn {
+      background:none; border:none; cursor:pointer;
+      color:var(--muted); font-size:0.72rem; font-weight:700;
+      letter-spacing:0.12em; text-transform:uppercase;
+      transition:color 0.2s; display:flex; align-items:center; gap:6px;
     }
-
-    html.admin-login-required .admin-shell {
-      display: none !important;
+    .soft-btn:hover { color:var(--cyan); }
+    .logout-btn {
+      background:none; border:1.5px solid var(--line); border-radius:8px;
+      padding:7px 14px; cursor:pointer; color:var(--muted);
+      font-size:0.68rem; font-weight:800;
+      letter-spacing:0.12em; text-transform:uppercase;
+      transition:all 0.2s; display:flex; align-items:center; gap:6px;
     }
+    .logout-btn:hover { border-color:var(--red); color:var(--red); }
 
-    html.admin-session-valid .login-overlay {
-      display: none !important;
+    /* ── PAGE HERO ── */
+    .page-hero {
+      max-width:1200px; margin:0 auto;
+      padding:clamp(2.5rem,6vw,4.5rem) clamp(1rem,4vw,3rem) 1.5rem;
     }
-
-    .admin-header {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      min-height: 78px;
-      padding: 0 clamp(1.25rem, 4vw, 4rem);
-      background: rgba(250, 250, 250, 0.88);
-      border-bottom: 1px solid var(--line);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-    }
-
-    .brand-block strong {
-      display: block;
-      font-size: 0.9rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .brand-block span {
-      display: block;
-      margin-top: 0.2rem;
-      color: var(--muted);
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .header-links {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .soft-link,
-    .logout-button {
-      border: 0;
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 0.76rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      transition: color 0.25s ease;
-    }
-
-    .soft-link:hover,
-    .logout-button:hover {
-      color: var(--cyan);
-    }
-
-    .admin-hero {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: clamp(2.8rem, 6vw, 5rem) 1.25rem 2rem;
-    }
-
     .kicker {
-      margin: 0 0 0.85rem;
-      color: var(--cyan);
-      font-size: 0.76rem;
-      font-weight: 800;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
+      display:block; margin-bottom:0.6rem;
+      color:var(--cyan); font-size:0.68rem; font-weight:800;
+      letter-spacing:0.28em; text-transform:uppercase;
+    }
+    .page-title {
+      font-size:clamp(1.8rem,4.5vw,3.5rem); font-weight:800;
+      letter-spacing:0.03em; text-transform:uppercase;
+      color:var(--blue); line-height:1.05; margin-bottom:0.6rem;
+    }
+    .page-hero p { color:var(--muted); font-size:0.88rem; line-height:1.8; max-width:640px; }
+
+    /* Stats row */
+    .stats-row {
+      max-width:1200px; margin:0 auto;
+      padding:0 clamp(1rem,4vw,3rem) 2rem;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+      gap:1rem;
+    }
+    .stat-card {
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:var(--r);
+      padding:1.2rem 1.4rem;
+      box-shadow:0 4px 16px rgba(12,45,131,0.06);
+    }
+    .stat-card .s-label {
+      font-size:0.62rem; font-weight:800;
+      letter-spacing:0.18em; text-transform:uppercase;
+      color:var(--muted); margin-bottom:0.5rem; display:block;
+    }
+    .stat-card .s-val {
+      font-size:1.6rem; font-weight:800; color:var(--blue);
+      line-height:1;
+    }
+    .stat-card .s-sub {
+      font-size:0.68rem; color:var(--muted); margin-top:0.3rem;
     }
 
-    h1 {
-      max-width: 850px;
-      margin: 0 0 1rem;
-      color: var(--ink);
-      font-size: clamp(2.1rem, 4.6vw, 4.25rem);
-      line-height: 1.04;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-    }
-
-    .admin-hero p {
-      max-width: 720px;
-      margin: 0;
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.8;
-    }
-
+    /* ── MAIN GRID ── */
     .admin-grid {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 0 1.25rem 5rem;
-      display: grid;
-      grid-template-columns: minmax(300px, 430px) 1fr;
-      gap: 1.4rem;
-      align-items: start;
+      max-width:1200px; margin:0 auto;
+      padding:0 clamp(1rem,4vw,3rem) 5rem;
+      display:grid;
+      grid-template-columns:minmax(300px,420px) 1fr;
+      gap:1.5rem;
+      align-items:start;
+    }
+    @media (max-width:900px) {
+      .admin-grid { grid-template-columns:1fr; }
     }
 
+    /* ── PANEL ── */
     .panel {
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
     }
-
     .panel-head {
-      padding: 1.25rem 1.35rem;
-      border-bottom: 1px solid var(--line);
+      padding:1.3rem 1.5rem;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:flex-start; justify-content:space-between; gap:1rem;
     }
-
     .panel-head h2 {
-      margin: 0;
-      font-size: 1rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-size:0.8rem; font-weight:800;
+      letter-spacing:0.16em; text-transform:uppercase;
+      color:var(--blue); margin-bottom:0.25rem;
+    }
+    .panel-head p { font-size:0.78rem; color:var(--muted); line-height:1.55; margin:0; }
+    .panel-icon {
+      width:40px; height:40px; border-radius:10px;
+      background:rgba(47,186,211,0.1);
+      display:grid; place-items:center;
+      color:var(--cyan); font-size:1rem;
+      flex-shrink:0;
     }
 
-    .panel-head p {
-      margin: 0.35rem 0 0;
-      color: var(--muted);
-      font-size: 0.86rem;
-      line-height: 1.6;
-    }
-
-    .product-form {
-      padding: 1.35rem;
-      display: grid;
-      gap: 1rem;
-    }
-
-    .field {
-      display: grid;
-      gap: 0.45rem;
-    }
-
+    /* ── PRODUCT FORM ── */
+    .product-form { padding:1.4rem 1.5rem; display:grid; gap:1.1rem; }
+    .field { display:grid; gap:0.45rem; }
     .field label {
-      color: var(--ink);
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
+      font-size:0.65rem; font-weight:800;
+      letter-spacing:0.15em; text-transform:uppercase; color:var(--ink);
     }
-
     .field input,
     .field select,
     .field textarea {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-      color: var(--ink);
-      outline: none;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      width:100%;
+      border:1.5px solid var(--line);
+      border-radius:9px;
+      background:#fff; color:var(--ink);
+      outline:none;
+      transition:border-color 0.25s, box-shadow 0.25s;
     }
-
-    .field input,
-    .field select {
-      min-height: 46px;
-      padding: 0 0.9rem;
+    .field input,.field select { min-height:44px; padding:0 0.9rem; }
+    .field textarea { min-height:110px; padding:0.8rem 0.9rem; line-height:1.6; resize:vertical; }
+    .field input:focus,.field select:focus,.field textarea:focus {
+      border-color:var(--cyan);
+      box-shadow:0 0 0 4px rgba(47,186,211,0.12);
     }
+    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
 
-    .field textarea {
-      min-height: 132px;
-      padding: 0.85rem 0.9rem;
-      line-height: 1.6;
-      resize: vertical;
+    /* Stock toggle */
+    .stock-field {
+      display:flex; align-items:center; gap:0.85rem;
+      padding:0.8rem 1rem;
+      border:1.5px solid var(--line);
+      border-radius:9px; background:#fff;
+      cursor:pointer;
     }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 4px rgba(47, 186, 211, 0.12);
+    .stock-field input[type="checkbox"] {
+      width:18px; height:18px;
+      accent-color:var(--green); cursor:pointer;
+      flex-shrink:0;
     }
+    .stock-field .stock-label { font-size:0.78rem; font-weight:600; }
+    .stock-field .stock-desc { font-size:0.68rem; color:var(--muted); }
 
-    .form-actions {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      margin-top: 0.2rem;
+    /* Preview thumb */
+    .img-preview {
+      width:100%; height:160px;
+      border:1.5px dashed var(--line);
+      border-radius:9px;
+      display:grid; place-items:center;
+      overflow:hidden; position:relative;
+      background:#f8f9fb;
+      transition:border-color 0.25s;
     }
-
-    .primary-button,
-    .ghost-button,
-    .danger-button {
-      min-height: 46px;
-      border-radius: 999px;
-      padding: 0 1.15rem;
-      cursor: pointer;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    .img-preview img {
+      width:100%; height:100%; object-fit:cover;
+      position:absolute; inset:0;
     }
-
-    .primary-button {
-      border: 1px solid var(--blue);
-      background: var(--blue);
-      color: var(--paper);
+    .img-preview .ph {
+      color:var(--muted); font-size:0.75rem;
+      text-align:center; padding:1rem;
+      position:relative; z-index:1;
     }
+    .img-preview .ph i { font-size:1.8rem; display:block; margin-bottom:0.5rem; opacity:0.35; }
 
-    .primary-button:hover {
-      transform: translateY(-2px);
-      border-color: var(--cyan);
-      background: var(--cyan);
+    /* Form actions */
+    .form-actions { display:flex; gap:0.75rem; flex-wrap:wrap; }
+    .btn-primary {
+      flex:1 1 140px;
+      padding:11px 1rem;
+      background:var(--blue); color:#fff;
+      border:none; border-radius:9px;
+      font-size:0.72rem; font-weight:800;
+      letter-spacing:0.14em; text-transform:uppercase;
+      cursor:pointer; display:flex; align-items:center;
+      justify-content:center; gap:7px;
+      transition:background 0.25s, transform 0.2s;
     }
-
-    .ghost-button {
-      border: 1px solid var(--line);
-      background: #fff;
-      color: var(--blue);
+    .btn-primary:hover { background:var(--cyan); transform:translateY(-1px); }
+    .btn-secondary {
+      padding:11px 1rem;
+      background:none; color:var(--muted);
+      border:1.5px solid var(--line);
+      border-radius:9px;
+      font-size:0.72rem; font-weight:800;
+      letter-spacing:0.12em; text-transform:uppercase;
+      cursor:pointer;
+      transition:all 0.2s;
     }
+    .btn-secondary:hover { border-color:var(--cyan); color:var(--cyan); }
 
-    .ghost-button:hover {
-      transform: translateY(-2px);
-      border-color: rgba(47, 186, 211, 0.5);
-      color: var(--cyan);
+    /* ── INVENTORY PANEL ── */
+    .inv-tools {
+      padding:1rem 1.5rem;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;
     }
-
-    .danger-button {
-      border: 1px solid rgba(155, 47, 47, 0.25);
-      background: rgba(155, 47, 47, 0.06);
-      color: var(--danger);
+    .inv-search {
+      flex:1 1 200px;
+      height:40px;
+      border:1.5px solid var(--line);
+      border-radius:8px;
+      background:#f8f9fb; color:var(--ink);
+      padding:0 0.9rem;
+      outline:none; transition:border-color 0.25s, box-shadow 0.25s;
     }
-
-    .danger-button:hover {
-      transform: translateY(-2px);
-      background: rgba(155, 47, 47, 0.12);
+    .inv-search:focus { border-color:var(--cyan); box-shadow:0 0 0 3px rgba(47,186,211,0.1); background:#fff; }
+    .inv-cat-filter {
+      height:40px; padding:0 0.8rem;
+      border:1.5px solid var(--line);
+      border-radius:8px; background:#f8f9fb; color:var(--ink);
+      outline:none; cursor:pointer; min-width:140px;
+      transition:border-color 0.25s;
     }
-
-    .inventory-tools {
-      padding: 1rem 1.35rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.85rem;
-      border-bottom: 1px solid var(--line);
-      flex-wrap: wrap;
-    }
-
-    .inventory-tools input {
-      flex: 1 1 240px;
-      min-height: 44px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 0 0.9rem;
-      outline: none;
-    }
-
-    .inventory-tools input:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 4px rgba(47, 186, 211, 0.12);
-    }
-
+    .inv-cat-filter:focus { border-color:var(--cyan); }
     .count-pill {
-      display: inline-flex;
-      align-items: center;
-      min-height: 34px;
-      padding: 0 0.75rem;
-      border-radius: 999px;
-      background: rgba(12, 45, 131, 0.08);
-      color: var(--blue);
-      font-size: 0.74rem;
-      font-weight: 800;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      white-space: nowrap;
+      padding:4px 12px;
+      background:rgba(12,45,131,0.07);
+      border-radius:999px;
+      font-size:0.65rem; font-weight:800;
+      letter-spacing:0.12em; text-transform:uppercase;
+      color:var(--blue); white-space:nowrap;
     }
-
-    .table-wrap {
-      overflow-x: auto;
+    .danger-btn {
+      padding:8px 14px;
+      background:none; color:var(--muted);
+      border:1.5px solid var(--line);
+      border-radius:8px;
+      font-size:0.65rem; font-weight:800;
+      letter-spacing:0.12em; text-transform:uppercase;
+      cursor:pointer; transition:all 0.2s;
+      white-space:nowrap;
     }
+    .danger-btn:hover { border-color:var(--red); color:var(--red); }
 
-    table {
-      width: 100%;
-      min-width: 780px;
-      border-collapse: collapse;
-    }
-
-    th,
-    td {
-      padding: 1rem 1.15rem;
-      border-bottom: 1px solid var(--line);
-      text-align: left;
-      vertical-align: middle;
-    }
-
+    /* Table */
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; min-width:500px; }
+    thead { background:rgba(12,45,131,0.03); }
     th {
-      color: var(--muted);
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      padding:0.75rem 1rem;
+      text-align:left;
+      font-size:0.62rem; font-weight:800;
+      letter-spacing:0.16em; text-transform:uppercase;
+      color:var(--muted);
+      border-bottom:1px solid var(--line);
+      white-space:nowrap;
     }
-
     td {
-      font-size: 0.88rem;
+      padding:0.85rem 1rem;
+      border-bottom:1px solid var(--line);
+      font-size:0.78rem; vertical-align:middle;
     }
+    tr:last-child td { border-bottom:none; }
+    tr:hover td { background:rgba(47,186,211,0.03); }
 
     .thumb {
-      width: 72px;
-      height: 56px;
-      border-radius: 7px;
-      object-fit: cover;
-      background: #f2f2f2;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+      width:52px; height:52px; object-fit:cover;
+      border-radius:8px; border:1px solid var(--line);
     }
-
-    .item-name {
-      font-weight: 800;
+    .item-name { font-weight:700; color:var(--blue); font-size:0.78rem; margin-bottom:3px; }
+    .item-desc { color:var(--muted); font-size:0.68rem; line-height:1.4;
+                 display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
+    .cat-chip {
+      display:inline-block;
+      padding:3px 9px; border-radius:4px;
+      background:rgba(12,45,131,0.07); color:var(--blue);
+      font-size:0.62rem; font-weight:700;
+      letter-spacing:0.08em; text-transform:uppercase;
+      white-space:nowrap;
     }
-
-    .item-description {
-      max-width: 280px;
-      margin-top: 0.25rem;
-      color: var(--muted);
-      font-size: 0.78rem;
-      line-height: 1.5;
+    .stock-pill {
+      display:inline-flex; align-items:center; gap:4px;
+      padding:3px 9px; border-radius:999px;
+      font-size:0.6rem; font-weight:800;
+      letter-spacing:0.1em; text-transform:uppercase;
     }
-
-    .category-chip {
-      display: inline-flex;
-      align-items: center;
-      min-height: 28px;
-      padding: 0 0.65rem;
-      border-radius: 999px;
-      background: rgba(47, 186, 211, 0.1);
-      color: var(--blue);
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      white-space: nowrap;
+    .stock-pill.in { background:rgba(24,165,88,0.1); color:var(--green); }
+    .stock-pill.out { background:rgba(192,57,43,0.1); color:var(--red); }
+    .stock-pill::before {
+      content:''; width:6px; height:6px; border-radius:50%;
+      background:currentColor;
     }
-
-    .row-actions {
-      display: flex;
-      gap: 0.45rem;
-      justify-content: flex-end;
-    }
-
+    .row-actions { display:flex; gap:0.4rem; }
     .icon-action {
-      width: 38px;
-      height: 38px;
-      border: 1px solid var(--line);
-      border-radius: 50%;
-      background: #fff;
-      color: var(--blue);
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      transition: transform 0.25s ease, color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+      width:32px; height:32px; border-radius:7px;
+      border:1.5px solid var(--line);
+      background:#fff; color:var(--muted);
+      cursor:pointer; display:grid; place-items:center;
+      font-size:0.75rem;
+      transition:all 0.2s;
     }
+    .icon-action:hover { background:var(--blue); border-color:var(--blue); color:#fff; }
+    .icon-action.del:hover { background:var(--red); border-color:var(--red); color:#fff; }
+    .icon-action.stock-toggle-btn:hover { background:var(--green); border-color:var(--green); color:#fff; }
+    .empty-row { text-align:center; padding:2.5rem; color:var(--muted); font-size:0.82rem; }
 
-    .icon-action:hover {
-      transform: translateY(-2px);
-      border-color: rgba(47, 186, 211, 0.5);
-      color: var(--cyan);
-    }
-
-    .icon-action.delete {
-      color: var(--danger);
-    }
-
-    .icon-action.delete:hover {
-      border-color: rgba(155, 47, 47, 0.3);
-      background: rgba(155, 47, 47, 0.06);
-    }
-
-    .empty-row {
-      padding: 2rem;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .login-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      display: grid;
-      place-items: center;
-      padding: 1.25rem;
-      background:
-        linear-gradient(rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0.72)),
-        url('assets/images/collection/obra_escultura_azul.jpeg') center/cover no-repeat;
-    }
-
-    .login-card {
-      width: min(100%, 430px);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      border-radius: 18px;
-      padding: 2rem;
-      background: rgba(250, 250, 250, 0.92);
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-    }
-
-    .login-card h2 {
-      margin: 0 0 0.7rem;
-      color: var(--ink);
-      font-size: 1.55rem;
-      line-height: 1.2;
-      text-transform: uppercase;
-    }
-
-    .login-card p {
-      margin: 0 0 1.3rem;
-      color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.65;
-    }
-
-    .login-form {
-      display: grid;
-      gap: 0.85rem;
-    }
-
-    .login-form input {
-      min-height: 48px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 0 1rem;
-      outline: none;
-    }
-
-    .login-form input:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 4px rgba(47, 186, 211, 0.12);
-    }
-
-    .login-error {
-      min-height: 1.2rem;
-      margin: 0;
-      color: var(--danger);
-      font-size: 0.82rem;
-      font-weight: 700;
-    }
-
+    /* ── TOAST ── */
     .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 24px;
-      z-index: 120;
-      padding: 0.9rem 1.1rem;
-      border-radius: 999px;
-      background: rgba(34, 34, 34, 0.94);
-      color: #fff;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
-      transform: translate(-50%, 20px);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      font-size: 0.86rem;
-      font-weight: 700;
+      position:fixed; bottom:1.5rem; left:50%;
+      transform:translateX(-50%) translateY(80px);
+      background:var(--blue); color:#fff;
+      padding:11px 20px; border-radius:9px;
+      font-size:0.78rem; font-weight:700;
+      box-shadow:0 8px 30px rgba(12,45,131,0.25);
+      z-index:300; opacity:0;
+      transition:transform 0.4s var(--ease), opacity 0.4s;
+      white-space:nowrap; pointer-events:none;
     }
-
-    .toast.show {
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
-
-    @media (max-width: 900px) {
-      .admin-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .admin-header {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 0.8rem;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-      }
-
-      .header-links {
-        justify-content: flex-start;
-        width: 100%;
-        gap: 0.7rem;
-      }
-
-      .soft-link,
-      .logout-button {
-        font-size: 0.68rem;
-        letter-spacing: 0.1em;
-      }
-
-      .admin-hero {
-        padding-top: 2rem;
-        padding-bottom: 1.25rem;
-      }
-
-      .admin-hero h1 {
-        font-size: clamp(2rem, 11vw, 3rem);
-      }
-
-      .admin-hero p {
-        font-size: 0.92rem;
-        line-height: 1.7;
-      }
-
-      .admin-grid {
-        padding-inline: 1rem;
-        padding-bottom: 3rem;
-      }
-
-      .login-overlay {
-        align-items: center;
-        padding: 1rem;
-      }
-
-      .login-card {
-        padding: 1.35rem;
-        border-radius: 14px;
-      }
-
-      .login-card h2 {
-        font-size: 1.25rem;
-      }
-
-      .login-card p {
-        font-size: 0.88rem;
-      }
-
-      .panel-head,
-      .product-form,
-      .inventory-tools {
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
-
-      .form-actions {
-        flex-direction: column;
-      }
-
-      .primary-button,
-      .ghost-button,
-      .danger-button {
-        width: 100%;
-      }
-
-      table {
-        min-width: 700px;
-      }
-
-      th,
-      td {
-        padding: 0.85rem;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
+    .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+    .toast.success { background:var(--green); }
+    .toast.error   { background:var(--red); }
   </style>
 </head>
 <body>
+
+  <!-- LOGIN OVERLAY -->
   <div class="login-overlay" id="loginOverlay">
     <div class="login-card">
-      <p class="kicker">Acceso privado</p>
-      <h2>Panel de catálogo</h2>
-      <p>Gestiona las obras disponibles, sus precios y las imágenes que verá el comprador.</p>
-      <form class="login-form" id="loginForm">
-        <input id="passwordInput" type="password" placeholder="Contraseña de administración" autocomplete="current-password" required>
-        <button class="primary-button" type="submit">Entrar</button>
-        <p class="login-error" id="loginError" aria-live="polite"></p>
+      <div class="logo-mark"><i class="fas fa-gem"></i></div>
+      <h1>Panel Admin</h1>
+      <p>Ingresa la contraseña para acceder al panel de Vitrales del Cajón</p>
+      <form id="loginForm" novalidate>
+        <div class="login-field">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="passwordInput" placeholder="Contraseña de administrador" autocomplete="current-password" required>
+        </div>
+        <button class="login-submit" type="submit">
+          <i class="fas fa-sign-in-alt" style="margin-right:6px;"></i>Ingresar
+        </button>
+        <p class="login-error" id="loginError"></p>
       </form>
     </div>
   </div>
 
+  <!-- ADMIN SHELL -->
   <div class="admin-shell" id="adminShell">
-    <header class="admin-header">
-      <a class="brand-block" href="index.html" aria-label="Volver al inicio">
-        <strong>Vitrales del Cajón</strong>
-        <span>Administrador de obras</span>
-      </a>
-      <nav class="header-links" aria-label="Accesos rápidos">
-        <a class="soft-link" href="catalogo.html">Ver catálogo</a>
-        <a class="soft-link" href="index.html">Inicio</a>
-        <button class="logout-button" id="logoutButton" type="button">Cerrar Sesión</button>
-      </nav>
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-brand">
+        <div>
+          <strong>Vitrales del Cajón</strong>
+          <span>Panel de Administración</span>
+        </div>
+        <span class="admin-badge">Admin</span>
+      </div>
+      <div class="topbar-actions">
+        <a href="index.html" class="soft-btn">
+          <i class="fas fa-eye"></i> Ver Sitio
+        </a>
+        <a href="catalogo.html" class="soft-btn">
+          <i class="fas fa-th"></i> Catálogo
+        </a>
+        <button class="logout-btn" id="logoutButton" type="button">
+          <i class="fas fa-sign-out-alt"></i> Salir
+        </button>
+      </div>
     </header>
 
-    <main>
-      <section class="admin-hero">
-        <p class="kicker">Gestión local</p>
-        <h1>Inventario vivo para una galería comprable</h1>
-        <p>Agrega, edita o elimina obras desde este panel. Los cambios se guardan en el navegador y se reflejan de inmediato en el catálogo.</p>
-      </section>
+    <!-- Page hero -->
+    <div class="page-hero">
+      <span class="kicker">Gestión de catálogo</span>
+      <h1 class="page-title">Inventario</h1>
+      <p>Agrega, edita o elimina obras del catálogo. Los cambios se reflejan instantáneamente en la tienda.</p>
+    </div>
 
-      <section class="admin-grid" aria-label="Panel de administración">
-        <article class="panel">
+    <!-- Stats -->
+    <div class="stats-row" id="statsRow">
+      <div class="stat-card">
+        <span class="s-label">Total Obras</span>
+        <div class="s-val" id="statTotal">0</div>
+        <div class="s-sub">en el catálogo</div>
+      </div>
+      <div class="stat-card">
+        <span class="s-label">En Stock</span>
+        <div class="s-val" id="statInStock" style="color:var(--green);">0</div>
+        <div class="s-sub">disponibles</div>
+      </div>
+      <div class="stat-card">
+        <span class="s-label">Sin Stock</span>
+        <div class="s-val" id="statOutStock" style="color:var(--red);">0</div>
+        <div class="s-sub">temporalmente</div>
+      </div>
+      <div class="stat-card">
+        <span class="s-label">Destacadas</span>
+        <div class="s-val" id="statFeatured" style="color:var(--amber);">0</div>
+        <div class="s-sub">en Tienda</div>
+      </div>
+      <div class="stat-card">
+        <span class="s-label">Categorías</span>
+        <div class="s-val" id="statCats">0</div>
+        <div class="s-sub">tipos de obra</div>
+      </div>
+    </div>
+
+    <main style="max-width:1200px;margin:0 auto;padding:0 clamp(1rem,4vw,3rem) 5rem;">
+      <div class="admin-grid" style="padding:0;">
+
+        <!-- ── FORM PANEL ── -->
+        <div class="panel" id="formPanel">
           <div class="panel-head">
-            <h2 id="formTitle">Agregar obra</h2>
-            <p>Completa los datos tal como deben aparecer en la tienda.</p>
+            <div>
+              <h2 id="formTitle">Agregar obra</h2>
+              <p id="formSubtitle">Completa los campos para agregar una nueva pieza al catálogo.</p>
+            </div>
+            <div class="panel-icon"><i class="fas fa-plus-circle"></i></div>
           </div>
 
-          <form class="product-form" id="productForm">
+          <form class="product-form" id="productForm" novalidate>
             <input type="hidden" id="productId">
 
-            <div class="field">
-              <label for="productName">Nombre del Vitral</label>
-              <input id="productName" type="text" placeholder="Ej: Luna del Valle" required>
+            <div class="field-row">
+              <div class="field">
+                <label for="productName">Nombre de la obra *</label>
+                <input type="text" id="productName" placeholder="Ej: Atrapasol Colibrí" required>
+              </div>
+              <div class="field">
+                <label for="productPrice">Precio CLP *</label>
+                <input type="number" id="productPrice" placeholder="Ej: 45000" min="0" required>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="productCategory">Categoría *</label>
+                <select id="productCategory" required>
+                  <option value="" disabled selected>Seleccionar...</option>
+                  <option value="Joyas">Joyas</option>
+                  <option value="Atrapasoles">Atrapasoles</option>
+                  <option value="Lámparas y Faroles">Lámparas y Faroles</option>
+                  <option value="Ventanas">Ventanas</option>
+                  <option value="Espejos">Espejos</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="productSubcategory">Subcategoría</label>
+                <select id="productSubcategory">
+                  <option value="">Sin subcategoría</option>
+                  <option value="Aros">Aros</option>
+                  <option value="Collares">Collares</option>
+                  <option value="Atrapasol">Atrapasol</option>
+                  <option value="Lámpara Tiffany">Lámpara Tiffany</option>
+                  <option value="Farol">Farol</option>
+                  <option value="Vitral">Vitral</option>
+                  <option value="Panel">Panel</option>
+                  <option value="Ventana">Ventana</option>
+                  <option value="Espejo">Espejo</option>
+                </select>
+              </div>
             </div>
 
             <div class="field">
-              <label for="productCategory">Categoría</label>
-              <select id="productCategory" required>
-                <option value="">Seleccionar categoría</option>
-                <option value="Joyas - Aros">Joyas · Aros</option>
-                <option value="Joyas - Colgantes">Joyas · Colgantes</option>
-                <option value="Decorativo">Decorativo</option>
-                <option value="Suncatchers">Suncatchers</option>
-                <option value="Ventanas">Ventanas</option>
-                <option value="Pantalla de Lámparas">Pantalla de Lámparas</option>
-                <option value="Espejos">Espejos</option>
-                <option value="Lámparas">Lámparas</option>
-                <option value="Paneles">Paneles</option>
-              </select>
+              <label for="productImage">URL de Imagen</label>
+              <input type="text" id="productImage" placeholder="assets/images/collection/nombre-obra.webp">
+              <div class="img-preview" id="imgPreview">
+                <div class="ph"><i class="fas fa-image"></i>Vista previa de imagen</div>
+              </div>
             </div>
 
             <div class="field">
-              <label for="productPrice">Precio</label>
-              <input id="productPrice" type="number" min="0" step="1000" placeholder="Ej: 120000" required>
+              <label for="productDescription">Descripción artística *</label>
+              <textarea id="productDescription" placeholder="Describe la pieza: técnica, colores, inspiración, cómo captura la luz..." required></textarea>
             </div>
 
+            <!-- Stock toggle -->
             <div class="field">
-              <label for="productImage">URL de la Imagen</label>
-              <input id="productImage" type="text" placeholder="assets/images/collection/obra_luna_hada.jpeg" required>
+              <label>Estado de stock</label>
+              <label class="stock-field" for="productInStock">
+                <input type="checkbox" id="productInStock" checked>
+                <div>
+                  <div class="stock-label" id="stockLabelText">✓ En stock — disponible para compra</div>
+                  <div class="stock-desc">Activa o desactiva sin eliminar la obra del catálogo</div>
+                </div>
+              </label>
             </div>
 
+            <!-- Featured toggle -->
             <div class="field">
-              <label for="productDescription">Descripción Poética</label>
-              <textarea id="productDescription" placeholder="Describe la luz, el material y el uso de la pieza." required></textarea>
+              <label>Destacar en Tienda</label>
+              <label class="stock-field" for="productFeatured">
+                <input type="checkbox" id="productFeatured">
+                <div>
+                  <div class="stock-label" id="featuredLabelText">☆ No destacada</div>
+                  <div class="stock-desc">Las obras destacadas aparecen en la sección Tienda del inicio</div>
+                </div>
+              </label>
             </div>
 
             <div class="form-actions">
-              <button class="primary-button" id="submitButton" type="submit">Guardar obra</button>
-              <button class="ghost-button" id="resetButton" type="button">Limpiar</button>
+              <button class="btn-primary" type="submit" id="submitButton">
+                <i class="fas fa-save"></i> Guardar obra
+              </button>
+              <button class="btn-secondary" type="button" id="resetButton">
+                <i class="fas fa-times"></i> Cancelar
+              </button>
             </div>
           </form>
-        </article>
+        </div>
 
-        <article class="panel">
+        <!-- ── INVENTORY PANEL ── -->
+        <div class="panel">
           <div class="panel-head">
-            <h2>Inventario actual</h2>
-            <p>Estas obras alimentan automáticamente la grilla de catalogo.html.</p>
+            <div>
+              <h2>Inventario actual</h2>
+              <p>Todas las obras del catálogo. Edita, activa stock o elimina cualquier pieza.</p>
+            </div>
+            <div class="panel-icon"><i class="fas fa-layer-group"></i></div>
           </div>
 
-          <div class="inventory-tools">
-            <input id="inventorySearch" type="search" placeholder="Buscar por nombre, categoría o descripción">
+          <div class="inv-tools">
+            <input type="search" class="inv-search" id="inventorySearch" placeholder="Buscar por nombre, categoría...">
+            <select class="inv-cat-filter" id="invCatFilter">
+              <option value="all">Todas las categorías</option>
+              <option value="Joyas">Joyas</option>
+              <option value="Atrapasoles">Atrapasoles</option>
+              <option value="Lámparas y Faroles">Lámparas y Faroles</option>
+              <option value="Ventanas">Ventanas</option>
+              <option value="Espejos">Espejos</option>
+            </select>
             <span class="count-pill" id="productCount">0 obras</span>
-            <button class="danger-button" id="restoreSeedButton" type="button">Restaurar base</button>
+            <button class="danger-btn" id="restoreSeedButton" type="button">
+              <i class="fas fa-redo" style="margin-right:4px;"></i>Restaurar base
+            </button>
           </div>
 
           <div class="table-wrap">
@@ -751,6 +655,7 @@
                   <th>Imagen</th>
                   <th>Obra</th>
                   <th>Categoría</th>
+                  <th>Stock</th>
                   <th>Precio</th>
                   <th>Acciones</th>
                 </tr>
@@ -758,247 +663,309 @@
               <tbody id="inventoryBody"></tbody>
             </table>
           </div>
-        </article>
-      </section>
+        </div>
+
+      </div>
     </main>
   </div>
 
   <div class="toast" id="toast"></div>
 
   <script>
-    const ADMIN_PASS = 'vitrales2026';
-    const STORAGE_PRODUCTS = 'vitralesCatalogProducts';
-    const AUTH_KEY = 'admin_authenticated';
-    const isAdminAuthenticated = sessionStorage.getItem(AUTH_KEY) === 'true';
+  (function() {
+    /* ═══════════════════════════════════════
+       ADMIN PANEL LOGIC — v2
+    ═══════════════════════════════════════ */
+    const ADMIN_PASS        = 'vitrales2026';
+    const STORAGE_PRODUCTS  = 'vitralesCatalogProducts';
+    const STORAGE_VERSION   = 'vitralesInventoryVersion';
+    const AUTH_KEY          = 'admin_authenticated';
 
-    const seedProducts = [
-      { id: 'p-luna-hada', name: 'Luna del Valle', category: 'Suncatchers', price: 180000, image: 'assets/images/collection/obra_luna_hada.jpeg', description: 'Hada de vitral suspendida sobre luna creciente, con vidrios blancos, ámbar y turquesa que capturan la luz del jardín.' },
-      { id: 'p-geometria-azul', name: 'Geometría Azul', category: 'Decorativo', price: 200000, image: 'assets/images/collection/obra_escultura_azul.jpeg', description: 'Escultura tridimensional de vidrio azul con planos geométricos y texturas translúcidas para repisas o mesas de luz.' },
-      { id: 'p-companero-lunar', name: 'Compañero Lunar', category: 'Suncatchers', price: 165000, image: 'assets/images/collection/obra_perro_luna.jpeg', description: 'Perrito en luna púrpura, trabajado con cobre y vidrios cálidos para una presencia tierna y protectora en ventana.' },
-      { id: 'p-esfera-iridiscente', name: 'Esfera Iridiscente', category: 'Decorativo', price: 195000, image: 'assets/images/collection/obra_esfera_iridiscente.jpeg', description: 'Pieza esférica facetada con vidrios humo, transparentes e iridiscentes montados sobre base de vidrio.' },
-      { id: 'p-aros-hoja', name: 'Aros Hoja de Bosque', category: 'Joyas - Aros', price: 85000, image: 'assets/images/collection/obra_aros_hoja_verde.jpeg', description: 'Aros de vidrio fusionado en verdes profundos con brillo orgánico inspirado en hojas húmedas del Cajón.' },
-      { id: 'p-arco-solar', name: 'Colgante Arco Solar', category: 'Joyas - Colgantes', price: 90000, image: 'assets/images/collection/obra_colgante_arco_solar.jpeg', description: 'Colgante pequeño en amarillo, verde y rojo con composición circular luminosa y acento artesanal.' },
-      { id: 'p-aros-media-luna', name: 'Aros Media Luna', category: 'Joyas - Aros', price: 88000, image: 'assets/images/collection/obra_aros_media_luna.jpeg', description: 'Aros curvos en amarillo intenso y vino profundo, pulidos para reflejar destellos cálidos al movimiento.' },
-      { id: 'p-aros-agua', name: 'Aros Agua Azul', category: 'Joyas - Aros', price: 92000, image: 'assets/images/collection/obra_aros_azules.jpeg', description: 'Par de aros en azules transparentes con centro claro, evocando pozones cordilleranos bajo el sol.' },
-      { id: 'p-aros-triangulo', name: 'Aros Triángulo de Luz', category: 'Joyas - Aros', price: 95000, image: 'assets/images/collection/obra_aros_triangulo_luz.jpeg', description: 'Aros triangulares con rojo, blanco y verde en una composición gráfica de alto contraste.' },
-      { id: 'p-aros-brasa', name: 'Aros Brasa Roja', category: 'Joyas - Aros', price: 98000, image: 'assets/images/collection/obra_aros_rojos.jpeg', description: 'Aros rojos de vidrio brillante con detalle plateado, intensos y contemporáneos.' },
-      { id: 'p-hoja-andina', name: 'Colgante Hoja Andina', category: 'Joyas - Colgantes', price: 89000, image: 'assets/images/collection/obra_colgante_hoja.jpeg', description: 'Colgante tipo hoja en verdes translúcidos, con veta luminosa y cordón negro ajustable.' },
-      { id: 'p-bosque-ambar', name: 'Colgante Bosque Ámbar', category: 'Joyas - Colgantes', price: 96000, image: 'assets/images/collection/obra_colgante_verde_ambar.jpeg', description: 'Colgante orgánico en verde y ámbar que proyecta sombras cálidas sobre madera natural.' },
-      { id: 'p-granate-prisma', name: 'Colgante Granate Prisma', category: 'Joyas - Colgantes', price: 110000, image: 'assets/images/collection/obra_colgante_granate.jpeg', description: 'Composición prismática en granates e iridiscencias, con transparencias profundas y borde artesanal.' },
-      { id: 'p-circulo-agua', name: 'Colgante Círculo de Agua', category: 'Joyas - Colgantes', price: 85000, image: 'assets/images/collection/obra_colgante_circulo_agua.jpeg', description: 'Medallón circular celeste con burbujas internas, simple y luminoso como una gota suspendida.' },
-      { id: 'p-cactus', name: 'Dúo Cactus del Cajón', category: 'Decorativo', price: 145000, image: 'assets/images/collection/obra_cactus_duo.jpeg', description: 'Dos cactus decorativos de vitral verde, ideales para escritorio, repisa o rincón de plantas.' },
-      { id: 'p-mariposa', name: 'Mariposa Solar', category: 'Suncatchers', price: 175000, image: 'assets/images/collection/obra_mariposa_sol.jpeg', description: 'Mariposa de ventana en naranjo y amarillo, pensada para teñir el espacio con luz cálida.' },
-      { id: 'p-gato-luna', name: 'Gato Luna Cobriza', category: 'Decorativo', price: 170000, image: 'assets/images/collection/obra_gato_luna.jpeg', description: 'Gato de vitral abrazado por una luna cobriza, pieza expresiva con carácter doméstico y poético.' }
-    ];
+    const isAuth = sessionStorage.getItem(AUTH_KEY) === 'true';
+    const seedProducts = window.VITRALES_PRODUCTS || [];
+    const inventoryVersion = window.VITRALES_INVENTORY_VERSION || 'v1';
 
-    const $ = (selector) => document.querySelector(selector);
-    const formatPrice = (value) => '$' + Number(value || 0).toLocaleString('es-CL');
-    const escapeHTML = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#039;'
-    }[char]));
+    // Sync seed on version change
+    if (localStorage.getItem(STORAGE_VERSION) !== inventoryVersion || !localStorage.getItem(STORAGE_PRODUCTS)) {
+      localStorage.setItem(STORAGE_PRODUCTS, JSON.stringify(seedProducts));
+      localStorage.setItem(STORAGE_VERSION, inventoryVersion);
+    }
+
+    /* Helpers */
+    const $ = id => document.getElementById(id);
     const getProducts = () => JSON.parse(localStorage.getItem(STORAGE_PRODUCTS) || '[]');
-    const saveProducts = (products) => localStorage.setItem(STORAGE_PRODUCTS, JSON.stringify(products));
+    const saveProducts = p => localStorage.setItem(STORAGE_PRODUCTS, JSON.stringify(p));
+    const fmt = v => '$' + Number(v || 0).toLocaleString('es-CL');
+    const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+    const slugify = v => v.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'obra';
 
-    if (!localStorage.getItem(STORAGE_PRODUCTS)) {
-      saveProducts(seedProducts);
+    /* Toast */
+    let toastTimer;
+    function showToast(msg, type='') {
+      const t = $('toast');
+      t.textContent = msg;
+      t.className = 'toast show' + (type ? ' '+type : '');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
     }
 
-    const loginOverlay = $('#loginOverlay');
-    const adminShell = $('#adminShell');
-    const loginForm = $('#loginForm');
-    const loginError = $('#loginError');
-    const passwordInput = $('#passwordInput');
-    const logoutButton = $('#logoutButton');
-    const productForm = $('#productForm');
-    const formTitle = $('#formTitle');
-    const submitButton = $('#submitButton');
-    const inventoryBody = $('#inventoryBody');
-    const inventorySearch = $('#inventorySearch');
-    const productCount = $('#productCount');
-    const toast = $('#toast');
-
-    const fields = {
-      id: $('#productId'),
-      name: $('#productName'),
-      category: $('#productCategory'),
-      price: $('#productPrice'),
-      image: $('#productImage'),
-      description: $('#productDescription')
-    };
-
-    function unlock() {
-      if (!isAdminAuthenticated) return;
-      loginOverlay.style.display = 'none';
-      adminShell.classList.add('unlocked');
-      renderInventory();
+    /* Stats */
+    function updateStats() {
+      const prods = getProducts();
+      $('statTotal').textContent    = prods.length;
+      $('statInStock').textContent  = prods.filter(p => p.inStock !== false).length;
+      $('statOutStock').textContent = prods.filter(p => p.inStock === false).length;
+      $('statFeatured').textContent = prods.filter(p => p.featured).length;
+      $('statCats').textContent     = new Set(prods.map(p => p.category)).size;
     }
 
-    function showToast(message) {
-      toast.textContent = message;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2200);
-    }
-
-    function slugify(value) {
-      return value
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '') || 'obra';
-    }
-
-    function resetForm() {
-      productForm.reset();
-      fields.id.value = '';
-      formTitle.textContent = 'Agregar obra';
-      submitButton.textContent = 'Guardar obra';
-    }
-
-    function productFromForm() {
-      const id = fields.id.value || `${slugify(fields.name.value)}-${Date.now()}`;
-      return {
-        id,
-        name: fields.name.value.trim(),
-        category: fields.category.value,
-        price: Number(fields.price.value),
-        image: fields.image.value.trim(),
-        description: fields.description.value.trim()
-      };
-    }
-
+    /* Inventory render */
     function renderInventory() {
-      const term = inventorySearch.value.trim().toLowerCase();
+      const term = $('inventorySearch').value.trim().toLowerCase();
+      const catFilter = $('invCatFilter').value;
       const products = getProducts();
-      const filtered = products.filter((product) => {
-        const haystack = `${product.name} ${product.category} ${product.description}`.toLowerCase();
-        return !term || haystack.includes(term);
+      const filtered = products.filter(p => {
+        const hay = `${p.name} ${p.category} ${p.description}`.toLowerCase();
+        const matchSearch = !term || hay.includes(term);
+        const matchCat = catFilter === 'all' || p.category === catFilter;
+        return matchSearch && matchCat;
       });
 
-      productCount.textContent = `${products.length} ${products.length === 1 ? 'obra' : 'obras'}`;
+      $('productCount').textContent = `${products.length} obra${products.length!==1?'s':''}`;
+      updateStats();
 
+      const tbody = $('inventoryBody');
       if (!filtered.length) {
-        inventoryBody.innerHTML = '<tr><td class="empty-row" colspan="5">No hay obras que coincidan con esta búsqueda.</td></tr>';
+        tbody.innerHTML = `<tr><td class="empty-row" colspan="6">No hay obras que coincidan.</td></tr>`;
         return;
       }
 
-      inventoryBody.innerHTML = filtered.map((product) => `
-        <tr>
-          <td><img class="thumb" src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}" loading="lazy"></td>
-          <td>
-            <div class="item-name">${escapeHTML(product.name)}</div>
-            <div class="item-description">${escapeHTML(product.description)}</div>
-          </td>
-          <td><span class="category-chip">${escapeHTML(product.category)}</span></td>
-          <td><strong>${formatPrice(product.price)}</strong></td>
-          <td>
-            <div class="row-actions">
-              <button class="icon-action" type="button" data-edit="${escapeHTML(product.id)}" aria-label="Editar ${escapeHTML(product.name)}">
-                <i class="fas fa-pen"></i>
-              </button>
-              <button class="icon-action delete" type="button" data-delete="${escapeHTML(product.id)}" aria-label="Eliminar ${escapeHTML(product.name)}">
-                <i class="fas fa-trash"></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = filtered.map(p => {
+        const inStock = p.inStock !== false;
+        return `
+          <tr>
+            <td><img class="thumb" src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" onerror="this.src=''"></td>
+            <td>
+              <div class="item-name">${esc(p.name)}${p.featured ? ' <span style="color:var(--amber);font-size:0.65rem;">★</span>' : ''}</div>
+              <div class="item-desc">${esc(p.description)}</div>
+            </td>
+            <td>
+              <span class="cat-chip">${esc(p.category)}</span>
+              ${p.subcategory ? `<br><span style="font-size:0.62rem;color:var(--muted);margin-top:4px;display:inline-block;">${esc(p.subcategory)}</span>` : ''}
+            </td>
+            <td>
+              <span class="stock-pill ${inStock ? 'in' : 'out'}">
+                ${inStock ? 'En stock' : 'Sin stock'}
+              </span>
+            </td>
+            <td><strong style="font-size:0.82rem;">${fmt(p.price)}</strong></td>
+            <td>
+              <div class="row-actions">
+                <button class="icon-action" type="button" data-edit="${esc(p.id)}" title="Editar">
+                  <i class="fas fa-pen"></i>
+                </button>
+                <button class="icon-action stock-toggle-btn" type="button" data-stock="${esc(p.id)}" data-current="${inStock}" title="${inStock ? 'Marcar sin stock' : 'Marcar en stock'}">
+                  <i class="fas fa-${inStock ? 'toggle-on' : 'toggle-off'}"></i>
+                </button>
+                <button class="icon-action del" type="button" data-delete="${esc(p.id)}" title="Eliminar">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>`;
+      }).join('');
     }
 
-    function editProduct(productId) {
-      const product = getProducts().find((item) => item.id === productId);
-      if (!product) return;
-
-      fields.id.value = product.id;
-      fields.name.value = product.name;
-      fields.category.value = product.category;
-      fields.price.value = product.price;
-      fields.image.value = product.image;
-      fields.description.value = product.description;
-      formTitle.textContent = 'Editar obra';
-      submitButton.textContent = 'Actualizar obra';
-      productForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    /* Form helpers */
+    function resetForm() {
+      $('productForm').reset();
+      $('productId').value = '';
+      $('productInStock').checked = true;
+      $('productFeatured').checked = false;
+      updateStockLabel();
+      updateFeaturedLabel();
+      updateImgPreview();
+      $('formTitle').textContent = 'Agregar obra';
+      $('formSubtitle').textContent = 'Completa los campos para agregar una nueva pieza al catálogo.';
+      $('submitButton').innerHTML = '<i class="fas fa-save"></i> Guardar obra';
     }
 
-    function deleteProduct(productId) {
-      const product = getProducts().find((item) => item.id === productId);
-      if (!product) return;
-      const confirmed = window.confirm(`¿Eliminar "${product.name}" del catálogo?`);
-      if (!confirmed) return;
+    function updateStockLabel() {
+      const on = $('productInStock').checked;
+      $('stockLabelText').textContent = on ? '✓ En stock — disponible para compra' : '✗ Sin stock — visible pero no comprable';
+      $('stockLabelText').style.color = on ? 'var(--green)' : 'var(--red)';
+    }
 
-      saveProducts(getProducts().filter((item) => item.id !== productId));
+    function updateFeaturedLabel() {
+      const on = $('productFeatured').checked;
+      $('featuredLabelText').textContent = on ? '★ Destacada — aparece en la Tienda del inicio' : '☆ No destacada';
+      $('featuredLabelText').style.color = on ? 'var(--amber)' : 'var(--muted)';
+    }
+
+    function updateImgPreview() {
+      const url = $('productImage').value.trim();
+      const preview = $('imgPreview');
+      const existing = preview.querySelector('img');
+      if (existing) existing.remove();
+      if (url) {
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = 'Preview';
+        img.onerror = () => img.remove();
+        preview.appendChild(img);
+      }
+    }
+
+    function productFromForm() {
+      const name = $('productName').value.trim();
+      const id = $('productId').value || `${slugify(name)}-${Date.now()}`;
+      return {
+        id,
+        name,
+        category: $('productCategory').value,
+        subcategory: $('productSubcategory').value,
+        price: Number($('productPrice').value),
+        image: $('productImage').value.trim(),
+        description: $('productDescription').value.trim(),
+        inStock: $('productInStock').checked,
+        featured: $('productFeatured').checked
+      };
+    }
+
+    function editProduct(id) {
+      const p = getProducts().find(x => x.id === id);
+      if (!p) return;
+      $('productId').value = p.id;
+      $('productName').value = p.name;
+      $('productCategory').value = p.category;
+      $('productSubcategory').value = p.subcategory || '';
+      $('productPrice').value = p.price;
+      $('productImage').value = p.image;
+      $('productDescription').value = p.description;
+      $('productInStock').checked = p.inStock !== false;
+      $('productFeatured').checked = !!p.featured;
+      updateStockLabel();
+      updateFeaturedLabel();
+      updateImgPreview();
+      $('formTitle').textContent = 'Editar obra';
+      $('formSubtitle').textContent = `Modificando: ${p.name}`;
+      $('submitButton').innerHTML = '<i class="fas fa-check"></i> Actualizar obra';
+      $('formPanel').scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+
+    function toggleStock(id, currentlyInStock) {
+      const products = getProducts();
+      const idx = products.findIndex(p => p.id === id);
+      if (idx < 0) return;
+      const newStock = !currentlyInStock;
+      products[idx].inStock = newStock;
+      saveProducts(products);
+      renderInventory();
+      showToast(
+        newStock ? `"${products[idx].name}" marcada como EN STOCK` : `"${products[idx].name}" marcada SIN STOCK`,
+        newStock ? 'success' : ''
+      );
+    }
+
+    function deleteProduct(id) {
+      const products = getProducts();
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+      if (!window.confirm(`¿Eliminar "${p.name}" del catálogo? Esta acción no se puede deshacer.`)) return;
+      saveProducts(products.filter(x => x.id !== id));
       renderInventory();
       resetForm();
       showToast('Obra eliminada del catálogo');
     }
 
-    loginForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      if (passwordInput.value === ADMIN_PASS) {
+    /* Login */
+    $('loginForm').addEventListener('submit', e => {
+      e.preventDefault();
+      if ($('passwordInput').value === ADMIN_PASS) {
         sessionStorage.setItem(AUTH_KEY, 'true');
         location.reload();
       } else {
-        loginError.textContent = 'Contraseña incorrecta.';
-        passwordInput.select();
+        $('loginError').textContent = 'Contraseña incorrecta. Inténtalo de nuevo.';
+        $('passwordInput').select();
       }
     });
 
-    logoutButton.addEventListener('click', () => {
+    /* Logout */
+    $('logoutButton').addEventListener('click', () => {
       sessionStorage.removeItem(AUTH_KEY);
       window.location.href = 'index.html';
     });
 
-    productForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const product = productFromForm();
-      const products = getProducts();
-      const existingIndex = products.findIndex((item) => item.id === product.id);
-
-      if (existingIndex >= 0) {
-        products[existingIndex] = product;
-        showToast('Obra actualizada');
-      } else {
-        products.unshift(product);
-        showToast('Obra agregada al catálogo');
+    /* Form submit */
+    $('productForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const p = productFromForm();
+      if (!p.name || !p.category || !p.price) {
+        showToast('Nombre, categoría y precio son obligatorios', 'error');
+        return;
       }
-
+      const products = getProducts();
+      const idx = products.findIndex(x => x.id === p.id);
+      if (idx >= 0) {
+        products[idx] = p;
+        showToast(`"${p.name}" actualizada`, 'success');
+      } else {
+        products.unshift(p);
+        showToast(`"${p.name}" agregada al catálogo`, 'success');
+      }
       saveProducts(products);
       renderInventory();
       resetForm();
     });
 
-    $('#resetButton').addEventListener('click', resetForm);
-    inventorySearch.addEventListener('input', renderInventory);
+    /* Reset form */
+    $('resetButton').addEventListener('click', resetForm);
 
-    inventoryBody.addEventListener('click', (event) => {
-      const editButton = event.target.closest('[data-edit]');
-      const deleteButton = event.target.closest('[data-delete]');
-      if (editButton) editProduct(editButton.dataset.edit);
-      if (deleteButton) deleteProduct(deleteButton.dataset.delete);
+    /* Image preview */
+    $('productImage').addEventListener('input', updateImgPreview);
+
+    /* Stock label live update */
+    $('productInStock').addEventListener('change', updateStockLabel);
+    $('productFeatured').addEventListener('change', updateFeaturedLabel);
+
+    /* Search & filter */
+    $('inventorySearch').addEventListener('input', renderInventory);
+    $('invCatFilter').addEventListener('change', renderInventory);
+
+    /* Table actions */
+    $('inventoryBody').addEventListener('click', e => {
+      const editBtn  = e.target.closest('[data-edit]');
+      const delBtn   = e.target.closest('[data-delete]');
+      const stockBtn = e.target.closest('[data-stock]');
+      if (editBtn)  editProduct(editBtn.dataset.edit);
+      if (delBtn)   deleteProduct(delBtn.dataset.delete);
+      if (stockBtn) toggleStock(stockBtn.dataset.stock, stockBtn.dataset.current === 'true');
     });
 
-    $('#restoreSeedButton').addEventListener('click', () => {
-      const confirmed = window.confirm('¿Restaurar la base inicial de obras? Esto reemplaza el inventario actual.');
-      if (!confirmed) return;
+    /* Restore seed */
+    $('restoreSeedButton').addEventListener('click', () => {
+      if (!window.confirm('¿Restaurar el catálogo original? Esto reemplazará todos los cambios actuales.')) return;
       saveProducts(seedProducts);
+      localStorage.setItem(STORAGE_VERSION, inventoryVersion);
       renderInventory();
       resetForm();
-      showToast('Base inicial restaurada');
+      showToast('Catálogo restaurado a la base original', 'success');
     });
 
-    window.addEventListener('storage', (event) => {
-      if (event.key === STORAGE_PRODUCTS) renderInventory();
+    /* Storage sync */
+    window.addEventListener('storage', e => {
+      if (e.key === STORAGE_PRODUCTS) renderInventory();
     });
 
-    if (isAdminAuthenticated) {
-      unlock();
+    /* Init */
+    if (isAuth) {
+      updateStockLabel();
+      updateFeaturedLabel();
+      renderInventory();
     } else {
-      passwordInput.focus();
+      $('passwordInput').focus();
     }
+  })();
   </script>
 </body>
 </html>

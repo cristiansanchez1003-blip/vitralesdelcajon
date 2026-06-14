@@ -1,426 +1,313 @@
-﻿/* ============================================
-   VITRALES EN EL CAJÓN — Interactive Engine
-   ============================================ */
+/* ============================================================
+   VITRALES DEL CAJÓN — Interactive Engine v2
+   index.html only (catalogo & admin have their own scripts)
+   ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const WHATSAPP_PHONE = '56999977550';
-  const whatsappLink = (message) => `https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${encodeURIComponent(message)}`;
-  const STORAGE_CHECKOUT_CART = 'vitralesCheckoutCart';
+  const WHATSAPP_PHONE    = '56999977550';
+  const STORAGE_CHECKOUT  = 'vitralesCheckoutCart';
+  const whatsappLink = (msg) => `https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${encodeURIComponent(msg)}`;
 
-  // Mobile performance: defer non-critical images and decode them asynchronously.
-  document.querySelectorAll('img').forEach((img) => {
-    if (!img.closest('.hero, .preloader') && !img.hasAttribute('loading')) {
-      img.setAttribute('loading', 'lazy');
-    }
-    if (!img.hasAttribute('decoding')) {
-      img.setAttribute('decoding', 'async');
-    }
+  // Lazy loading for non-hero images
+  document.querySelectorAll('img').forEach(img => {
+    if (!img.closest('.hero, .preloader') && !img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
+    if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
   });
 
-  // Hero carousel
-  const heroSlides = document.querySelectorAll('.carousel-slide');
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (heroSlides.length > 1 && !prefersReducedMotion) {
-    let activeHeroSlide = 0;
+  // ── Preloader ──────────────────────────────
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        preloader.classList.add('hidden');
+        setTimeout(() => preloader.remove(), 600);
+      }, 800);
+    });
+    setTimeout(() => {
+      if (preloader && !preloader.classList.contains('hidden')) preloader.classList.add('hidden');
+    }, 3000);
+  }
 
+  // ── Hero Carousel ──────────────────────────
+  const heroSlides = document.querySelectorAll('.carousel-slide');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (heroSlides.length > 1 && !prefersReduced) {
+    let active = 0;
     setInterval(() => {
-      heroSlides[activeHeroSlide].classList.remove('active');
-      activeHeroSlide = (activeHeroSlide + 1) % heroSlides.length;
-      heroSlides[activeHeroSlide].classList.add('active');
+      heroSlides[active].classList.remove('active');
+      active = (active + 1) % heroSlides.length;
+      heroSlides[active].classList.add('active');
     }, 5000);
   }
 
-  // ── Preloader ──────────────────────────────────────
-  const preloader = document.getElementById('preloader');
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      preloader.classList.add('hidden');
-      setTimeout(() => preloader.remove(), 600);
-    }, 800);
-  });
-
-  // Fallback: hide preloader after 3s max
-  setTimeout(() => {
-    if (preloader && !preloader.classList.contains('hidden')) {
-      preloader.classList.add('hidden');
-    }
-  }, 3000);
-
-
-  // ── Navbar Scroll Effect ───────────────────────────
+  // ── Navbar Scroll ──────────────────────────
   const navbar = document.getElementById('navbar');
-  let lastScroll = 0;
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+  }
 
-  window.addEventListener('scroll', () => {
-    const currentScroll = window.scrollY;
-    if (currentScroll > 60) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
-    lastScroll = currentScroll;
-  }, { passive: true });
-
-
-  // ── Mobile Navigation Toggle ───────────────────────
+  // ── Mobile Nav Toggle ──────────────────────
   const navToggle = document.getElementById('navToggle');
-  const navLinks = document.getElementById('navLinks');
-
-  if (navToggle) {
+  const navLinks  = document.getElementById('navLinks');
+  if (navToggle && navLinks) {
     navToggle.addEventListener('click', () => {
-      navToggle.classList.toggle('active');
       navLinks.classList.toggle('open');
+      navToggle.classList.toggle('active');
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('active');
+      });
     });
   }
 
-  // Close mobile nav on link click
-  navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      if (navToggle) navToggle.classList.remove('active');
-      navLinks.classList.remove('open');
-    });
-  });
-
-
-  // ── Active Nav Link Highlight ──────────────────────
+  // ── Active Nav Link ─────────────────────────
   const sections = document.querySelectorAll('section[id]');
-  const navLinksList = navLinks.querySelectorAll('a');
-
-  const observerOptions = {
-    root: null,
-    rootMargin: '-40% 0px -40% 0px',
-    threshold: 0
-  };
-
-  const sectionObserver = new IntersectionObserver((entries) => {
+  const navItems = navLinks ? navLinks.querySelectorAll('a') : [];
+  const sectionObs = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const id = entry.target.id;
-        navLinksList.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === `#${id}`) {
-            link.classList.add('active');
-          }
+        navItems.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
         });
       }
     });
-  }, observerOptions);
+  }, { rootMargin: '-40% 0px -40% 0px' });
+  sections.forEach(s => sectionObs.observe(s));
 
-  sections.forEach(section => sectionObserver.observe(section));
-
-
-  // ── Scroll Reveal Animations ───────────────────────
-  const revealElements = document.querySelectorAll('.reveal');
-
-  const revealObserver = new IntersectionObserver((entries) => {
+  // ── Scroll Reveal ──────────────────────────
+  const revealObs = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-        revealObserver.unobserve(entry.target);
+        revealObs.unobserve(entry.target);
       }
     });
-  }, {
-    root: null,
-    rootMargin: '0px 0px -80px 0px',
-    threshold: 0.1
-  });
+  }, { rootMargin: '0px 0px -60px 0px', threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
-  revealElements.forEach(el => revealObserver.observe(el));
+  // ── Toast ──────────────────────────────────
+  const toast      = document.getElementById('toast');
+  const toastMsg   = document.getElementById('toastMessage');
+  let toastTimer;
+  function showToast(msg) {
+    if (!toast || !toastMsg) return;
+    toastMsg.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+  }
 
+  // ── Cart System (index.html) ─────────────────
+  const STORAGE_CART = 'vitralesCatalogCart';
+  const getCart  = () => JSON.parse(localStorage.getItem(STORAGE_CART) || '[]');
+  const saveCart = c  => localStorage.setItem(STORAGE_CART, JSON.stringify(c));
+  const getStoredProducts = () => JSON.parse(localStorage.getItem('vitralesCatalogProducts') || '[]');
 
-  // ── Product Filter Tabs ────────────────────────────
-  const filterTabs = document.querySelectorAll('.filter-tab');
-  const productCards = document.querySelectorAll('.product-card');
-  const filterEmpty = document.getElementById('filterEmpty');
-
-  filterTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      // Update active tab
-      filterTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-
-      const filter = tab.dataset.filter;
-      let visibleCount = 0;
-
-      productCards.forEach((card, index) => {
-        const category = card.dataset.category;
-        const subcategory = card.dataset.subcategory;
-
-        if (filter === 'all' || category === filter || subcategory === filter) {
-          card.style.display = '';
-          card.style.animation = `fadeUp 0.5s ${visibleCount * 0.06}s var(--ease-out) both`;
-          visibleCount += 1;
-        } else {
-          card.style.display = 'none';
-        }
-      });
-
-      if (filterEmpty) {
-        filterEmpty.hidden = visibleCount > 0;
-      }
-    });
-  });
-
-
-  // ── Cart System ────────────────────────────────────
-  const cart = [];
-  const cartToggle = document.getElementById('cartToggle');
+  const cartToggle  = document.getElementById('cartToggle');
   const cartOverlay = document.getElementById('cartOverlay');
-  const cartDrawer = document.getElementById('cartDrawer');
-  const cartClose = document.getElementById('cartClose');
-  const cartBadge = document.getElementById('cartBadge');
-  const cartItemsContainer = document.getElementById('cartItems');
-  const cartEmpty = document.getElementById('cartEmpty');
-  const cartFooter = document.getElementById('cartFooter');
-  const cartTotal = document.getElementById('cartTotal');
+  const cartDrawer  = document.getElementById('cartDrawer');
+  const cartClose   = document.getElementById('cartClose');
+  const cartBadge   = document.getElementById('cartBadge');
+  const cartItems   = document.getElementById('cartItems');
+  const cartEmpty   = document.getElementById('cartEmpty');
+  const cartFooter  = document.getElementById('cartFooter');
+  const cartTotal   = document.getElementById('cartTotal');
 
-  // Product data
-  const products = {
-    'product-1': { name: 'Amanecer Andino', price: 385000, category: 'Pantalla de Lámparas', image: 'assets/images/tiffany_lamp.png' },
-    'product-2': { name: 'Colibrí del Valle', price: 68000, category: 'Suncatcher', image: 'assets/images/suncatcher.png' },
-    'product-3': { name: 'Geometría Sagrada', price: 720000, category: 'Ventanas', image: 'assets/images/window_panel.png' },
-    'product-4': { name: 'Flor de Cordillera', price: 55000, category: 'Suncatcher', image: 'assets/images/suncatcher.png' },
-    'product-5': { name: 'Crepúsculo Azul', price: 310000, category: 'Pantalla de Lámparas', image: 'assets/images/tiffany_lamp.png' },
-    'product-6': { name: 'Mandala Chakana', price: 195000, category: 'Ventanas', image: 'assets/images/window_panel.png' },
-    'product-7': { name: 'Luna del Valle', price: 180000, category: 'Suncatcher', image: 'assets/images/collection/obra_luna_hada.jpeg' },
-    'product-8': { name: 'Geometría Azul', price: 200000, category: 'Decorativo', image: 'assets/images/collection/obra_escultura_azul.jpeg' },
-    'product-9': { name: 'Compañero Lunar', price: 165000, category: 'Suncatcher', image: 'assets/images/collection/obra_perro_luna.jpeg' },
-    'product-10': { name: 'Esfera Iridiscente', price: 195000, category: 'Decorativo', image: 'assets/images/collection/obra_esfera_iridiscente.jpeg' },
-    'product-11': { name: 'Aros Hoja de Bosque', price: 85000, category: 'Joyas - Aros', image: 'assets/images/collection/obra_aros_hoja_verde.jpeg' },
-    'product-12': { name: 'Colgante Arco Solar', price: 90000, category: 'Joyas - Colgantes', image: 'assets/images/collection/obra_colgante_arco_solar.jpeg' },
-    'product-13': { name: 'Aros Media Luna', price: 88000, category: 'Joyas - Aros', image: 'assets/images/collection/obra_aros_media_luna.jpeg' },
-    'product-14': { name: 'Aros Agua Azul', price: 92000, category: 'Joyas - Aros', image: 'assets/images/collection/obra_aros_azules.jpeg' },
-    'product-15': { name: 'Aros Triángulo de Luz', price: 95000, category: 'Joyas - Aros', image: 'assets/images/collection/obra_aros_triangulo_luz.jpeg' },
-    'product-16': { name: 'Aros Brasa Roja', price: 98000, category: 'Joyas - Aros', image: 'assets/images/collection/obra_aros_rojos.jpeg' },
-    'product-17': { name: 'Colgante Hoja Andina', price: 89000, category: 'Joyas - Colgantes', image: 'assets/images/collection/obra_colgante_hoja.jpeg' },
-    'product-18': { name: 'Colgante Bosque Ámbar', price: 96000, category: 'Joyas - Colgantes', image: 'assets/images/collection/obra_colgante_verde_ambar.jpeg' },
-    'product-19': { name: 'Colgante Granate Prisma', price: 110000, category: 'Joyas - Colgantes', image: 'assets/images/collection/obra_colgante_granate.jpeg' },
-    'product-20': { name: 'Colgante Círculo de Agua', price: 85000, category: 'Joyas - Colgantes', image: 'assets/images/collection/obra_colgante_circulo_agua.jpeg' },
-    'product-21': { name: 'Dúo Cactus del Cajón', price: 145000, category: 'Decorativo', image: 'assets/images/collection/obra_cactus_duo.jpeg' },
-    'product-22': { name: 'Mariposa Solar', price: 175000, category: 'Suncatcher', image: 'assets/images/collection/obra_mariposa_sol.jpeg' },
-    'product-23': { name: 'Gato Luna Cobriza', price: 170000, category: 'Decorativo', image: 'assets/images/collection/obra_gato_luna.jpeg' }
-  };
+  const formatPrice = v => '$' + Number(v || 0).toLocaleString('es-CL');
+
+  function updateCartBadge() {
+    if (!cartBadge) return;
+    const n = getCart().reduce((s, i) => s + i.qty, 0);
+    cartBadge.textContent = n;
+  }
 
   function openCart() {
-    cartOverlay.classList.add('open');
+    if (!cartDrawer) return;
     cartDrawer.classList.add('open');
+    if (cartOverlay) cartOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
+    renderCart();
   }
 
   function closeCart() {
-    cartOverlay.classList.remove('open');
+    if (!cartDrawer) return;
     cartDrawer.classList.remove('open');
+    if (cartOverlay) cartOverlay.classList.remove('open');
     document.body.style.overflow = '';
   }
 
-  if (cartToggle) cartToggle.addEventListener('click', openCart);
-  if (cartClose) cartClose.addEventListener('click', closeCart);
-  if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
-
-  // Close cart on browse link
-  const cartBrowse = document.getElementById('cart-browse');
-  if (cartBrowse) {
-    cartBrowse.addEventListener('click', closeCart);
-  }
-
-  function formatPrice(price) {
-    return '$' + price.toLocaleString('es-CL');
-  }
-
-  function cartSummaryMessage() {
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
-    const lines = cart.map((item, index) => `${index + 1}. ${item.name} — ${formatPrice(item.price)}`);
-    return `Hola, quiero comprar estas obras de Vitrales del Cajón:\n\n${lines.join('\n')}\n\nTotal: ${formatPrice(total)}`;
-  }
-
-  function updateCartUI() {
-    if (cartBadge) cartBadge.textContent = cart.length;
-
-    if (cart.length === 0) {
-      cartEmpty.style.display = '';
-      cartFooter.style.display = 'none';
-      // Remove cart items except empty message
-      const items = cartItemsContainer.querySelectorAll('.cart-item');
-      items.forEach(item => item.remove());
-    } else {
-      cartEmpty.style.display = 'none';
-      cartFooter.style.display = '';
-
-      // Rebuild cart items
-      const existingItems = cartItemsContainer.querySelectorAll('.cart-item');
-      existingItems.forEach(item => item.remove());
-
-      let total = 0;
-      cart.forEach((item, index) => {
-        total += item.price;
-        const cartItemEl = document.createElement('div');
-        cartItemEl.className = 'cart-item';
-        cartItemEl.innerHTML = `
-          <div class="cart-item-img"><img src="${item.image}" alt="${item.name}"></div>
-          <div class="cart-item-details">
-            <div class="cart-item-name">${item.name}</div>
-            <div class="cart-item-price">${formatPrice(item.price)}</div>
-          </div>
-          <button class="cart-item-remove" data-index="${index}" aria-label="Eliminar"><i class="fas fa-trash-alt"></i></button>
-        `;
-        cartItemsContainer.appendChild(cartItemEl);
-      });
-
-      cartTotal.textContent = formatPrice(total);
-
-      // Remove item listeners
-      cartItemsContainer.querySelectorAll('.cart-item-remove').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const idx = parseInt(btn.dataset.index);
-          cart.splice(idx, 1);
-          updateCartUI();
-        });
-      });
-    }
-  }
-
   function addToCart(productId) {
-    const product = products[productId];
-    if (product) {
-      cart.push({ ...product });
-      updateCartUI();
-      showToast(`"${product.name}" agregado al carrito`);
-    }
+    const products = getStoredProducts();
+    const product = products.find(p => p.id === productId);
+    if (!product || product.inStock === false) return;
+    const cart = getCart();
+    const ex = cart.find(i => i.id === productId);
+    if (ex) ex.qty += 1;
+    else cart.push({ id: productId, qty: 1 });
+    saveCart(cart);
+    updateCartBadge();
+    renderCart();
+    showToast(`"${product.name}" agregado al carrito`);
   }
+
+  function removeFromCart(productId) {
+    saveCart(getCart().filter(i => i.id !== productId));
+    updateCartBadge();
+    renderCart();
+  }
+
+  function renderCart() {
+    if (!cartItems) return;
+    const products = getStoredProducts();
+    const cart = getCart();
+
+    if (!cart.length) {
+      if (cartEmpty)  cartEmpty.style.display = '';
+      if (cartFooter) cartFooter.style.display = 'none';
+      cartItems.innerHTML = '';
+      cartItems.appendChild(cartEmpty);
+      return;
+    }
+
+    if (cartEmpty)  cartEmpty.style.display = 'none';
+    if (cartFooter) cartFooter.style.display = '';
+
+    const rows = cart.map(item => {
+      const p = products.find(x => x.id === item.id);
+      if (!p) return '';
+      return `<div class="cart-item-row" data-id="${p.id}" style="display:flex;gap:0.85rem;padding:1rem 0;border-bottom:1px solid rgba(12,45,131,0.07);">
+        <img src="${p.image}" alt="${p.name}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;flex-shrink:0;" loading="lazy" onerror="this.src=''">
+        <div style="flex:1;min-width:0;">
+          <p style="font-size:0.78rem;font-weight:700;color:var(--deep-blue);margin-bottom:2px;">${p.name}</p>
+          <p style="font-size:0.7rem;color:#6f7178;margin-bottom:6px;">${p.category}</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;">
+            <div style="display:flex;align-items:center;gap:0.4rem;">
+              <button type="button" class="cart-qty-btn" data-id="${p.id}" data-qty="${item.qty-1}"
+                style="width:26px;height:26px;border-radius:50%;border:1px solid rgba(12,45,131,0.15);background:#f5f5f7;cursor:pointer;font-weight:700;">−</button>
+              <span style="font-size:0.85rem;font-weight:700;width:20px;text-align:center;">${item.qty}</span>
+              <button type="button" class="cart-qty-btn" data-id="${p.id}" data-qty="${item.qty+1}"
+                style="width:26px;height:26px;border-radius:50%;border:1px solid rgba(12,45,131,0.15);background:#f5f5f7;cursor:pointer;font-weight:700;">+</button>
+            </div>
+            <span style="font-size:0.82rem;font-weight:800;color:var(--deep-blue);">${formatPrice(p.price * item.qty)}</span>
+          </div>
+        </div>
+      </div>`;
+    }).filter(Boolean).join('');
+
+    const totalAmount = cart.reduce((s, item) => {
+      const p = products.find(x => x.id === item.id);
+      return s + (p ? p.price * item.qty : 0);
+    }, 0);
+
+    if (cartTotal) cartTotal.textContent = formatPrice(totalAmount);
+
+    // Clear and repopulate
+    cartItems.innerHTML = '';
+    if (cartEmpty) {
+      cartEmpty.style.display = 'none';
+      cartItems.appendChild(cartEmpty);
+    }
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = rows;
+    while (tempDiv.firstChild) cartItems.appendChild(tempDiv.firstChild);
+
+    // Qty buttons
+    cartItems.querySelectorAll('.cart-qty-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const id = btn.dataset.id;
+        const qty = Number(btn.dataset.qty);
+        const cart = getCart();
+        const updated = cart.map(i => i.id === id ? { ...i, qty: Math.max(0, qty) } : i).filter(i => i.qty > 0);
+        saveCart(updated);
+        updateCartBadge();
+        renderCart();
+      });
+    });
+  }
+
+  if (cartToggle)  cartToggle.addEventListener('click', openCart);
+  if (cartClose)   cartClose.addEventListener('click', closeCart);
+  if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
 
   const checkoutBtn = document.getElementById('checkoutBtn');
   if (checkoutBtn) {
     checkoutBtn.addEventListener('click', () => {
-      if (!cart.length) {
-        showToast('Agrega una obra antes de finalizar');
-        return;
-      }
-
-      const groupedCart = cart.reduce((items, item) => {
-        const existing = items.find((entry) => entry.name === item.name);
-        if (existing) {
-          existing.qty += 1;
-        } else {
-          items.push({ ...item, qty: 1 });
-        }
-        return items;
-      }, []);
-      localStorage.setItem(STORAGE_CHECKOUT_CART, JSON.stringify(groupedCart));
+      const products = getStoredProducts();
+      const cart = getCart();
+      if (!cart.length) { showToast('Agrega una obra antes de ir al checkout'); return; }
+      const items = cart.map(i => {
+        const p = products.find(x => x.id === i.id);
+        return p ? { ...p, qty: i.qty } : null;
+      }).filter(Boolean);
+      localStorage.setItem(STORAGE_CHECKOUT, JSON.stringify(items));
       window.location.href = 'checkout.html';
     });
   }
 
-  // Quick view buttons act as add-to-cart
-  document.querySelectorAll('.product-quickview button').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const card = e.target.closest('.product-card');
-      if (card) addToCart(card.id);
-    });
-  });
-
-
-  // ── Wishlist Toggle ────────────────────────────────
-  document.querySelectorAll('.product-wishlist').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const icon = btn.querySelector('i');
-      if (icon.classList.contains('far')) {
-        icon.classList.remove('far');
-        icon.classList.add('fas');
-        btn.style.background = 'var(--deep-blue)';
-        btn.style.color = '#fff';
-        showToast('Agregado a favoritos ♥');
-      } else {
-        icon.classList.remove('fas');
-        icon.classList.add('far');
-        btn.style.background = '';
-        btn.style.color = '';
-        showToast('Eliminado de favoritos');
-      }
-    });
-  });
-
-
-  // ── Toast Notification ─────────────────────────────
-  const toast = document.getElementById('toast');
-  const toastMessage = document.getElementById('toastMessage');
-  let toastTimeout;
-
-  function showToast(message) {
-    toastMessage.textContent = message;
-    toast.classList.add('show');
-    clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(() => {
-      toast.classList.remove('show');
-    }, 2800);
-  }
-
-
-  // ── Glass Style Selector ──────────────────────────
+  // ── Glass Style Selector ───────────────────
   const glassStyles = document.getElementById('glassStyles');
   if (glassStyles) {
-    glassStyles.querySelectorAll('.glass-style-option').forEach(option => {
-      option.addEventListener('click', () => {
+    glassStyles.querySelectorAll('.glass-style-option').forEach(opt => {
+      opt.addEventListener('click', () => {
         glassStyles.querySelectorAll('.glass-style-option').forEach(o => o.classList.remove('selected'));
-        option.classList.add('selected');
+        opt.classList.add('selected');
       });
     });
   }
 
-
-  // ── Cotizador Form Submit ──────────────────────────
+  // ── Cotizador Form ─────────────────────────
   const cotizadorForm = document.getElementById('cotizadorForm');
   if (cotizadorForm) {
-    cotizadorForm.addEventListener('submit', (e) => {
+    cotizadorForm.addEventListener('submit', e => {
       e.preventDefault();
-
       const submitBtn = document.getElementById('submitCotizacion');
-      const originalText = submitBtn.innerHTML;
+      const originalHTML = submitBtn.innerHTML;
       const selectedStyle = document.querySelector('.glass-style-option.selected')?.dataset.style || 'No definido';
-      const quoteMessage = [
+      const msg = [
         'Hola, quiero solicitar una cotización a Vitrales del Cajón.',
         '',
         `Nombre: ${document.getElementById('nombre')?.value || 'No indicado'}`,
         `Email: ${document.getElementById('email')?.value || 'No indicado'}`,
         `Teléfono: ${document.getElementById('telefono')?.value || 'No indicado'}`,
         `Tipo de pieza: ${document.getElementById('tipo-pieza')?.selectedOptions?.[0]?.textContent || 'No indicado'}`,
-        `Medidas: ${document.getElementById('medida-ancho')?.value || '-'} x ${document.getElementById('medida-alto')?.value || '-'} x ${document.getElementById('medida-profundo')?.value || '-'} cm`,
+        `Medidas: ${document.getElementById('medida-ancho')?.value || '-'} × ${document.getElementById('medida-alto')?.value || '-'} × ${document.getElementById('medida-profundo')?.value || '-'} cm`,
         `Estilo de vidrio: ${selectedStyle}`,
         `Presupuesto: ${document.getElementById('presupuesto')?.selectedOptions?.[0]?.textContent || 'No indicado'}`,
         '',
         `Idea: ${document.getElementById('descripcion')?.value || 'No indicada'}`
       ].join('\n');
 
-      // Loading state
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
       submitBtn.disabled = true;
 
       setTimeout(() => {
         submitBtn.innerHTML = '<i class="fab fa-whatsapp"></i> Abriendo WhatsApp...';
-        submitBtn.style.background = 'var(--turquoise)';
-        showToast('Abriendo WhatsApp para enviar tu cotización');
-        window.location.href = whatsappLink(quoteMessage);
-
+        showToast('Abriendo WhatsApp para enviar tu cotización ✓');
+        window.location.href = whatsappLink(msg);
         setTimeout(() => {
-          submitBtn.innerHTML = originalText;
-          submitBtn.style.background = '';
+          submitBtn.innerHTML = originalHTML;
           submitBtn.disabled = false;
           cotizadorForm.reset();
-          // Re-select default glass style
-          const opalOption = document.getElementById('style-opal');
-          if (opalOption) opalOption.classList.add('selected');
-        }, 3000);
-      }, 1500);
+          const firstStyle = glassStyles?.querySelector('.glass-style-option');
+          if (firstStyle) firstStyle.classList.add('selected');
+        }, 4000);
+      }, 1400);
     });
   }
 
-
-  // ── Newsletter Submit ──────────────────────────────
-  const newsletterSubmit = document.getElementById('newsletter-submit');
-  if (newsletterSubmit) {
-    newsletterSubmit.addEventListener('click', (e) => {
+  // ── Newsletter ─────────────────────────────
+  const nlSubmit = document.getElementById('newsletter-submit');
+  if (nlSubmit) {
+    nlSubmit.addEventListener('click', e => {
       e.preventDefault();
       const emailInput = document.getElementById('newsletter-email');
-      if (emailInput && emailInput.value.includes('@')) {
+      if (emailInput?.value.includes('@')) {
         showToast('¡Gracias por suscribirte! 💎');
         emailInput.value = '';
       } else {
@@ -429,89 +316,57 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-
-  // ── Smooth Scroll for Anchor Links ─────────────────
+  // ── Smooth Scroll ──────────────────────────
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', (e) => {
-      const targetId = anchor.getAttribute('href');
-      if (targetId === '#') return;
-
-      const target = document.querySelector(targetId);
+    anchor.addEventListener('click', e => {
+      const href = anchor.getAttribute('href');
+      if (href === '#') return;
+      const target = document.querySelector(href);
       if (target) {
         e.preventDefault();
-        const offset = navbar.offsetHeight + 20;
-        const targetPosition = target.getBoundingClientRect().top + window.scrollY - offset;
-
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
+        const offset = (navbar?.offsetHeight || 70) + 20;
+        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
       }
     });
   });
 
-
-  // ── Parallax Effect on Hero ────────────────────────
-  // Hero background movement is handled by the CSS carousel Ken Burns effect.
-
-
-  // ── Counter Animation for Story Stats ──────────────
-  const statNumbers = document.querySelectorAll('.stat-number');
-  let statsAnimated = false;
-
-  const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !statsAnimated) {
-        statsAnimated = true;
-        animateCounters();
-        statsObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.5 });
-
+  // ── Counter Animation ──────────────────────
   const storyStats = document.querySelector('.story-stats');
-  if (storyStats) statsObserver.observe(storyStats);
-
-  function animateCounters() {
-    statNumbers.forEach(stat => {
-      const text = stat.textContent;
-      const match = text.match(/(\d+)/);
-      if (!match) return;
-
-      const target = parseInt(match[1]);
-      const suffix = text.replace(match[1], '');
-      const duration = 2000;
-      const startTime = performance.now();
-
-      function updateCount(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-
-        // Ease out cubic
-        const eased = 1 - Math.pow(1 - progress, 3);
-        const current = Math.floor(eased * target);
-
-        stat.innerHTML = current + suffix.replace(/(\+|%)/, '<span>$1</span>');
-
-        if (progress < 1) {
-          requestAnimationFrame(updateCount);
-        } else {
-          stat.innerHTML = target + suffix.replace(/(\+|%)/, '<span>$1</span>');
+  let statsAnimated = false;
+  if (storyStats) {
+    const statsObs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !statsAnimated) {
+          statsAnimated = true;
+          document.querySelectorAll('.stat-number').forEach(el => {
+            const match = el.textContent.match(/(\d+)/);
+            if (!match) return;
+            const target = parseInt(match[1]);
+            const suffix = el.textContent.replace(match[1], '');
+            const start = performance.now();
+            const dur = 2000;
+            function update(now) {
+              const p = Math.min((now - start) / dur, 1);
+              const eased = 1 - Math.pow(1 - p, 3);
+              el.innerHTML = Math.floor(eased * target) + suffix.replace(/(\+|%)/, '<span>$1</span>');
+              if (p < 1) requestAnimationFrame(update);
+              else el.innerHTML = target + suffix.replace(/(\+|%)/, '<span>$1</span>');
+            }
+            requestAnimationFrame(update);
+          });
+          statsObs.unobserve(entry.target);
         }
-      }
-
-      requestAnimationFrame(updateCount);
-    });
+      });
+    }, { threshold: 0.5 });
+    statsObs.observe(storyStats);
   }
 
-
-  // ── Keyboard Accessibility ─────────────────────────
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeCart();
-      navToggle.classList.remove('active');
-      navLinks.classList.remove('open');
-    }
+  // ── Keyboard ───────────────────────────────
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeCart();
   });
 
+  // ── Init ───────────────────────────────────
+  updateCartBadge();
+  renderCart();
 });
