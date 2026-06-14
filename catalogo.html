@@ -577,11 +577,11 @@
       </div>
       <div class="filter-pills" id="filterPills">
         <button class="pill active" data-cat="all">Todas</button>
-        <button class="pill" data-cat="Joyas"><i class="fas fa-gem" style="margin-right:4px;"></i>Joyas</button>
         <button class="pill" data-cat="Atrapasoles"><i class="fas fa-sun" style="margin-right:4px;"></i>Atrapasoles</button>
         <button class="pill" data-cat="Lámparas y Faroles"><i class="fas fa-lightbulb" style="margin-right:4px;"></i>Lámparas</button>
         <button class="pill" data-cat="Ventanas"><i class="fas fa-border-all" style="margin-right:4px;"></i>Ventanas</button>
         <button class="pill" data-cat="Espejos"><i class="fas fa-mirror" style="margin-right:4px;"></i>Espejos</button>
+        <button class="pill" data-cat="Decoración"><i class="fas fa-fan" style="margin-right:4px;"></i>Decoración</button>
       </div>
       <button class="filter-toggle" id="filterToggle">
         <i class="fas fa-sliders-h"></i> Filtrar
@@ -868,13 +868,13 @@
     });
 
     // ── Render catalog ──
-    const CATEGORY_ORDER = ['Joyas', 'Atrapasoles', 'Lámparas y Faroles', 'Ventanas', 'Espejos'];
+    const CATEGORY_ORDER = ['Atrapasoles', 'Lámparas y Faroles', 'Ventanas', 'Espejos', 'Decoración'];
     const CATEGORY_ICONS = {
-      'Joyas': 'fas fa-gem',
       'Atrapasoles': 'fas fa-sun',
       'Lámparas y Faroles': 'fas fa-lightbulb',
       'Ventanas': 'fas fa-border-all',
-      'Espejos': 'fas fa-expand'
+      'Espejos': 'fas fa-expand',
+      'Decoración': 'fas fa-fan'
     };
 
     function renderCatalog() {

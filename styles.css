@@ -1100,7 +1100,7 @@ section {
   gap: var(--space-sm);
 }
 
-.cotizador-feature .feature-icon {
+.cotizador-feature i {
   width: 44px;
   height: 44px;
   min-width: 44px;
@@ -1111,22 +1111,34 @@ section {
   justify-content: center;
   color: var(--turquoise);
   font-size: 1rem;
+  flex-shrink: 0;
+  line-height: 1;
 }
 
-.cotizador-feature h4 {
+.cotizador-feature > div {
+  flex: 1;
+}
+
+.cotizador-feature strong {
+  display: block;
   font-size: var(--fs-small);
   font-weight: 600;
   margin-bottom: 2px;
+  color: var(--deep-blue);
 }
 
-.cotizador-feature p {
+.cotizador-feature span {
+  display: block;
   font-size: var(--fs-small);
   color: #888;
-  margin-bottom: 0;
 }
 
 .cotizador-form {
   padding: var(--space-xl);
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(12, 45, 131, 0.08);
+  backdrop-filter: blur(8px);
 }
 
 .form-group {
@@ -1249,6 +1261,24 @@ section {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+/* Measurement inputs row */
+.medidas-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.medidas-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.medidas-row span {
+  color: #999;
+  font-weight: 500;
+  flex-shrink: 0;
 }
 
 .form-submit {
@@ -1390,9 +1420,16 @@ section {
 }
 
 .footer-brand img {
-  height: 60px;
+  height: 75px;
+  width: auto;
   margin-bottom: var(--space-md);
-  filter: brightness(10);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(12, 45, 131, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.footer-brand img:hover {
+  transform: scale(1.05);
 }
 
 .footer-brand p {
@@ -1863,16 +1900,40 @@ section {
     flex-direction: column;
   }
 
+  .cotizador {
+    padding: var(--space-2xl) 0;
+  }
+
+  .cotizador-form {
+    padding: var(--space-lg);
+  }
+
   .form-row {
     grid-template-columns: 1fr;
+  }
+
+  .medidas-row {
+    flex-wrap: wrap;
+  }
+
+  .medidas-row input {
+    min-width: 80px;
   }
 
   .measurement-group {
     grid-template-columns: 1fr;
   }
 
+  .glass-style-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
   .glass-styles {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cotizador-features {
+    gap: var(--space-sm);
   }
 
   .story-stats {
@@ -1986,6 +2047,78 @@ section {
 
   .product-price {
     text-align: left;
+  }
+
+  /* Cotizador mobile */
+  .cotizador {
+    padding: var(--space-xl) 0;
+  }
+
+  .cotizador-form {
+    padding: var(--space-md);
+  }
+
+  .form-group label {
+    font-size: 0.65rem;
+    margin-bottom: 6px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 12px 14px;
+    font-size: 0.85rem;
+  }
+
+  .form-group textarea {
+    min-height: 100px;
+    rows: 3;
+  }
+
+  .medidas-row {
+    gap: 8px;
+  }
+
+  .medidas-row input {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+
+  .medidas-row span {
+    font-size: 0.9rem;
+  }
+
+  .glass-style-option {
+    padding: 8px 6px;
+    gap: 4px;
+  }
+
+  .glass-style-option .swatch {
+    width: 28px;
+    height: 28px;
+  }
+
+  .glass-style-option span {
+    font-size: 0.6rem;
+  }
+
+  .cotizador-feature {
+    gap: 8px;
+  }
+
+  .cotizador-feature i {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    font-size: 0.85rem;
+  }
+
+  .cotizador-feature strong {
+    font-size: 0.75rem;
+  }
+
+  .cotizador-feature span {
+    font-size: 0.7rem;
   }
 
   .toast {

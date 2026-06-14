@@ -438,6 +438,110 @@
 
     .status.success { color: var(--success); }
 
+    .terms-trigger {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--blue);
+      font-weight: 800;
+      font-family: inherit;
+      font-size: inherit;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      background: rgba(12, 45, 131, 0.35);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal-box {
+      width: 100%;
+      max-width: 640px;
+      max-height: 85vh;
+      overflow-y: auto;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .modal-head {
+      position: sticky;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.1rem 1.35rem;
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .modal-close {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 1;
+      transition: color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .modal-close:hover {
+      color: var(--cyan);
+      border-color: var(--cyan);
+    }
+
+    .modal-body {
+      padding: 1.1rem 1.35rem 1.6rem;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+
+    .modal-body h3 {
+      margin: 1.3rem 0 0.4rem;
+      color: var(--ink);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .modal-body h3:first-child { margin-top: 0; }
+
+    .modal-body p { margin: 0 0 0.6rem; }
+
+    .modal-body ul {
+      margin: 0 0 0.6rem;
+      padding-left: 1.2rem;
+    }
+
+    .modal-body li { margin-bottom: 0.35rem; }
+
     @media (max-width: 940px) {
       .checkout-layout {
         grid-template-columns: 1fr;
@@ -618,7 +722,7 @@
 
         <div class="terms">
           <input id="terms" type="checkbox" required>
-          <label for="terms">He leído y estoy de acuerdo con los <a href="index.html#contacto">términos y condiciones</a> de la web.</label>
+          <label for="terms">He leído y estoy de acuerdo con los <button type="button" class="terms-trigger" id="openTerms">términos y condiciones</button> de la web.</label>
         </div>
 
         <div class="summary-actions">
@@ -628,6 +732,46 @@
       </aside>
     </section>
   </main>
+
+  <div class="modal-overlay" id="termsModal" role="dialog" aria-modal="true" aria-labelledby="termsModalTitle">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h2 id="termsModalTitle">Términos y condiciones</h2>
+        <button class="modal-close" id="closeTerms" type="button" aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h3>1. Sobre Vitrales del Cajón</h3>
+        <p>Vitrales del Cajón es un taller artesanal ubicado en el Cajón del Maipo que diseña y elabora vitrales, atrapasoles, lámparas, faroles, espejos y joyas en vidrio. Cada pieza es hecha a mano, por lo que pueden existir leves variaciones de tamaño, color o textura respecto a las fotografías publicadas.</p>
+
+        <h3>2. Pedidos y confirmación</h3>
+        <p>Al realizar un pedido a través de este sitio, recibirás un resumen vía WhatsApp para confirmar disponibilidad, forma de pago y despacho. El pedido se considera confirmado únicamente cuando recibas esta confirmación del taller.</p>
+
+        <h3>3. Precios y medios de pago</h3>
+        <ul>
+          <li>Los precios se muestran en pesos chilenos (CLP) e incluyen los impuestos aplicables.</li>
+          <li>El pago se coordina por transferencia bancaria, confirmada manualmente por el taller.</li>
+          <li>Otros medios de pago (Webpay/Flow) podrán habilitarse próximamente.</li>
+        </ul>
+
+        <h3>4. Envíos y retiro</h3>
+        <ul>
+          <li><strong>Retiro en taller:</strong> coordinación previa en el Cajón del Maipo, sin costo.</li>
+          <li><strong>Despacho Región Metropolitana:</strong> costo fijo informado en el checkout.</li>
+          <li><strong>Despacho a regiones:</strong> embalaje protegido, costo informado y coordinado según destino.</li>
+        </ul>
+        <p>Por tratarse de piezas de vidrio, el embalaje se realiza con materiales de protección reforzados; aun así, el riesgo de transporte corre por cuenta del servicio de envío contratado.</p>
+
+        <h3>5. Cambios y devoluciones</h3>
+        <p>Si tu pedido llega con daños de transporte o defectos de fabricación, contáctanos dentro de 48 horas desde la recepción, adjuntando fotografías, para evaluar reposición o reembolso. Por ser piezas hechas a mano y/o personalizadas, no se aceptan devoluciones por cambio de opinión una vez iniciada la fabricación.</p>
+
+        <h3>6. Datos personales</h3>
+        <p>Los datos ingresados en este formulario (nombre, RUT, dirección, contacto) se utilizan exclusivamente para gestionar tu pedido, emitir el documento tributario correspondiente y coordinar el envío. No se comparten con terceros para fines comerciales.</p>
+
+        <h3>7. Contacto</h3>
+        <p>Para cualquier consulta sobre tu pedido, escríbenos por WhatsApp al +56 9 9997 7550.</p>
+      </div>
+    </div>
+  </div>
 
   <script>
     const STORAGE_PRODUCTS = 'vitralesCatalogProducts';
@@ -887,6 +1031,27 @@
       statusBox.textContent = 'Pedido validado. Abriendo WhatsApp para confirmar pago y despacho...';
       statusBox.classList.add('success');
       submitOrder(orderPayload);
+    });
+
+    const termsModal = document.getElementById('termsModal');
+    const openTermsBtn = document.getElementById('openTerms');
+    const closeTermsBtn = document.getElementById('closeTerms');
+
+    function openTermsModal() {
+      termsModal.classList.add('open');
+    }
+
+    function closeTermsModal() {
+      termsModal.classList.remove('open');
+    }
+
+    openTermsBtn.addEventListener('click', openTermsModal);
+    closeTermsBtn.addEventListener('click', closeTermsModal);
+    termsModal.addEventListener('click', (event) => {
+      if (event.target === termsModal) closeTermsModal();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && termsModal.classList.contains('open')) closeTermsModal();
     });
 
     hydrateRegions();
