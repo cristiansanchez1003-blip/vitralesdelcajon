@@ -1,8 +1,8 @@
 // Central inventory for Vitrales del Cajón.
 // Categories: Atrapasoles | Lámparas y Faroles | Ventanas | Espejos | Decoración / Figuras
 // Version: 20260614-v5 - Catálogo revisado: nombres, categorías y descripciones según fotos reales
-window.VITRALES_INVENTORY_VERSION = '20260614-v5';
-window.VITRALES_PRODUCTS = [
+if (typeof window !== 'undefined') window.VITRALES_INVENTORY_VERSION = '20260614-v5';
+const VITRALES_PRODUCTS = [
   /* ══════════════════════════════════════════
      ATRAPASOLES
   ══════════════════════════════════════════ */
@@ -793,3 +793,6 @@ window.VITRALES_PRODUCTS = [
     "featured": false
   }
 ];
+
+if (typeof window !== 'undefined') window.VITRALES_PRODUCTS = VITRALES_PRODUCTS;
+if (typeof module !== 'undefined' && module.exports) module.exports = VITRALES_PRODUCTS;

@@ -321,6 +321,21 @@
       border-radius: 8px;
       padding: 0.9rem;
       background: linear-gradient(135deg, #ffffff 0%, #f6fbfc 100%);
+      cursor: pointer;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .payment-method input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      accent-color: var(--blue);
+      flex: 0 0 auto;
+    }
+
+    .payment-method:has(input:checked) {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 4px rgba(47, 186, 211, 0.12);
     }
 
     .payment-method strong {
@@ -709,14 +724,14 @@
         <div class="payment-box">
           <div class="shipping-title">Pasarela de pagos</div>
           <div class="payment-methods">
-            <div class="payment-method">
+            <label class="payment-method">
               <span><strong>Webpay / Flow</strong>Pago con tarjeta de crédito, débito o prepago.</span>
-              <span class="method-pill">Próximo paso</span>
-            </div>
-            <div class="payment-method">
+              <input type="radio" name="paymentMethod" value="flow" checked>
+            </label>
+            <label class="payment-method">
               <span><strong>Transferencia</strong>Confirmación manual y coordinación por WhatsApp.</span>
-              <span class="method-pill">Disponible</span>
-            </div>
+              <input type="radio" name="paymentMethod" value="whatsapp">
+            </label>
           </div>
         </div>
 
@@ -749,8 +764,8 @@
         <h3>3. Precios y medios de pago</h3>
         <ul>
           <li>Los precios se muestran en pesos chilenos (CLP) e incluyen los impuestos aplicables.</li>
-          <li>El pago se coordina por transferencia bancaria, confirmada manualmente por el taller.</li>
-          <li>Otros medios de pago (Webpay/Flow) podrán habilitarse próximamente.</li>
+          <li>El pago con tarjeta de crédito, débito o prepago se procesa de forma segura a través de Webpay/Flow.</li>
+          <li>También puedes coordinar el pago por transferencia bancaria, confirmada manualmente por el taller vía WhatsApp.</li>
         </ul>
 
         <h3>4. Envíos y retiro</h3>
@@ -989,9 +1004,29 @@
       };
     }
 
+    async function payWithFlow(orderPayload) {
+      statusBox.classList.remove('success');
+      statusBox.textContent = 'Redirigiendo a Flow para completar tu pago...';
+
+      const response = await fetch('/api/create-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: orderPayload.items.map((item) => ({ id: item.id, qty: item.qty })),
+          shippingAmount: orderPayload.shipping.amount,
+          customer: orderPayload.customer
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data.url || !data.token) {
+        throw new Error(data.error || 'No se pudo iniciar el pago con Flow.');
+      }
+
+      window.location.href = `${data.url}?token=${encodeURIComponent(data.token)}`;
+    }
+
     function submitOrder(orderPayload) {
-      // Hook futuro para Flow/Webpay:
-      // return fetch('/api/create-payment', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderPayload) });
       const lines = orderPayload.items.map((item) => `• ${item.name} x${item.qty} — ${formatPrice(item.price * item.qty)}`);
       const customer = orderPayload.customer;
       const message = [
@@ -1021,13 +1056,28 @@
       hydrateCommunes(regionSelect.value);
     });
 
-    document.getElementById('placeOrder').addEventListener('click', () => {
+    document.getElementById('placeOrder').addEventListener('click', async () => {
       statusBox.textContent = '';
       statusBox.classList.remove('success');
       if (!validateForm()) return;
 
       const orderPayload = getOrderPayload();
       localStorage.setItem('vitralesLastOrder', JSON.stringify(orderPayload));
+
+      const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
+      const placeOrderBtn = document.getElementById('placeOrder');
+
+      if (paymentMethod === 'flow') {
+        placeOrderBtn.disabled = true;
+        try {
+          await payWithFlow(orderPayload);
+        } catch (error) {
+          statusBox.textContent = error.message || 'No se pudo iniciar el pago. Intenta nuevamente.';
+          placeOrderBtn.disabled = false;
+        }
+        return;
+      }
+
       statusBox.textContent = 'Pedido validado. Abriendo WhatsApp para confirmar pago y despacho...';
       statusBox.classList.add('success');
       submitOrder(orderPayload);

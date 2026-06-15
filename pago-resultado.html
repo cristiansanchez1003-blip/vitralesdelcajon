@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultado de tu pago — Vitrales del Cajón</title>
+  <meta name="description" content="Resultado del pago de tu pedido en Vitrales del Cajón.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <style>
+    :root {
+      --paper: #FAFAFA;
+      --white: #FFFFFF;
+      --ink: #222222;
+      --muted: #6f7178;
+      --line: rgba(34, 34, 34, 0.12);
+      --blue: #0C2D83;
+      --cyan: #2FBAD3;
+      --amber: #E59513;
+      --danger: #9b2f2f;
+      --success: #1d7c55;
+      --shadow: 0 18px 55px rgba(12, 45, 131, 0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(47, 186, 211, 0.08), transparent 34rem),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+
+    .result-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 76px;
+      padding: 0 clamp(1rem, 4vw, 4rem);
+      background: rgba(250, 250, 250, 0.9);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      min-width: 0;
+    }
+
+    .brand img {
+      width: 58px;
+      height: auto;
+      filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.15));
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 0.86rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .brand span {
+      display: block;
+      margin-top: 0.18rem;
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .back-link {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      transition: color 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .back-link:hover { color: var(--cyan); }
+
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: clamp(2.4rem, 6vw, 5rem) 1.25rem 5rem;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: clamp(1.5rem, 5vw, 2.6rem);
+      text-align: center;
+    }
+
+    .status-icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 1.2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      font-weight: 800;
+    }
+
+    .status-icon.ok { background: rgba(29, 124, 85, 0.12); color: var(--success); }
+    .status-icon.pending { background: rgba(229, 149, 19, 0.12); color: var(--amber); }
+    .status-icon.fail { background: rgba(155, 47, 47, 0.12); color: var(--danger); }
+    .status-icon.loading { background: rgba(12, 45, 131, 0.08); color: var(--blue); }
+
+    .kicker {
+      margin: 0 0 0.6rem;
+      color: var(--cyan);
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 0.8rem;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      line-height: 1.15;
+      letter-spacing: 0.01em;
+    }
+
+    p.lead {
+      margin: 0 0 1.6rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .order-meta {
+      margin: 0 0 1.6rem;
+      padding: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-align: left;
+    }
+
+    .order-meta div {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.3rem 0;
+    }
+
+    .order-meta strong { color: var(--ink); }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      border-radius: 999px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+      border: 1px solid var(--blue);
+    }
+
+    .btn-primary {
+      color: var(--paper);
+      background: var(--blue);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      border-color: var(--cyan);
+      background: var(--cyan);
+    }
+
+    .btn-secondary {
+      color: var(--blue);
+      background: transparent;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    @media (max-width: 640px) {
+      .result-header {
+        min-height: 68px;
+        padding: 0.55rem 1rem;
+      }
+      .brand img { width: 50px; }
+      .brand span { display: none; }
+      .back-link { font-size: 0.7rem; letter-spacing: 0.1em; }
+    }
+  </style>
+</head>
+<body>
+  <header class="result-header">
+    <a class="brand" href="index.html" aria-label="Volver al inicio">
+      <img src="assets/images/logotipo_vitrales_hero.png" alt="Vitrales del Cajón">
+      <span>
+        <strong>Vitrales del Cajón</strong>
+        <span>Pago seguro</span>
+      </span>
+    </a>
+    <a class="back-link" href="catalogo.html">Volver al catálogo</a>
+  </header>
+
+  <main>
+    <section class="panel" id="resultPanel">
+      <div class="status-icon loading" id="statusIcon">…</div>
+      <p class="kicker">Pasarela de pago Flow</p>
+      <h1 id="resultTitle">Verificando tu pago…</h1>
+      <p class="lead" id="resultText">Estamos consultando el estado de tu transacción con Flow. Esto puede tardar unos segundos.</p>
+      <div class="order-meta" id="orderMeta" style="display:none;"></div>
+      <div class="actions" id="resultActions"></div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_CART = 'vitralesCatalogCart';
+    const STORAGE_CHECKOUT_CART = 'vitralesCheckoutCart';
+    const STORAGE_LAST_ORDER = 'vitralesLastOrder';
+    const WHATSAPP_PHONE = '56999977550';
+
+    const formatPrice = (value) => '$' + Number(value || 0).toLocaleString('es-CL');
+    const whatsappLink = (message) => `https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${encodeURIComponent(message)}`;
+    const readJSON = (key, fallback = null) => {
+      try { return JSON.parse(localStorage.getItem(key) || 'null') || fallback; }
+      catch { return fallback; }
+    };
+
+    const statusIcon = document.getElementById('statusIcon');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultText = document.getElementById('resultText');
+    const orderMeta = document.getElementById('orderMeta');
+    const resultActions = document.getElementById('resultActions');
+
+    function setIcon(type, symbol) {
+      statusIcon.className = 'status-icon ' + type;
+      statusIcon.textContent = symbol;
+    }
+
+    function buildWhatsappMessage(order, statusData) {
+      if (!order) {
+        return `Hola, acabo de pagar mi pedido en Vitrales del Cajón (orden Flow ${statusData.commerceOrder || ''}). ¿Pueden confirmarme los detalles?`;
+      }
+      const lines = order.items.map((item) => `• ${item.name} x${item.qty} — ${formatPrice(item.price * item.qty)}`);
+      const customer = order.customer;
+      return [
+        'Hola, mi pago fue exitoso en Vitrales del Cajón ✅',
+        '',
+        `N° de orden: ${statusData.commerceOrder || ''}`,
+        '',
+        ...lines,
+        '',
+        `Subtotal: ${formatPrice(order.totals.subtotal)}`,
+        `Envío (${order.shipping.label}): ${formatPrice(order.shipping.amount)}`,
+        `Total pagado: ${formatPrice(order.totals.total)}`,
+        '',
+        'Datos del comprador:',
+        `${customer.nombre} ${customer.apellidos}`,
+        `RUT: ${customer.rut}`,
+        `Email: ${customer.email}`,
+        `Dirección: ${customer.direccion}${customer.departamento ? ', ' + customer.departamento : ''}`,
+        `${customer.comuna}, ${customer.region}, ${customer.pais}`
+      ].join('\n');
+    }
+
+    function renderActions(buttons) {
+      resultActions.innerHTML = '';
+      buttons.forEach(({ label, href, primary }) => {
+        const link = document.createElement('a');
+        link.className = 'btn ' + (primary ? 'btn-primary' : 'btn-secondary');
+        link.href = href;
+        link.textContent = label;
+        if (href.startsWith('http')) { link.target = '_blank'; link.rel = 'noopener'; }
+        resultActions.appendChild(link);
+      });
+    }
+
+    function showOrderMeta(statusData) {
+      orderMeta.style.display = 'block';
+      orderMeta.innerHTML = `
+        <div><span>N° de orden Flow</span><strong>${statusData.commerceOrder || '—'}</strong></div>
+        <div><span>Monto</span><strong>${formatPrice(statusData.amount)}</strong></div>
+        <div><span>Estado</span><strong>${statusData.statusText}</strong></div>
+      `;
+    }
+
+    function handlePaid(statusData) {
+      setIcon('ok', '✓');
+      resultTitle.textContent = '¡Pago realizado con éxito!';
+      resultText.textContent = 'Gracias por tu compra. Tu pedido fue confirmado y el taller será notificado.';
+      showOrderMeta(statusData);
+
+      const order = readJSON(STORAGE_LAST_ORDER);
+      localStorage.removeItem(STORAGE_CART);
+      localStorage.removeItem(STORAGE_CHECKOUT_CART);
+
+      renderActions([
+        { label: 'Avisar por WhatsApp', href: whatsappLink(buildWhatsappMessage(order, statusData)), primary: true },
+        { label: 'Volver al catálogo', href: 'catalogo.html', primary: false }
+      ]);
+    }
+
+    function handlePending(statusData) {
+      setIcon('pending', '…');
+      resultTitle.textContent = 'Tu pago está en proceso';
+      resultText.textContent = 'Aún no recibimos la confirmación final de Flow. Si ya completaste el pago, actualiza esta página en unos segundos.';
+      showOrderMeta(statusData);
+      renderActions([
+        { label: 'Actualizar estado', href: location.href, primary: true },
+        { label: 'Volver al catálogo', href: 'catalogo.html', primary: false }
+      ]);
+    }
+
+    function handleFailed(statusData) {
+      setIcon('fail', '✕');
+      resultTitle.textContent = 'El pago no se completó';
+      resultText.textContent = 'Tu pago fue rechazado o anulado. Puedes intentarlo nuevamente desde el checkout.';
+      if (statusData) showOrderMeta(statusData);
+      renderActions([
+        { label: 'Volver al checkout', href: 'checkout.html', primary: true },
+        { label: 'Volver al catálogo', href: 'catalogo.html', primary: false }
+      ]);
+    }
+
+    function handleError(message) {
+      setIcon('fail', '!');
+      resultTitle.textContent = 'No pudimos verificar tu pago';
+      resultText.textContent = message || 'Ocurrió un problema al consultar el estado del pago. Si el dinero fue debitado, contáctanos por WhatsApp.';
+      renderActions([
+        { label: 'Contactar por WhatsApp', href: whatsappLink('Hola, necesito ayuda para confirmar el estado de mi pago en Vitrales del Cajón.'), primary: true },
+        { label: 'Volver al catálogo', href: 'catalogo.html', primary: false }
+      ]);
+    }
+
+    async function checkStatus() {
+      const params = new URLSearchParams(location.search);
+      const token = params.get('token');
+
+      if (!token) {
+        handleError('No se encontró información de pago en la URL.');
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/payment-status?token=${encodeURIComponent(token)}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          handleError(data.error);
+          return;
+        }
+
+        if (data.status === 2) handlePaid(data);
+        else if (data.status === 1) handlePending(data);
+        else handleFailed(data);
+      } catch (error) {
+        handleError(error.message);
+      }
+    }
+
+    checkStatus();
+  </script>
+</body>
+</html>

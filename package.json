@@ -1,0 +1,6 @@
+{
+  "name": "vitrales-del-cajon",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Sitio web de Vitrales del Cajón con funciones serverless para la pasarela de pago Flow."
+}
