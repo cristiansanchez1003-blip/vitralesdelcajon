@@ -803,6 +803,20 @@
       }
 
       const getProducts = () => JSON.parse(localStorage.getItem(STORAGE_PRODUCTS) || '[]');
+
+      /* Server sync */
+      async function syncFromServer() {
+        try {
+          const res = await fetch('/api/products');
+          if (!res.ok) return;
+          const data = await res.json();
+          if (Array.isArray(data.products) && data.products.length) {
+            localStorage.setItem(STORAGE_PRODUCTS, JSON.stringify(data.products));
+            renderFeatured();
+          }
+        } catch {}
+      }
+
       const getCart = () => JSON.parse(localStorage.getItem(STORAGE_CART_INDEX) || '[]');
       const saveCart = (cart) => localStorage.setItem(STORAGE_CART_INDEX, JSON.stringify(cart));
       const formatPrice = (v) => '$' + Number(v || 0).toLocaleString('es-CL');
@@ -891,7 +905,10 @@
         }
       }
 
-      document.addEventListener('DOMContentLoaded', renderFeatured);
+      document.addEventListener('DOMContentLoaded', () => {
+        renderFeatured();
+        syncFromServer();
+      });
     })();
   </script>
 </body>

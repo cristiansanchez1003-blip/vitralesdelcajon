@@ -687,6 +687,19 @@
     const getCart     = () => JSON.parse(localStorage.getItem(STORAGE_CART) || '[]');
     const saveCart    = c  => localStorage.setItem(STORAGE_CART, JSON.stringify(c));
 
+    /* Server sync */
+    async function syncFromServer() {
+      try {
+        const res = await fetch('/api/products');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (Array.isArray(data.products) && data.products.length) {
+          localStorage.setItem(STORAGE_PRODUCTS, JSON.stringify(data.products));
+          renderCatalog();
+        }
+      } catch {}
+    }
+
     const fmt  = v => '$' + Number(v || 0).toLocaleString('es-CL');
     const esc  = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 
@@ -1072,6 +1085,7 @@
     // ── Init ──
     updateCartBadge();
     renderCatalog();
+    syncFromServer();
   })();
   </script>
 </body>

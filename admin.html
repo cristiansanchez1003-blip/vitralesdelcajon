@@ -711,6 +711,32 @@
     const $ = id => document.getElementById(id);
     const getProducts = () => JSON.parse(localStorage.getItem(STORAGE_PRODUCTS) || '[]');
     const saveProducts = p => localStorage.setItem(STORAGE_PRODUCTS, JSON.stringify(p));
+
+    /* Server sync */
+    async function syncFromServer() {
+      try {
+        const res = await fetch('/api/products');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (Array.isArray(data.products) && data.products.length) {
+          saveProducts(data.products);
+          renderInventory();
+        }
+      } catch {}
+    }
+
+    async function syncToServer(products) {
+      try {
+        const res = await fetch('/api/products', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ADMIN_PASS },
+          body: JSON.stringify(products)
+        });
+        if (!res.ok) throw new Error();
+      } catch {
+        showToast('Cambios guardados localmente, pero no se pudo sincronizar con el servidor', 'error');
+      }
+    }
     const fmt = v => '$' + Number(v || 0).toLocaleString('es-CL');
     const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
     const slugify = v => v.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'obra';
@@ -973,6 +999,7 @@
       const newStock = !currentlyInStock;
       products[idx].inStock = newStock;
       saveProducts(products);
+      syncToServer(products);
       renderInventory();
       showToast(
         newStock ? `"${products[idx].name}" marcada como EN STOCK` : `"${products[idx].name}" marcada SIN STOCK`,
@@ -985,7 +1012,9 @@
       const p = products.find(x => x.id === id);
       if (!p) return;
       if (!window.confirm(`¿Eliminar "${p.name}" del catálogo? Esta acción no se puede deshacer.`)) return;
-      saveProducts(products.filter(x => x.id !== id));
+      const updated = products.filter(x => x.id !== id);
+      saveProducts(updated);
+      syncToServer(updated);
       renderInventory();
       resetForm();
       showToast('Obra eliminada del catálogo');
@@ -1027,6 +1056,7 @@
         showToast(`"${p.name}" agregada al catálogo`, 'success');
       }
       saveProducts(products);
+      syncToServer(products);
       renderInventory();
       resetForm();
     });
@@ -1075,6 +1105,7 @@
       updateStockLabel();
       updateFeaturedLabel();
       renderInventory();
+      syncFromServer();
     } else {
       $('passwordInput').focus();
     }
