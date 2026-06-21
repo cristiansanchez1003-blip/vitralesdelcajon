@@ -346,8 +346,8 @@
       font-size:0.72rem;
       transition:all 0.25s;
     }
-    .product-wishlist-btn:hover,
-    .product-wishlist-btn.active { background:var(--blue); border-color:var(--blue); color:#fff; }
+    .product-wishlist-btn:hover { background:var(--blue); border-color:var(--blue); color:#fff; }
+    .product-wishlist-btn.active { background:var(--green); border-color:var(--green); color:#fff; }
 
     /* ── EMPTY STATE ── */
     .empty-state {
@@ -880,6 +880,25 @@
       }
     });
 
+    // ── Favorites (persisted for the current browser session) ──
+    function getFavorites() {
+      try { return new Set(JSON.parse(sessionStorage.getItem('vdc_favorites') || '[]')); }
+      catch { return new Set(); }
+    }
+    function saveFavorites(set) {
+      sessionStorage.setItem('vdc_favorites', JSON.stringify([...set]));
+    }
+    function isFavorite(id) {
+      return getFavorites().has(id);
+    }
+    function toggleFavorite(id) {
+      const favs = getFavorites();
+      const added = !favs.has(id);
+      if (added) favs.add(id); else favs.delete(id);
+      saveFavorites(favs);
+      return added;
+    }
+
     // ── Render catalog ──
     const CATEGORY_ORDER = ['Atrapasoles', 'Lámparas y Faroles', 'Ventanas', 'Espejos', 'Decoración'];
     const CATEGORY_ICONS = {
@@ -991,10 +1010,11 @@
                 <span class="product-price">
                   <span class="price-currency">CLP</span>${fmt(p.price).replace('$','')}
                 </span>
-                <button class="product-wishlist-btn" type="button"
+                <button class="product-wishlist-btn${isFavorite(p.id) ? ' active' : ''}" type="button"
+                        data-id="${esc(p.id)}"
                         aria-label="Agregar a favoritos"
                         onclick="event.stopPropagation()">
-                  <i class="far fa-heart"></i>
+                  <i class="fa${isFavorite(p.id) ? 's' : 'r'} fa-heart"></i>
                 </button>
               </div>
             </div>
@@ -1062,10 +1082,11 @@
     document.addEventListener('click', e => {
       const wb = e.target.closest('.product-wishlist-btn');
       if (!wb) return;
-      wb.classList.toggle('active');
+      const added = toggleFavorite(wb.dataset.id);
+      wb.classList.toggle('active', added);
       const icon = wb.querySelector('i');
-      icon.className = wb.classList.contains('active') ? 'fas fa-heart' : 'far fa-heart';
-      showToast(wb.classList.contains('active') ? 'Guardado en favoritos ♥' : 'Eliminado de favoritos');
+      icon.className = added ? 'fas fa-heart' : 'far fa-heart';
+      showToast(added ? 'Guardado en favoritos ♥' : 'Eliminado de favoritos');
     });
 
     // Keyboard accessibility for cards
